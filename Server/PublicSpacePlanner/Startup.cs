@@ -108,10 +108,10 @@ namespace PublicSpacePlanner
 			app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));
 
 
-			if (!env.IsDevelopment())
-			{
-				var clientFileProvider = new PhysicalFileProvider(
-					Configuration["Environment:ClientBuildPath"]);
+			//if (!env.IsDevelopment())
+			//{
+				var clientFileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
+					Configuration["Environment:ClientBuildPath"]));
 				var filesOptions = new DefaultFilesOptions();
 				filesOptions.FileProvider = clientFileProvider;
 				filesOptions.DefaultFileNames.Clear();
@@ -122,9 +122,8 @@ namespace PublicSpacePlanner
 					FileProvider = clientFileProvider,
 					RequestPath = ""
 				});
-				app.UseCors(Configuration["Environment:ClientUrl"]);
 
-			}
+			//}
 
 
 			app.UseMvc();
