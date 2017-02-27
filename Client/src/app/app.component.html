@@ -1,0 +1,22 @@
+<div class="container-fluid">
+		<app-login-tester></app-login-tester>
+		<div class="col-md-6 col-sm-6">
+			<h2 class="text-center">Users</h2>
+			<ul class="users">
+				<li *ngFor="let user of users" (click)="onSelect(user)" [class.selected]="user===selectedUser">
+					<span>{{user.name}}</span>
+				</li>
+			</ul>
+		</div>
+
+		<div *ngIf="selectedUser" class="col-md-6 col-sm-6" >
+			<h2>{{selectedUser.name}}</h2>
+			<div><label>id: </label>{{selectedUser.id}}</div>
+			<div>
+			    <label>name: </label>
+			    <input [(ngModel)]="selectedUser.name" placeholder="name"/>
+			</div>
+		</div>
+
+
+</div>
