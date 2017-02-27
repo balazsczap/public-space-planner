@@ -1,1 +1,0 @@
-start cmd.exe /c "cd Server/PublicSpacePlanner & git add -u & git commit -m "deploying" & git push heroku master"
