@@ -108,8 +108,10 @@ namespace PublicSpacePlanner
 			app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));
 			if (!env.IsDevelopment())
 			{
+				
 				var clientFileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
 					Configuration["Environment:ClientBuildPath"]));
+				Console.WriteLine($"Hosting Angular2 app from {Configuration["Environment:ClientBuildPath"]}");
 				var filesOptions = new DefaultFilesOptions();
 				filesOptions.FileProvider = clientFileProvider;
 				filesOptions.DefaultFileNames.Clear();

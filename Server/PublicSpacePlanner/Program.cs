@@ -13,7 +13,7 @@ namespace PublicSpacePlanner
     {
 		private static readonly Dictionary<string, string> defaults =
 		new Dictionary<string, string> {
-			{ WebHostDefaults.EnvironmentKey, "development" }
+			{ WebHostDefaults.EnvironmentKey, "Production" }
 		};
 
 		public static void Main(string[] args)
