@@ -108,7 +108,7 @@ namespace PublicSpacePlanner
 			if (!env.IsDevelopment())
 			{
 				
-				var clientFileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), Configuration["ASPNETCORE_BASEPATH"],
+				var clientFileProvider = new PhysicalFileProvider(Path.Combine(Configuration["ASPNETCORE_BASEPATH"],
 					Configuration["Environment:ClientBuildPath"]));
 				Console.WriteLine($"Hosting Angular2 app from {Configuration["Environment:ClientBuildPath"]}");
 				var filesOptions = new DefaultFilesOptions();
