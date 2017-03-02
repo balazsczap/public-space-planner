@@ -19,6 +19,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using PublicSpacePlanner.Data.Repositories;
+using System.Diagnostics;
 
 namespace PublicSpacePlanner
 {
@@ -107,6 +108,21 @@ namespace PublicSpacePlanner
 			app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));
 			if (!env.IsDevelopment())
 			{
+
+				var proc = new Process();
+				var startinfo = new ProcessStartInfo();
+				startinfo.WorkingDirectory = Directory.GetCurrentDirectory().ToString();
+
+				proc.StartInfo.FileName = "/bin/bash";
+				proc.StartInfo.Arguments = "-c ls -a";
+				proc.StartInfo.UseShellExecute = false;
+				proc.StartInfo.RedirectStandardOutput = true;
+				proc.Start();
+
+				Console.WriteLine("Shell has been executed!");
+				
+
+
 				Console.WriteLine($"Environment:ClientBuildPath: {Configuration["Environment:ClientBuildPath"]}");
 				var clientUrl = Configuration["Environment:ClientBuildPath"];
 				var clientFileProvider = new PhysicalFileProvider(clientUrl);
