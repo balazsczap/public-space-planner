@@ -33,8 +33,7 @@ namespace PublicSpacePlanner
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
-
-			
+		
         }
 
 
@@ -109,7 +108,7 @@ namespace PublicSpacePlanner
 			if (!env.IsDevelopment())
 			{
 				
-				var clientFileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
+				var clientFileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), Configuration["ASPNETCORE_BASEPATH"],
 					Configuration["Environment:ClientBuildPath"]));
 				Console.WriteLine($"Hosting Angular2 app from {Configuration["Environment:ClientBuildPath"]}");
 				var filesOptions = new DefaultFilesOptions();
