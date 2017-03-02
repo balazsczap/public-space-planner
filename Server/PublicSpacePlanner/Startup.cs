@@ -109,20 +109,6 @@ namespace PublicSpacePlanner
 			if (!env.IsDevelopment())
 			{
 
-				var proc = new Process();
-				var startinfo = new ProcessStartInfo();
-				startinfo.WorkingDirectory = Directory.GetCurrentDirectory().ToString();
-
-				proc.StartInfo.FileName = "/bin/bash";
-				proc.StartInfo.Arguments = "-c ls -a";
-				proc.StartInfo.UseShellExecute = false;
-				proc.StartInfo.RedirectStandardOutput = true;
-				proc.Start();
-
-				Console.WriteLine("Shell has been executed!");
-				
-
-
 				Console.WriteLine($"Environment:ClientBuildPath: {Configuration["Environment:ClientBuildPath"]}");
 				var clientUrl = Configuration["Environment:ClientBuildPath"];
 				var clientFileProvider = new PhysicalFileProvider(clientUrl);
