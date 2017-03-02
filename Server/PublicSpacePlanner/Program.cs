@@ -11,9 +11,15 @@ namespace PublicSpacePlanner
 {
     public class Program
     {
-        public static void Main(string[] args)
+		private static readonly Dictionary<string, string> defaults =
+		new Dictionary<string, string> {
+			{ WebHostDefaults.EnvironmentKey, "development" }
+		};
+
+		public static void Main(string[] args)
         {
 			var config = new ConfigurationBuilder()
+				.AddInMemoryCollection(defaults)
 				.AddEnvironmentVariables("ASPNETCORE_")
 				.AddCommandLine(args)
 				.Build();

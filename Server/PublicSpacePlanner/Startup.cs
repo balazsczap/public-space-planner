@@ -106,10 +106,8 @@ namespace PublicSpacePlanner
 				SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
 			};
 			app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));
-
-
-			//if (!env.IsDevelopment())
-			//{
+			if (!env.IsDevelopment())
+			{
 				var clientFileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
 					Configuration["Environment:ClientBuildPath"]));
 				var filesOptions = new DefaultFilesOptions();
@@ -123,7 +121,7 @@ namespace PublicSpacePlanner
 					RequestPath = ""
 				});
 
-			//}
+			}
 
 
 			app.UseMvc();
