@@ -25,7 +25,8 @@ A projekt (reményeim szerint) mindenkori buildelt változata elérhető a http:
 
 ##### Szükséges:
 * A `.NET Core 1.1 SDK`: https://www.microsoft.com/net/download/core#/current 
-  * A `preview2-1-003177`-es verzió van jelenleg használatban, <sub><sup>2017.03.05-én és korábban ez volt megtalálható a fenti linken.</sup></sub>
+  * A `preview2-1-003177`-es verzió van jelenleg használatban, 
+  <sub><sup>2017.03.05-én és korábban ez volt megtalálható a fenti linken.</sup></sub>
 * `node.js v6.9.4` és `npm 3.10.10`
 
 ##### Telepítés: 
@@ -43,5 +44,5 @@ A projekt gyökérkönyvtárában `npm run dev`.
 Ha két külön parancssorban szeretnénk futtatni:
 * a Client könyvtárban `npm start`,
 * a Server\PublicSpacePlanner könyvtárban `dotnet run --environment=Development`
-parancsok hatására a kliens a localhost:4200, a szerver a localhost:5000-es portján indul.
+parancsok hatására a kliens a localhost:4200, a szerver a localhost:5000-es portján indul, és ide van irányítva a kliens összes api hívása is.
 
