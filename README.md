@@ -47,5 +47,6 @@ A projekt gyökérkönyvtárában `npm run dev`.
 Ha két külön parancssorban szeretnénk futtatni:
 * a Client könyvtárban `npm start`,
 * a Server\PublicSpacePlanner könyvtárban `dotnet run --environment=Development`
+
 parancsok hatására a kliens a localhost:4200, a szerver a localhost:5000-es portján indul, és ide van irányítva a kliens összes api hívása is.
 
