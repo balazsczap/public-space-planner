@@ -19,7 +19,10 @@ Központi elem a résztvevők közötti kommunikáció, a minél proaktívabb r�
 
 ## Használat
 
-A projekt (reményeim szerint) mindenkori buildelt változata elérhető a http://public-space-planner.herokuapp.com címen.
+##### A projekt (<sub><sup>reményeim szerint</sup></sub>) mindenkori buildelt változata elérhető a http://public-space-planner.herokuapp.com címen.
+
+Ehhez a https://github.com/balazsczap/dotnetcore-buildpack -et használja, ami részben saját fejlesztés, viszont jelenlegi állapotában
+csak ehhez a projekthez használható megbízhatóan.
 
 ### Lokális futtatáshoz:
 
