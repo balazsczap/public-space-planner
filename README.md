@@ -1,6 +1,6 @@
 # Public Space Planner
 
-Az alkalmazás a BME-VIK Mérnökinformatikus képzés Önálló laboratórium tárgyának keretein belül készül.
+Az alkalmazás a BME-VIK Mérnökinformatikus BsC képzés Önálló laboratórium tárgyának keretein belül készül.
 
 ## Leírás
 
