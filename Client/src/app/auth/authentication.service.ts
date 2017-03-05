@@ -4,16 +4,22 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { ConfigurationService } from '../configuration/configuration.service';
 import { RestService } from '../network/rest.service';
+import {User} from '../models/user.model';
 
  
 @Injectable()
 export class AuthenticationService {
-    public token: string;
- 	
-    constructor() {
+    public token: string = "";
+    public _userId: number;
+    constructor(private _restService: RestService<any>) {
         // set token if saved in local storage
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = currentUser && currentUser.token;
+        console.log(currentUser);
+        _restService.setTokenProvider(this);
+        if(currentUser){
+            this.token = currentUser.token;
+            this._userId = currentUser.id;
+        }
     }
  
     // login(username: string, password: string): Observable<boolean> {
@@ -36,8 +42,95 @@ export class AuthenticationService {
     //             }
     //         });
     // }
+    logIn(username: string, password: string): Observable<boolean> {
+
+           // return this._restService.logIn(username,password)
+           //                 .flatMap(res => {
+           //                     if(res.ok!=false){
+           //                         console.log("ayy1");
+
+           //                         console.log(res);
+           //                         return res["id"];
+           //                     }
+           //                     console.log("ayy2");
+           //                     return "false";
+           //                 })
+           //                 .flatMap((res:number)=>{
+                               
+           //                     console.log("ayy2");
+           //                     return this._restService.getUserById(res).map(res=> {
+           //                         console.log("ayy4");
+           //                         console.log(res);
+           //                         return false;
+           //                     });
+
+           //                 },
+           //                 (err:string)=>{
+           //                     console.log("ayy5");
+           //                     console.log(err); 
+           //                     return false;
+           //                 })
+
+        // return this._restService.logIn(username, password)
+        //                 .map((res:Response) => {
+        //                     console.log(res);
+        //                     if(res.ok !== false){
+        //                         console.log("ayy1");
+        //                         this.token = res["access_token"];
+        //                         return res["id"];
+        //                     }
+        //                     console.log("ayy2");
+        //                 }).mergeMap(
+        //                     (data:number) => {
+        //                         console.log("ayy3");
+        //                         return this._restService.getUserById(data).map(
+        //                             data=>{
+        //                                 this._currentUser = data;
+        //                                 return false;
+        //                         });
+        //                     },
+        //                 );
+        return this._restService.logIn(username, password)
+                    .map((res : Response)=> {
+                        if(res.ok==false){
+                            return false;
+                        }
+                        this.token = res["access_token"];
+                        this._userId = res["id"];
+                        localStorage.setItem('currentUser', JSON.stringify({ id: this._userId, token: this.token }));
+                        return true;
+                    });
+    }
+
+
+    isLoggedIn() : boolean {
+        return this.token ? true : false;
+    }
+
+    // getLoggedIn() : Observable<User>  {
+    //     if(this._currentUser && this._currentUser.id != this._userId){
+    //         return this._restService.getUserById(this._userId).map(data => {
+    //             // var u = new User({id : data["id"], name: data["name"],username: data["username"],role : data["role"]});
+    //             var u = new User();
+
+    //             u.id = data["id"];
+    //             u.name = data["name"];
+    //             u.username = data["username"];
+    //             u.role = data["role"];
+    //             this._currentUser = u;
+    //             return u;
+    //         })
+    //     }
+    //     else if(this._currentUser){
+    //         return Observable.of(null);
+    //     }
+    //     else{
+    //         return Observable.of(this._currentUser);
+    //     }
+    // }
+
  
-    logout(): void {
+    logOut(): void {
         // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('currentUser');

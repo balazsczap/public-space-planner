@@ -1,4 +1,4 @@
-﻿{
+{
     "dependencies": {
         "Microsoft.Extensions.Configuration.CommandLine": "1.1.0",
         "Microsoft.AspNetCore.Mvc": "1.1.1",
@@ -19,7 +19,8 @@
         "Npgsql.EntityFrameworkCore.PostgreSQL": "1.1.0",
         "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0",
         "Microsoft.IdentityModel.Tokens": "5.1.1",
-        "Microsoft.AspNetCore.Authentication.JwtBearer": "1.1.0"
+        "Microsoft.AspNetCore.Authentication.JwtBearer": "1.1.0",
+        "BCrypt.Net-Core": "1.1.0"
     },
 
     "tools": {
@@ -68,6 +69,7 @@
     },
 
     "scripts": {
-            "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
-        }
+        "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
+    },
+    "userSecretsId": "aspnet-PublicSpacePlanner-20170303121326"
     }

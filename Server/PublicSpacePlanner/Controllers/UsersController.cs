@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
+using PublicSpacePlanner.Authentication;
 
 namespace PublicSpacePlanner.Controllers
 {
@@ -24,12 +25,12 @@ namespace PublicSpacePlanner.Controllers
 			_users = users;
 		}
 		// GET api/users
+
 		[HttpGet]
 		public IEnumerable<User> Get()
 		{
 			return _users.GetAll();
 		}
-
 
 		[HttpGet("{id:int}")]
 		public IActionResult GetOne(int id)
@@ -42,6 +43,7 @@ namespace PublicSpacePlanner.Controllers
 			return new ObjectResult(user);
 		}
 
+
 		// POST api/users
 		[HttpPost]
 		public IActionResult Add([FromBody] JObject userData)
@@ -49,7 +51,7 @@ namespace PublicSpacePlanner.Controllers
 			var name = userData["name"]?.ToString();
 			var username = userData["username"]?.ToString();
 			var password = userData["password"]?.ToString();
-			
+			var role = userData["role"]?.ToString();
 			var imgUrl = userData["imageUrl"]?.ToString();
 
 
@@ -62,16 +64,10 @@ namespace PublicSpacePlanner.Controllers
 				return StatusCode(409, "A User with this username already exists");
 			}
 
-			/*
-			 * 
-			 * 
-			 * 
-			 * HASH THE PASSWORD
-			 * 
-			 */
-
-			var user = new User { Name = name, Username = username, Password = password };
+			var hashed = PasswordHandler.HashPassword(password);
+			var user = new User { Name = name, Username = username, Password = hashed };
 			user.ImageUrl = imgUrl ?? user.ImageUrl;
+			user.Role = role ?? user.Role;
 
 			_users.Add(user);
 
@@ -87,6 +83,7 @@ namespace PublicSpacePlanner.Controllers
 			var username = userData["username"]?.ToString();
 			var password = userData["password"]?.ToString();
 			var imgUrl = userData["imageUrl"]?.ToString();
+			var role = userData["role"]?.ToString();
 
 			var user = _users.GetOneById(id);
 			if (user == null)
@@ -94,17 +91,17 @@ namespace PublicSpacePlanner.Controllers
 				return NotFound();
 			}
 
-			/*
-			 * 
-			 * 
-			 * 
-			 * HASH THE PASSWORD
-			 * 
-			 */
+
+
 			user.Name = name ?? user.Name;
 			user.Username = username ?? user.Username;
-			user.Password = password ?? user.Password;
+			if (password != null)
+			{
+				var hashed = PasswordHandler.HashPassword(password);
+				user.Password = hashed ?? user.Password;
+			}
 			user.ImageUrl = imgUrl ?? user.ImageUrl;
+			user.Role = role ?? user.Role;
 
 			_users.Update(user);
 			return Ok();
@@ -116,6 +113,7 @@ namespace PublicSpacePlanner.Controllers
 		{
 			_users.Remove(id);
 		}
+
 
 		
 

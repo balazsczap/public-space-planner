@@ -78,11 +78,11 @@ namespace PublicSpacePlanner
 
 				// Validate the JWT Issuer (iss) claim
 				ValidateIssuer = true,
-				ValidIssuer = "ExampleIssuer",
+				ValidIssuer = "PublicSpacePlanner",
 
 				// Validate the JWT Audience (aud) claim
 				ValidateAudience = true,
-				ValidAudience = "ExampleAudience",
+				ValidAudience = "PublicSpacePlanner",
 
 				// Validate the token expiry
 				ValidateLifetime = true,
@@ -97,37 +97,47 @@ namespace PublicSpacePlanner
 				AutomaticChallenge = true,
 				TokenValidationParameters = tokenValidationParameters
 			});
-			app.UseCors(builder => builder.AllowAnyOrigin());
 			var options = new TokenProviderOptions
 			{
-				Audience = "ExampleAudience",
-				Issuer = "ExampleIssuer",
+				Audience = "PublicSpacePlanner",
+				Issuer = "PublicSpacePlanner",
 				Path = "/api/auth",
 				SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
 			};
 			app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));
+
+			app.UseCors(builder => builder.AllowAnyOrigin());
+
+
 			if (!env.IsDevelopment())
 			{
-
-				Console.WriteLine($"Environment:ClientBuildPath: {Configuration["Environment:ClientBuildPath"]}");
-				var clientUrl = Configuration["Environment:ClientBuildPath"];
-				var clientFileProvider = new PhysicalFileProvider(clientUrl);
-				Console.WriteLine($"Hosting Angular2 app from {clientUrl}");
-				var filesOptions = new DefaultFilesOptions();
-				filesOptions.FileProvider = clientFileProvider;
-				filesOptions.DefaultFileNames.Clear();
-				filesOptions.DefaultFileNames.Add("index.html");
-				app.UseDefaultFiles(filesOptions);
-				app.UseStaticFiles(new StaticFileOptions
-				{
-					FileProvider = clientFileProvider,
-					RequestPath = ""
-				});
-
+				ServeClient(app);
 			}
+
+			
 
 
 			app.UseMvc();
         }
+
+		
+
+		private void ServeClient(IApplicationBuilder app)
+		{
+			Console.WriteLine($"Environment:ClientBuildPath: {Configuration["Environment:ClientBuildPath"]}");
+			var clientUrl = Configuration["Environment:ClientBuildPath"];
+			var clientFileProvider = new PhysicalFileProvider(clientUrl);
+			Console.WriteLine($"Hosting Angular2 app from {clientUrl}");
+			var filesOptions = new DefaultFilesOptions();
+			filesOptions.FileProvider = clientFileProvider;
+			filesOptions.DefaultFileNames.Clear();
+			filesOptions.DefaultFileNames.Add("index.html");
+			app.UseDefaultFiles(filesOptions);
+			app.UseStaticFiles(new StaticFileOptions
+			{
+				FileProvider = clientFileProvider,
+				RequestPath = ""
+			});
+		}
     }
 }

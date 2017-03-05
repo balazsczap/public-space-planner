@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using PublicSpacePlanner.Data;
@@ -63,14 +64,17 @@ namespace PublicSpacePlanner.Authentication
 
 			var now = DateTime.UtcNow;
 
-			// Specifically add the jti (random nonce), iat (issued timestamp), and sub (subject/user) claims.
-			// You can add other claims here, if you want:
-			var claims = new Claim[]
+
+
+			var claims = new List<Claim>()
 			{
 				new Claim(JwtRegisteredClaimNames.Sub, username),
 				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 				new Claim(JwtRegisteredClaimNames.Iat, now.ToUniversalTime().ToString(), ClaimValueTypes.Integer64)
 			};
+
+			claims.AddRange(identity.Claims);
+		
 
 			// Create the JWT and write it to a string
 			var jwt = new JwtSecurityToken(
@@ -82,10 +86,14 @@ namespace PublicSpacePlanner.Authentication
 				signingCredentials: _options.SigningCredentials);
 			var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
+			var id = identity.Claims.Single(t => t.Type == "user id").Value.ToLower();
+
 			var response = new
 			{
 				access_token = encodedJwt,
-				expires_in = (int)_options.Expiration.TotalSeconds
+				expires_in = (int)_options.Expiration.TotalSeconds,
+				id = id,
+				
 			};
 
 			// Serialize and return the response
@@ -94,26 +102,26 @@ namespace PublicSpacePlanner.Authentication
 		}
 		private Task<ClaimsIdentity> GetIdentity(string username, string password)
 		{
-			// DON'T do this in production, obviously!
 
 			var user = _userRepository.GetOneByUsername(username);
 			if (user == null)
 			{
 				return Task.FromResult<ClaimsIdentity>(null);
 			}
-			if (CheckHash(user.Password, password))
+			if (PasswordHandler.VerifyPassword(password, user.Password))
 			{
-				return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(username, "Token"), new Claim[] { }));
+				return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(username, "Token"),
+					new Claim[] {
+						new Claim("user id", user.Id.ToString()),
+						new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", user.Role)
+					}));
 			}
 
 			// Credentials are invalid, or account doesn't exist
 			return Task.FromResult<ClaimsIdentity>(null);
 		}
 
-		private bool CheckHash(string hash, string password)
-		{
-			return hash == password;
-		}
+
 
 	}
 }

@@ -8,6 +8,7 @@ import {ConfigurationService } from './configuration/configuration.service'
 import { AuthenticationService } from './auth/authentication.service'
 import { AppComponent } from './app.component';
 import { LoginTesterComponent } from './users/login-tester/login-tester.component';
+import {RestService} from './network/rest.service'
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { LoginTesterComponent } from './users/login-tester/login-tester.componen
     NgbModule.forRoot()
     // MaterialModule
   ],
-  providers: [ConfigurationService, AuthenticationService],
+  providers: [ConfigurationService, AuthenticationService, RestService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

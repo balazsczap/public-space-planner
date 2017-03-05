@@ -10,18 +10,27 @@
 				<label for="password">Password</label>
 				<input type="password" [(ngModel)]="pw" class="form-control" name="password" required>
 			</div>
-			<input class="btn btn-primary col-md-2 col-md-offset-5 col-sm-2 col-sm-offset-5" type="submit" value="Submit">
+			<div class="row">
+				<input class="btn btn-primary col-md-2 col-md-offset-3 col-sm-2 col-sm-offset-3" type="submit" value="Login">
+				<input class="btn btn-primary col-md-2 col-md-offset-2 col-sm-2 col-sm-offset-2" type="button" value="Logout" (click)="logOut()">
+			</div>
+			<div *ngIf="user " style="margin-top:30px; padding:10px; font-size:big; border: 1px solid #333;">
+				<span>Hello {{user.name}}! You are logged in as a(n) {{user.role}}.</span>
+			</div>
 		</form>
 	</div>
-	<div class="row">
+	<div class="row" style="margin-top:30px;">
 		<input class="btn btn-primary " value="GET Public route" (click)="getPublic()">
+		<span>{{publicdata}}</span>
 	</div>
 
-	<div class="row">
-		<input class="btn btn-primary " value="GET Public route" (click)="getPublic()">
+	<div class="row" style="margin-top:30px;">
+		<input class="btn btn-primary " value="GET User route" (click)="getUser()">
+		<span>{{userdata}}</span>
 	</div>
-	<div class="row">
-		<input class="btn btn-primary " value="GET Public route" (click)="getPublic()">
+	<div class="row" style="margin-top:30px;">
+		<input class="btn btn-primary " value="GET Admin route" (click)="getAdmin()">
+		<span>{{admindata}}</span>
 	</div>
 <!-- 	<div class="row" style="margin-top:100px;">
 
