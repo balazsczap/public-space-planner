@@ -19,7 +19,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsersComponent } from './users/users.component';
 import { StockComponent } from './stock/stock.component';
 import { MapComponent } from './map/map.component';
-import { AddComponent } from './Stock/add/add.component';
+import { AddComponent } from './stock/add/add.component';
 import { LoginComponent } from './login/login.component';
 import { Notifications as NotificationsComponent } from './notifications/notifications.component';
 
