@@ -11,14 +11,16 @@ import {User} from '../models/user.model';
 export class AuthenticationService {
     public token: string = "";
     public _userId: number;
+    public user: User;
     constructor(private _restService: RestService<any>) {
         // set token if saved in local storage
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        var currentUser = JSON.parse(localStorage.getItem('userCredentials'));
         console.log(currentUser);
         _restService.setTokenProvider(this);
         if(currentUser){
             this.token = currentUser.token;
             this._userId = currentUser.id;
+            this.user = JSON.parse(localStorage.getItem('userData'));
         }
     }
  
@@ -42,69 +44,48 @@ export class AuthenticationService {
     //             }
     //         });
     // }
+
+
+
     logIn(username: string, password: string): Observable<boolean> {
 
-           // return this._restService.logIn(username,password)
-           //                 .flatMap(res => {
-           //                     if(res.ok!=false){
-           //                         console.log("ayy1");
-
-           //                         console.log(res);
-           //                         return res["id"];
-           //                     }
-           //                     console.log("ayy2");
-           //                     return "false";
-           //                 })
-           //                 .flatMap((res:number)=>{
-                               
-           //                     console.log("ayy2");
-           //                     return this._restService.getUserById(res).map(res=> {
-           //                         console.log("ayy4");
-           //                         console.log(res);
-           //                         return false;
-           //                     });
-
-           //                 },
-           //                 (err:string)=>{
-           //                     console.log("ayy5");
-           //                     console.log(err); 
-           //                     return false;
-           //                 })
-
         // return this._restService.logIn(username, password)
-        //                 .map((res:Response) => {
-        //                     console.log(res);
-        //                     if(res.ok !== false){
-        //                         console.log("ayy1");
-        //                         this.token = res["access_token"];
-        //                         return res["id"];
-        //                     }
-        //                     console.log("ayy2");
-        //                 }).mergeMap(
-        //                     (data:number) => {
-        //                         console.log("ayy3");
-        //                         return this._restService.getUserById(data).map(
-        //                             data=>{
-        //                                 this._currentUser = data;
-        //                                 return false;
-        //                         });
-        //                     },
-        //                 );
+        //             .map((res : Response)=> {
+        //                 if(res.ok==false){
+        //                     return false;
+        //                 }
+        //                 this.token = res["access_token"];
+        //                 this._userId = res["id"];
+        //                 localStorage.setItem('currentUser', JSON.stringify({ id: this._userId, token: this.token }));
+        //                 return true;
+        //             });
+
         return this._restService.logIn(username, password)
-                    .map((res : Response)=> {
-                        if(res.ok==false){
-                            return false;
-                        }
-                        this.token = res["access_token"];
-                        this._userId = res["id"];
-                        localStorage.setItem('currentUser', JSON.stringify({ id: this._userId, token: this.token }));
-                        return true;
-                    });
+                  .flatMap(data=>{
+                    if(data.ok==false){
+                      return Observable.of<User>(null);
+                    }
+                    this.token = data["access_token"];
+                    this._userId = data["id"];
+                    localStorage.setItem('userCredentials', JSON.stringify({ id: this._userId, token: this.token }));
+                    return this._restService.getUserById(this._userId);
+                  }).map(data=>{
+                    if(data==null){
+                      return false;
+                    }
+                    this.user = data;
+                    localStorage.setItem('userData', JSON.stringify(this.user));
+                    return true;
+                  });
     }
 
 
     isLoggedIn() : boolean {
-        return this.token ? true : false;
+        return this.token && this.user ? true : false;
+    }    
+
+    isAdmin() : boolean {
+        return this.token && this.user && this.user.role==="admin";
     }
 
     // getLoggedIn() : Observable<User>  {
@@ -133,6 +114,8 @@ export class AuthenticationService {
     logOut(): void {
         // clear token remove user from local storage to log user out
         this.token = null;
-        localStorage.removeItem('currentUser');
+        this.user = null;
+        localStorage.removeItem('userData');
+        localStorage.removeItem('userCredentials');
     }
 }

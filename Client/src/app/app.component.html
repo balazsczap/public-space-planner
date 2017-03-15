@@ -1,22 +1,35 @@
-<div class="container-fluid">
-		<app-login-tester></app-login-tester>
-<!-- 		<div class="col-md-6 col-sm-6">
-			<h2 class="text-center">Users</h2>
-			<ul class="users">
-				<li *ngFor="let user of users" (click)="onSelect(user)" [class.selected]="user===selectedUser">
-					<span>{{user.name}}</span>
-				</li>
-			</ul>
-		</div>
+<div class="container">
+<notifications></notifications>
+<nav class="row navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <span class="navbar-brand" style="cursor:default;">Public Space Planner</span>
+    </div>
+    <ul class="nav navbar-nav">
+      <li *ngIf="authService.isLoggedIn()" [routerLinkActive]="['active']" ><a routerLink="/dashboard">Dashboard</a></li>
+      <li *ngIf="authService.isLoggedIn()" [routerLinkActive]="['active']" ><a routerLink="/map">Map</a></li>
+      <li *ngIf="authService.isLoggedIn()" [routerLinkActive]="['active']" ><a routerLink="/stock">Stock</a></li>
+      <li *ngIf="authService.isLoggedIn()" [routerLinkActive]="['active']" ><a routerLink="/authtest">Auth tester</a></li>
+      <li *ngIf="authService.isAdmin()" [routerLinkActive]="['active']" ><a routerLink="/users" >Users</a></li>
+    </ul>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li *ngIf="authService.isLoggedIn()"><p class="navbar-text">Signed in as {{authService.user.name}}</p></li>
 
-		<div *ngIf="selectedUser" class="col-md-6 col-sm-6" >
-			<h2>{{selectedUser.name}}</h2>
-			<div><label>id: </label>{{selectedUser.id}}</div>
-			<div>
-			    <label>name: </label>
-			    <input [(ngModel)]="selectedUser.name" placeholder="name"/>
-			</div>
-		</div>
- -->
+        <li *ngIf="authService.isLoggedIn()" class="dropdown">
+          <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
+          <ul class="dropdown-menu">
+            <!-- <li><a href="">Profile</a></li> -->
+            <li role="separator" class="divider"></li>
+            <li  (click)="logOut()"  style="cursor:pointer;"><a>Log out</a></li>
+          </ul>
+        </li>
+        <li *ngIf="!authService.isLoggedIn()" [routerLinkActive]="['active']" ><a routerLink="/login" >Log in</a></li>
+      </ul>
+    </div>
 
+  </div>
+
+</nav>
+<router-outlet class="row"></router-outlet>
 </div>

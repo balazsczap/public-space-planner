@@ -1,22 +1,6 @@
-export class User{
-	id: number;
-	name: string;
-	username: string;
-}
-const USERS: User[] = [
-  { id: 11, name: 'Mr. Nice', username: 'Mr. Nice' },
-  { id: 12, name: 'Narco', username: 'Narco' },
-  { id: 13, name: 'Bombasto', username: 'Bombasto' },
-  { id: 14, name: 'Celeritas', username: 'Celeritas' },
-  { id: 15, name: 'Magneta', username: 'Magneta' },
-  { id: 16, name: 'RubberMan', username: 'RubberMan' },
-  { id: 17, name: 'Dynama', username: 'Dynama' },
-  { id: 18, name: 'Dr IQ', username: 'Dr IQ' },
-  { id: 19, name: 'Magma', username: 'Magma' },
-  { id: 20, name: 'Tornado', username: 'Tornado' }
-];
 import { Component } from '@angular/core';
-
+import { AuthenticationService } from './auth/authentication.service'
+import {Router} from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -26,11 +10,13 @@ import { Component } from '@angular/core';
 
 
 export class AppComponent {
-  title = 'app works!';
-  users = USERS;
-  selectedUser : User;
+  constructor(private authService: AuthenticationService, private router: Router) { 
 
-  onSelect(user: User): void{
-  	this.selectedUser = user;
   }
+
+  logOut(){
+    this.authService.logOut();
+    this.router.navigate(['login']);
+  }
+
 }
