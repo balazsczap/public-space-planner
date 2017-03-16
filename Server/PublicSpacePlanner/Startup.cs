@@ -23,31 +23,31 @@ using System.Diagnostics;
 
 namespace PublicSpacePlanner
 {
-    public class Startup
-    {
-        public Startup(IHostingEnvironment env)
-        {
+	public class Startup
+	{
+		public Startup(IHostingEnvironment env)
+		{
 
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
-		
-        }
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(env.ContentRootPath)
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+				.AddEnvironmentVariables();
+			Configuration = builder.Build();
+
+		}
 
 
-        public IConfigurationRoot Configuration { get; }
+		public IConfigurationRoot Configuration { get; }
 		//move this to a file
 		private static string secretKey = "6vTpJKZLzh3VXn9WODi7xeHWMAtfqjvvifDNveNs";
 		private static SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
-        {
+		{
 
-            // Add framework services.
-            services.AddMvc();
+			// Add framework services.
+			services.AddMvc();
 
 
 			var conn_str = @"User ID=besthfaxbiccvz;
@@ -66,9 +66,9 @@ namespace PublicSpacePlanner
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+		{
+			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+			loggerFactory.AddDebug();
 
 			var tokenValidationParameters = new TokenValidationParameters
 			{
@@ -102,6 +102,7 @@ namespace PublicSpacePlanner
 				Audience = "PublicSpacePlanner",
 				Issuer = "PublicSpacePlanner",
 				Path = "/api/auth",
+				Expiration = TimeSpan.FromMinutes(15),
 				SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
 			};
 			app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));
@@ -114,13 +115,13 @@ namespace PublicSpacePlanner
 				ServeClient(app);
 			}
 
-			
+
 
 
 			app.UseMvc();
-        }
+		}
 
-		
+
 
 		private void ServeClient(IApplicationBuilder app)
 		{
@@ -139,5 +140,5 @@ namespace PublicSpacePlanner
 				RequestPath = ""
 			});
 		}
-    }
+	}
 }

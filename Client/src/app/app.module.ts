@@ -11,12 +11,17 @@ import { RoutingModule } from './routing.module';
 
 import { ConfigurationService } from './configuration/configuration.service'
 import { AuthenticationService } from './auth/authentication.service'
-import { RestService } from './network/rest.service';
+import { AdminGuard, UserGuard} from './auth/auth-guard.service';
+
+import { UserService } from './network/user.service';
+import { HttpService } from './network/http.service';
 import { NotificationsService } from './notifications/notifications.service';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { UsersComponent } from './users/users.component';
+// import { UsersComponent } from './users/users.component';
+import { UsersModule } from './users/users.module';
+
 import { StockComponent } from './stock/stock.component';
 import { MapComponent } from './map/map.component';
 import { AddComponent } from './stock/add/add.component';
@@ -33,13 +38,13 @@ import { LoginTesterComponent } from './users/login-tester/login-tester.componen
     FormsModule,
     HttpModule,
     RoutingModule,
+    UsersModule
     // NgbModule.forRoot()
   ],
   declarations: [
     AppComponent,
     PageNotFoundComponent,
     DashboardComponent,
-    UsersComponent,
     StockComponent,
     MapComponent,
     AddComponent,
@@ -49,7 +54,7 @@ import { LoginTesterComponent } from './users/login-tester/login-tester.componen
 
     LoginTesterComponent
   ],
-  providers: [ConfigurationService, AuthenticationService, RestService, NotificationsService],
+  providers: [ConfigurationService, AuthenticationService, NotificationsService, HttpService, UserService, AdminGuard, UserGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

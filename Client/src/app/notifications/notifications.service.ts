@@ -9,11 +9,25 @@ export class NotificationsService {í
 
     public noteAdded = this._notifications.asObservable();
 
-    public add(notification: Notification) {
-        this._notifications.next(notification);
+    // public add(notification: Notification) {
+    //     this._notifications.next(notification);
+    // }
+
+    public create(type: string, message: string, duration: number = 3000){
+    	this._notifications.next(new Notification(type,message,duration));
     }
 
-    public create(type: string, message: string){
-    	this._notifications.next(new Notification(type,message));
+    public readonly TYPE = {
+    	ERROR: "error",
+    	WARNING: "warning",
+        NOTE: "note"
     }
+
+    public readonly DURATION = { 
+        SHORT: 1500,
+        MEDIUM: 3000,
+        LONG: 6000
+    }
+
+    
 }

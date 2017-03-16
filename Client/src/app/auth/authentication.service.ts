@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { ConfigurationService } from '../configuration/configuration.service';
-import { RestService } from '../network/rest.service';
-import {User} from '../models/user.model';
+import { User } from '../models/user.model';
+import { UserService } from '../network/user.service';
+import { Router } from "@angular/router";
 
- 
 @Injectable()
 export class AuthenticationService {
     public token: string = "";
     public _userId: number;
     public user: User;
-    constructor(private _restService: RestService<any>) {
+    constructor(private _httpService: Http,
+     private _config: ConfigurationService,
+      private _router: Router) {
         // set token if saved in local storage
         var currentUser = JSON.parse(localStorage.getItem('userCredentials'));
-        console.log(currentUser);
-        _restService.setTokenProvider(this);
+
         if(currentUser){
             this.token = currentUser.token;
             this._userId = currentUser.id;
@@ -24,30 +25,38 @@ export class AuthenticationService {
         }
     }
  
-    // login(username: string, password: string): Observable<boolean> {
-    //     return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
-    //         .map((response: Response) => {
-    //             // login successful if there's a jwt token in the response
-    //             let token = response.json() && response.json().token;
-    //             if (token) {
-    //                 // set token property
-    //                 this.token = token;
- 
-    //                 // store username and jwt token in local storage to keep user logged in between page refreshes
-    //                 localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
- 
-    //                 // return true to indicate successful login
-    //                 return true;
-    //             } else {
-    //                 // return false to indicate failed login
-    //                 return false;
-    //             }
-    //         });
-    // }
 
-
-
+    //does a http post to the authentication endpoint, gets the response,
+    //parses it for the user id and token, and gets the user data for display
     logIn(username: string, password: string): Observable<boolean> {
+        let headers = new Headers();
+        let body = new URLSearchParams();
+        body.set('username', username);
+        body.set('password', password);
+
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        return this._httpService.post(this._config.ApiUrl+"/auth", body, {headers: headers})
+            .map(res=> {console.log(res);return res.json()})
+            .flatMap(data=>{
+                if(data.ok==false){
+                  return Observable.of<User>(null);
+                }
+                this.token = data["access_token"];
+                this._userId = data["id"];
+                localStorage.setItem('userCredentials', JSON.stringify({ id: this._userId, token: this.token }));
+                // return this._userService.getUserById(this._userId);
+                return this.getUserData();
+            })
+            .catch(err=>{
+                if(err.status==400 && err.statusText==="Bad Request"){
+                    return Observable.of(false);
+                }
+                if(err.status>=500 && err.status<600){
+                    return Observable.throw(`Server error (${err.status})`);
+                }
+                return err;
+            })
+
 
         // return this._restService.logIn(username, password)
         //             .map((res : Response)=> {
@@ -60,23 +69,44 @@ export class AuthenticationService {
         //                 return true;
         //             });
 
-        return this._restService.logIn(username, password)
-                  .flatMap(data=>{
-                    if(data.ok==false){
-                      return Observable.of<User>(null);
-                    }
-                    this.token = data["access_token"];
-                    this._userId = data["id"];
-                    localStorage.setItem('userCredentials', JSON.stringify({ id: this._userId, token: this.token }));
-                    return this._restService.getUserById(this._userId);
-                  }).map(data=>{
-                    if(data==null){
-                      return false;
-                    }
-                    this.user = data;
-                    localStorage.setItem('userData', JSON.stringify(this.user));
-                    return true;
-                  });
+        // return this._restService.logIn(username, password)
+        //           .flatMap(data=>{
+        //             if(data.ok==false){
+        //               return Observable.of<User>(null);
+        //             }
+        //             this.token = data["access_token"];
+        //             this._userId = data["id"];
+        //             localStorage.setItem('userCredentials', JSON.stringify({ id: this._userId, token: this.token }));
+        //             return this._restService.getUserById(this._userId);
+        //           }).map(data=>{
+        //             if(data==null){
+        //               return false;
+        //             }
+        //             this.user = data;
+        //             localStorage.setItem('userData', JSON.stringify(this.user));
+        //             return true;
+        //           });
+    }
+
+    //gets the user data for display, parses it, and stores it
+    private getUserData = (): Observable<any>=>{
+        return this._httpService.get(this._config.ApiUrl+"/users/"+this._userId).map(res=> res.json())
+            .map(data=>{
+                if(data==null){
+                  return false;
+                }
+                this.user = data;
+                localStorage.setItem('userData', JSON.stringify(this.user));
+                return true;
+            })
+            .catch(error=>{
+                if(error.status==400){
+                    return Observable.of(error);
+                }
+                else{
+                    return Observable.throw(error.json().error || 'Server error'); 
+                }
+            });
     }
 
 
@@ -88,34 +118,13 @@ export class AuthenticationService {
         return this.token && this.user && this.user.role==="admin";
     }
 
-    // getLoggedIn() : Observable<User>  {
-    //     if(this._currentUser && this._currentUser.id != this._userId){
-    //         return this._restService.getUserById(this._userId).map(data => {
-    //             // var u = new User({id : data["id"], name: data["name"],username: data["username"],role : data["role"]});
-    //             var u = new User();
 
-    //             u.id = data["id"];
-    //             u.name = data["name"];
-    //             u.username = data["username"];
-    //             u.role = data["role"];
-    //             this._currentUser = u;
-    //             return u;
-    //         })
-    //     }
-    //     else if(this._currentUser){
-    //         return Observable.of(null);
-    //     }
-    //     else{
-    //         return Observable.of(this._currentUser);
-    //     }
-    // }
-
- 
     logOut(): void {
-        // clear token remove user from local storage to log user out
+        // clear token, remove user from local storage to log user out
         this.token = null;
         this.user = null;
         localStorage.removeItem('userData');
         localStorage.removeItem('userCredentials');
+        this._router.navigate(["/login"]);
     }
 }

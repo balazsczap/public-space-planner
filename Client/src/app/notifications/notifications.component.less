@@ -1,0 +1,38 @@
+@note: #C8E6C9;
+@error: #EF5350;
+@warning: #FFB300;
+@textPrimaryColor : #FFFFFF;
+
+.notification-area{
+	width:30%;
+	position:fixed;
+	left:50%;
+	margin-left: -13.75%;
+	z-index: 1;
+}
+
+.notification {
+	padding:5px;
+	padding-left:40px;
+	padding-right:40px;
+	padding-bottom:10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
+	background-color: #f8f8f8;
+	z-index: 1;
+	margin-bottom: 8px;
+}
+
+.notification-error{
+	background-color: @error;
+	color: @textPrimaryColor;
+}
+
+.notification-warning{
+	background-color: @warning;
+	color: @textPrimaryColor;
+}
+
+.notification-note{
+	background-color: @note;
+	color: @textPrimaryColor;
+}

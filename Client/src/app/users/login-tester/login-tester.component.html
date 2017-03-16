@@ -1,17 +1,22 @@
 <div class="container">
+
 	<div class="row" style="margin-top:30px;">
+		<input class="btn btn-primary " value="HELP" (click)="getUserById()">
+	</div>
+
+<!-- 	<div class="row" style="margin-top:30px;">
 		<input class="btn btn-primary " value="GET Public route" (click)="getPublic()">
 		<span>{{publicdata}}</span>
 	</div>
-
+ -->
 	<div class="row" style="margin-top:30px;">
 		<input class="btn btn-primary " value="GET User route" (click)="getUser()">
 		<span>{{userdata}}</span>
 	</div>
-	<div *ngIf="authService.isAdmin()" class="row" style="margin-top:30px;">
+<!-- 	<div *ngIf="authService.isAdmin()" class="row" style="margin-top:30px;">
 		<input class="btn btn-primary " value="GET Admin route" (click)="getAdmin()">
 		<span>{{admindata}}</span>
-	</div>
+	</div> -->
 <!-- 	<div class="row" style="margin-top:100px;">
 
 		<table class="table table-hover">

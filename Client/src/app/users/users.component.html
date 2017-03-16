@@ -1,3 +1,16 @@
-<p>
-  users works!
-</p>
+<div class="col-md-7 col-sm-7 section">
+	<div  *ngFor="let user of users" class="row user subsection">
+		<div class="row"><h3>{{user.name}}</h3></div>
+		<hr/>
+		<div class="row"><span>ID: {{user.id}}</span></div>
+		<div class="row"><span>Username: {{user.username}}</span></div>
+		<div class="row"><span>Role: {{user.role}}</span></div>
+		<div class="row"><span>Email: {{user.email}}</span></div>
+	</div>
+</div>
+<!-- <div id="gutter" class="col-md-6 col-sm-6"> -->
+<app-add-user class="col-md-5 col-sm-5"></app-add-user>
+<!-- </div> -->
+
+
+

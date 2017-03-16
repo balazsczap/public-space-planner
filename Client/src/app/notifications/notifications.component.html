@@ -1,6 +1,7 @@
-<div class="notifications">
-    <div (click)="hide(note)" class="{{ note.type }}"
+<div class="notification-area">
+    <div (click)="removeNote(note)" [@remove]="note.active" [class]="'notification notification-'+note.type"
             *ngFor="let note of _notes">
-        {{ note.message }}
+        <h2 class="text-center">{{ note.message }}</h2>
+        <p class="text-center">(click to dismiss)</p>
     </div>
 </div>
