@@ -11,11 +11,28 @@ namespace PublicSpacePlanner.Data.Models
     {
 		public int Id { get; set; }
 		public string Name { get; set; }
+		[JsonIgnore]
 		public string Username { get; set; }
-		public string Role { get; set; } = "user";
+		public string Email { get; set; }
+
+		//role can only have user or admin, and it defaults to user for any kind of typo
+		private string role = "user";
+		public string Role
+		{
+			get { return role; }
+			set {
+				if (value != "admin" || value != "user")
+					role = "user";
+				else
+					role = value;
+			}
+		}
+
 		[JsonIgnore]
 		public string Password { get; set; }
 		public string ImageUrl { get; set; } = "default_image_url";
+
+		public bool Active { get; set; } = false;
 		public ICollection<Blueprint> BlueprintsCreated { get; set; } = new List<Blueprint>();
 		public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 	}

@@ -8,8 +8,8 @@ using PublicSpacePlanner.Data;
 namespace PublicSpacePlanner.Migrations
 {
     [DbContext(typeof(SpacePlannerDbContext))]
-    [Migration("20170225213101_user password added")]
-    partial class userpasswordadded
+    [Migration("20170317092230_new")]
+    partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,11 +62,17 @@ namespace PublicSpacePlanner.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Email");
+
                     b.Property<string>("ImageUrl");
 
                     b.Property<string>("Name");
 
                     b.Property<string>("Password");
+
+                    b.Property<string>("Role");
+
+                    b.Property<string>("Username");
 
                     b.HasKey("Id");
 

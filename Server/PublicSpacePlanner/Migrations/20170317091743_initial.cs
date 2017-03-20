@@ -15,8 +15,13 @@ namespace PublicSpacePlanner.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Email = table.Column<string>(nullable: true),
+                    Emaillllll = table.Column<string>(nullable: true),
                     ImageUrl = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    Role = table.Column<string>(nullable: true),
+                    Username = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

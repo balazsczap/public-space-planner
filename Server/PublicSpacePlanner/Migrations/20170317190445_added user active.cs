@@ -4,20 +4,21 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PublicSpacePlanner.Migrations
 {
-    public partial class userpasswordadded : Migration
+    public partial class addeduseractive : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Password",
+            migrationBuilder.AddColumn<bool>(
+                name: "Active",
                 table: "Users",
-                nullable: true);
+                nullable: false,
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Password",
+                name: "Active",
                 table: "Users");
         }
     }

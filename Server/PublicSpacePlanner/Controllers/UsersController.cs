@@ -26,15 +26,18 @@ namespace PublicSpacePlanner.Controllers
 		}
 		// GET api/users
 
+		
 		[HttpGet]
 		public IEnumerable<User> Get()
 		{
-			return _users.GetAll();
+			return _users.GetAll().Where(u=>u.Active);
 		}
 
+		[Authorize(Roles = "user,admin")]
 		[HttpGet("{id:int}")]
 		public IActionResult GetOne(int id)
 		{
+
 			var user = _users.GetOneById(id);
 			if (user == null)
 			{
@@ -44,13 +47,16 @@ namespace PublicSpacePlanner.Controllers
 		}
 
 
-		// POST api/users
-		[HttpPost]
-		public IActionResult Add([FromBody] JObject userData)
+
+	   [Authorize(Roles = "admin")]
+	   [HttpPost()]
+	   [Route("full")]
+		public IActionResult AddFull([FromBody] JObject userData)
 		{
 			var name = userData["name"]?.ToString();
 			var username = userData["username"]?.ToString();
 			var password = userData["password"]?.ToString();
+			var email = userData["email"]?.ToString();
 			var role = userData["role"]?.ToString();
 			var imgUrl = userData["imageUrl"]?.ToString();
 
@@ -68,20 +74,53 @@ namespace PublicSpacePlanner.Controllers
 			var user = new User { Name = name, Username = username, Password = hashed };
 			user.ImageUrl = imgUrl ?? user.ImageUrl;
 			user.Role = role ?? user.Role;
+			user.Email = email ?? user.Email;
 
 			_users.Add(user);
-
-			
 
 			return Created($"/users/{user.Id}", user);
 		}
 
+
+		[Authorize(Roles ="admin")]
+		[HttpPost]
+		public IActionResult Add([FromBody] JObject userData)
+		{
+			var email = userData["email"]?.ToString();
+			var role = userData["role"]?.ToString();
+
+			if(email == null || role==null)
+			{
+				return StatusCode(400, "No email or role given");
+			}
+
+			var user = new User { Email = email, Role = role};
+
+			_users.Add(user);
+
+			return Created($"/users/{user.Id}", user);
+		}
+
+		[Authorize(Roles = "user,admin")]
 		[HttpPut("{id:int}")]
 		public IActionResult Update([FromRoute]int id, [FromBody] JObject userData)
 		{
+			var requester = new
+			{
+				Role = User.Claims.Single(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value,
+				Id = int.Parse(User.Claims.Single(c => c.Type == "user id").Value)
+			};
+
+			if (requester.Role == "user" && requester.Id != id)
+			{
+				return StatusCode(403, "Trying to access another user's data");
+			}
+
+
 			var name = userData["name"]?.ToString();
 			var username = userData["username"]?.ToString();
 			var password = userData["password"]?.ToString();
+			var email = userData["email"]?.ToString();
 			var imgUrl = userData["imageUrl"]?.ToString();
 			var role = userData["role"]?.ToString();
 
@@ -91,7 +130,7 @@ namespace PublicSpacePlanner.Controllers
 				return NotFound();
 			}
 
-
+			
 
 			user.Name = name ?? user.Name;
 			user.Username = username ?? user.Username;
@@ -102,12 +141,17 @@ namespace PublicSpacePlanner.Controllers
 			}
 			user.ImageUrl = imgUrl ?? user.ImageUrl;
 			user.Role = role ?? user.Role;
+			user.Email = email ?? user.Email;
+
+			if (!string.IsNullOrEmpty(user.Name) && !string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
+				user.Active = true;
 
 			_users.Update(user);
 			return Ok();
 
 		}
 
+		[Authorize(Roles ="admin")]
 		[HttpDelete("{id:int}")]
 		public void Delete(int id)
 		{

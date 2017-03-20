@@ -61,6 +61,10 @@ namespace PublicSpacePlanner.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Email");
+
                     b.Property<string>("ImageUrl");
 
                     b.Property<string>("Name");

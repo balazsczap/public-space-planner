@@ -22,11 +22,11 @@ namespace PublicSpacePlanner.Authentication
 		private readonly TokenProviderOptions _options;
 		private readonly IUserRepository _userRepository;
 		public TokenProviderMiddleware(
-			SpacePlannerDbContext context,
+			IUserRepository repository,
 			RequestDelegate next,
 			IOptions<TokenProviderOptions> options)
 		{
-			_userRepository = new UserRepository(context);
+			_userRepository = repository;
 			_next = next;
 			_options = options.Value;
 		}

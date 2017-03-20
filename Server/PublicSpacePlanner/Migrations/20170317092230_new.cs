@@ -4,21 +4,21 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PublicSpacePlanner.Migrations
 {
-    public partial class roleadded : Migration
+    public partial class @new : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Role",
-                table: "Users",
-                nullable: true);
+            migrationBuilder.DropColumn(
+                name: "Emaillllll",
+                table: "Users");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Role",
-                table: "Users");
+            migrationBuilder.AddColumn<string>(
+                name: "Emaillllll",
+                table: "Users",
+                nullable: true);
         }
     }
 }

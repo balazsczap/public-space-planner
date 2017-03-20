@@ -14,7 +14,8 @@ namespace PublicSpacePlanner.Data
 			: base(opt)
 		{
 			Database.EnsureCreated();
-			
+			//Database.Migrate();
+
 		}
 
 		public DbSet<User> Users { get; set; }

@@ -102,7 +102,7 @@ namespace PublicSpacePlanner
 				Audience = "PublicSpacePlanner",
 				Issuer = "PublicSpacePlanner",
 				Path = "/api/auth",
-				Expiration = TimeSpan.FromMinutes(15),
+				Expiration = TimeSpan.FromMinutes(60),
 				SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
 			};
 			app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));

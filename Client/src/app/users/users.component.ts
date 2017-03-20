@@ -20,7 +20,6 @@ export class UsersComponent implements OnInit {
   	this.userService.getAll().subscribe(
   		data=>{
   			this.users = data;
-  			console.log(this.users);
   		},
   		err=>{
   			this.notifications.create("error", err);

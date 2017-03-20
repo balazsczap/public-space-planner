@@ -36,7 +36,7 @@ export class AuthenticationService {
 
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         return this._httpService.post(this._config.ApiUrl+"/auth", body, {headers: headers})
-            .map(res=> {console.log(res);return res.json()})
+            .map(res=> res.json())
             .flatMap(data=>{
                 if(data.ok==false){
                   return Observable.of<User>(null);
@@ -50,6 +50,9 @@ export class AuthenticationService {
             .catch(err=>{
                 if(err.status==400 && err.statusText==="Bad Request"){
                     return Observable.of(false);
+                }
+                if(err.status>=400 && err.status<500){
+                    return Observable.throw(`Client error (${err.status})`);
                 }
                 if(err.status>=500 && err.status<600){
                     return Observable.throw(`Server error (${err.status})`);
@@ -90,7 +93,12 @@ export class AuthenticationService {
 
     //gets the user data for display, parses it, and stores it
     private getUserData = (): Observable<any>=>{
-        return this._httpService.get(this._config.ApiUrl+"/users/"+this._userId).map(res=> res.json())
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+        headers.append('Authorization', 'Bearer ' + this.token);
+        return this._httpService.get(this._config.ApiUrl+"/users/"+this._userId, {headers:headers}).map(res=> res.json())
             .map(data=>{
                 if(data==null){
                   return false;
