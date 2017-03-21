@@ -23,4 +23,19 @@ export class UserService {
     public getProtected = () : Observable<string> =>{
         return this.http.get("/test/user").map(res=>res.json());
     }
+
+    public createNew = (email: string): Observable<string> =>{
+        var content = JSON.stringify(email);
+        return this.http.post("/auth/firsttime", content)
+            .map(res=>{
+                var token = res.json()["token"];
+                return token;
+            });
+    }
+
+    public updateUser = (user: User): Observable<User> =>{
+        var content = JSON.stringify(user);
+        return this.http.put("/users/" + user.id, content)
+            .map(res=>res.json());
+    } 
 }

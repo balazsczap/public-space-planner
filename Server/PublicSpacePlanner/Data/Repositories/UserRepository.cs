@@ -28,17 +28,22 @@ namespace PublicSpacePlanner.Data.Repositories
 
 		public User GetOneById(int id)
 		{
-			return _context.Users.FirstOrDefault(u => u.Id == id);
+			return _context.Users.Single(u => u.Id == id);
 		}
 
 		public User GetOneByUsername(string username)
 		{
-			return _context.Users.SingleOrDefault(u => u.Username == username);
+			return _context.Users.Single(u => u.Username == username);
+		}
+
+		public User GetOneByEmail(string email)
+		{
+			return _context.Users.Single(u => u.Email == email);
 		}
 
 		public void Remove(int id)
 		{
-			var e = _context.Users.First(u => u.Id == id);
+			var e = _context.Users.Single(u => u.Id == id);
 			_context.Remove(e);
 			_context.SaveChanges();
 		}

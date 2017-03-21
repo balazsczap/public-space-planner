@@ -16,55 +16,25 @@ using System.Threading.Tasks;
 namespace PublicSpacePlanner.Authentication
 {
 	//https://stormpath.com/blog/token-authentication-asp-net-core
-	public class TokenProviderMiddleware
+	public class TokenProviderService
     {
-		private readonly RequestDelegate _next;
 		private readonly TokenProviderOptions _options;
 		private readonly IUserRepository _userRepository;
-		public TokenProviderMiddleware(
+		public TokenProviderService(
 			IUserRepository repository,
-			RequestDelegate next,
 			IOptions<TokenProviderOptions> options)
 		{
 			_userRepository = repository;
-			_next = next;
 			_options = options.Value;
 		}
 
-		public Task Invoke(HttpContext context)
-		{
-			// If the request path doesn't match, skip
-			if (!context.Request.Path.Equals(_options.Path, StringComparison.Ordinal))
-			{
-				return _next(context);
-			}
 
-			// Request must be POST with Content-Type: application/x-www-form-urlencoded
-			if (!context.Request.Method.Equals("POST")
-			   || !context.Request.HasFormContentType)
-			{
-				context.Response.StatusCode = 400;
-				return context.Response.WriteAsync("Bad request.");
-			}
-
-			return GenerateToken(context);
-		}
-		private async Task GenerateToken(HttpContext context)
+		public async Task<string> GenerateToken(string username, string password)
 		{
-			var username = context.Request.Form["username"];
-			var password = context.Request.Form["password"];
+
 
 			var identity = await GetIdentity(username, password);
-			if (identity == null)
-			{
-				context.Response.StatusCode = 400;
-				await context.Response.WriteAsync("Invalid username or password.");
-				return;
-			}
-
 			var now = DateTime.UtcNow;
-
-
 
 			var claims = new List<Claim>()
 			{
@@ -74,7 +44,7 @@ namespace PublicSpacePlanner.Authentication
 			};
 
 			claims.AddRange(identity.Claims);
-		
+
 
 			// Create the JWT and write it to a string
 			var jwt = new JwtSecurityToken(
@@ -86,20 +56,52 @@ namespace PublicSpacePlanner.Authentication
 				signingCredentials: _options.SigningCredentials);
 			var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-			var id = identity.Claims.Single(t => t.Type == "user id").Value.ToLower();
+			//var id = identity.Claims.Single(t => t.Type == "user id").Value.ToLower();
 
-			var response = new
+			//var response = new
+			//{
+			//	access_token = encodedJwt,
+			//	expires_in = (int)_options.Expiration.TotalSeconds,
+			//	id = id,
+
+			//};
+
+			return encodedJwt;
+			
+		}
+
+		public async Task<string> GenerateFirstTimeToken(string email)
+		{
+			var user = _userRepository.GetOneByEmail(email);
+			
+			//if (user.Active)
+			//{
+			//	throw new InvalidOperationException("User is already activated");
+			//}
+
+			var now = DateTime.UtcNow;
+			var claims = new List<Claim>()
 			{
-				access_token = encodedJwt,
-				expires_in = (int)_options.Expiration.TotalSeconds,
-				id = id,
-				
+				new Claim(JwtRegisteredClaimNames.Sub, email),
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+				new Claim(JwtRegisteredClaimNames.Iat,  now.ToUniversalTime().ToString(), ClaimValueTypes.Integer64),
+				new Claim("user id", user.Id.ToString()),
+				new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", user.Role)
+
 			};
 
-			// Serialize and return the response
-			context.Response.ContentType = "application/json";
-			await context.Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
+			var jwt = new JwtSecurityToken(
+			issuer: _options.Issuer,
+			audience: _options.Audience,
+			claims: claims,
+			notBefore: now,
+			expires: now.Add(_options.LongExpiration),
+			signingCredentials: _options.SigningCredentials);
+			var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+			return encodedJwt;
 		}
+
 		private Task<ClaimsIdentity> GetIdentity(string username, string password)
 		{
 
@@ -108,7 +110,7 @@ namespace PublicSpacePlanner.Authentication
 			{
 				return Task.FromResult<ClaimsIdentity>(null);
 			}
-			if (PasswordHandler.VerifyPassword(password, user.Password))
+			if (user.Active && PasswordHandler.VerifyPassword(password, user.Password))
 			{
 				return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(username, "Token"),
 					new Claim[] {

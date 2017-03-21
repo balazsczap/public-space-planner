@@ -10,6 +10,7 @@ namespace PublicSpacePlanner.Data.Repositories
     {
 		User GetOneById(int id);
 		User GetOneByUsername(string username);
+		User GetOneByEmail(string email);
 		IEnumerable<User> GetAll();
 		void Add(User user);
 		void Update(User user);

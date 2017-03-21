@@ -41,6 +41,17 @@ export class HttpService<T> {
 			});
 	}
 
+	public post = (url: string, body: any) : Observable<Response> =>{
+		let headers = this.createAuthHeaders();
+		return this._http.post(this._config.ApiUrl + url, body, {headers:headers})
+				.catch(err=>{console.log(err); return err;});
+	}
+
+	public put = (url: string, body:any): Observable<Response> =>{
+		let headers = this.createAuthHeaders();
+		return this._http.put(this._config.ApiUrl + url, body, {headers:headers})
+				.catch(err=>{console.log(err); return err;});
+	}
 
    private handleError(error: Response) {
      	console.error(error);

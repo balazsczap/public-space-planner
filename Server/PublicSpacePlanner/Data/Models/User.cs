@@ -11,7 +11,7 @@ namespace PublicSpacePlanner.Data.Models
     {
 		public int Id { get; set; }
 		public string Name { get; set; }
-		[JsonIgnore]
+		//[JsonIgnore]
 		public string Username { get; set; }
 		public string Email { get; set; }
 

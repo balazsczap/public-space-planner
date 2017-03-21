@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -11,7 +11,7 @@ import { RoutingModule } from './routing.module';
 
 import { ConfigurationService } from './configuration/configuration.service'
 import { AuthenticationService } from './auth/authentication.service'
-import { AdminGuard, UserGuard} from './auth/auth-guard.service';
+import { AdminGuard, UserGuard, SelfGuard} from './auth/auth-guard.service';
 
 import { UserService } from './network/user.service';
 import { HttpService } from './network/http.service';
@@ -29,6 +29,7 @@ import { LoginComponent } from './login/login.component';
 import { Notifications as NotificationsComponent } from './notifications/notifications.component';
 
 import { LoginTesterComponent } from './users/login-tester/login-tester.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { LoginTesterComponent } from './users/login-tester/login-tester.componen
     FormsModule,
     HttpModule,
     RoutingModule,
-    UsersModule
+    UsersModule, 
+    ReactiveFormsModule
     // NgbModule.forRoot()
   ],
   declarations: [
@@ -52,9 +54,12 @@ import { LoginTesterComponent } from './users/login-tester/login-tester.componen
     NotificationsComponent,
 
 
-    LoginTesterComponent
+    LoginTesterComponent,
+
+
+    ProfileComponent
   ],
-  providers: [ConfigurationService, AuthenticationService, NotificationsService, HttpService, UserService, AdminGuard, UserGuard],
+  providers: [ConfigurationService, AuthenticationService, NotificationsService, HttpService, UserService, AdminGuard, UserGuard, SelfGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

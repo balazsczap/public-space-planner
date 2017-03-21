@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder , Validators, FormGroup, AbstractControl , FormControl} from '@angular/forms';
+import { UserService } from '../../network/user.service';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add.component.html',
@@ -10,19 +11,21 @@ export class AddUserComponent implements OnInit {
   		"name": new FormControl(),
   		"email": new FormControl()
   });
-  constructor(fb: FormBuilder) { 
+  constructor(fb: FormBuilder, private userService: UserService) { 
   	this.addUserForm = fb.group({
   		"name": ['', Validators.pattern("\\w+ \\w+[ \\w]+")],
   		"email": ['', Validators.required]
   	})
   }
-
+  private userUrl : string;
   ngOnInit() {
   }
 
   onSubmit(value: string){
-  	console.log(this.addUserForm.valid)
-  	console.log(value);
+     var email = this.addUserForm.get("email").value;
+     // console.log(value);
+     this.userService.createNew(email)
+         .subscribe(data=>this.userUrl="/api/auth/firsttime/"+data);
   }
 
 }

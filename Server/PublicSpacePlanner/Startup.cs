@@ -59,6 +59,19 @@ namespace PublicSpacePlanner
 							 SslMode=Require;
 							 Trust Server Certificate=true;";
 
+
+			services.AddOptions();
+			services.Configure<TokenProviderOptions>(opt => { 
+				opt.Audience = "PublicSpacePlanner";
+				opt.Issuer = "PublicSpacePlanner";
+				opt.Expiration = TimeSpan.FromMinutes(60);
+				opt.LongExpiration = TimeSpan.FromDays(7);
+				opt.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+			});
+			
+			//app.UseMiddleware<TokenProviderService>(Options.Create(options));
+			services.AddSingleton<TokenProviderService>();
+
 			services.AddDbContext<SpacePlannerDbContext>(options => options.UseNpgsql(conn_str));
 			services.AddSingleton<IUserRepository, UserRepository>();
 			services.AddCors();
@@ -97,15 +110,6 @@ namespace PublicSpacePlanner
 				AutomaticChallenge = true,
 				TokenValidationParameters = tokenValidationParameters
 			});
-			var options = new TokenProviderOptions
-			{
-				Audience = "PublicSpacePlanner",
-				Issuer = "PublicSpacePlanner",
-				Path = "/api/auth",
-				Expiration = TimeSpan.FromMinutes(60),
-				SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
-			};
-			app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));
 
 			app.UseCors(builder => builder.AllowAnyOrigin());
 

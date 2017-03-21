@@ -94,7 +94,7 @@ namespace PublicSpacePlanner.Controllers
 				return StatusCode(400, "No email or role given");
 			}
 
-			var user = new User { Email = email, Role = role};
+			var user = new User { Email = email, Username=email, Password = null, Role = role};
 
 			_users.Add(user);
 
@@ -140,7 +140,10 @@ namespace PublicSpacePlanner.Controllers
 				user.Password = hashed ?? user.Password;
 			}
 			user.ImageUrl = imgUrl ?? user.ImageUrl;
-			user.Role = role ?? user.Role;
+
+			if (requester.Role=="admin")
+				user.Role = role ?? user.Role;
+
 			user.Email = email ?? user.Email;
 
 			if (!string.IsNullOrEmpty(user.Name) && !string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
