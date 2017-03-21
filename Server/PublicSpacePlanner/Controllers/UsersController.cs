@@ -150,7 +150,7 @@ namespace PublicSpacePlanner.Controllers
 				user.Active = true;
 
 			_users.Update(user);
-			return Ok();
+			return new ObjectResult(user);
 
 		}
 

@@ -50,6 +50,7 @@ export class HttpService<T> {
 	public put = (url: string, body:any): Observable<Response> =>{
 		let headers = this.createAuthHeaders();
 		return this._http.put(this._config.ApiUrl + url, body, {headers:headers})
+				// .map(data=>{console.log(data); return data;})
 				.catch(err=>{console.log(err); return err;});
 	}
 

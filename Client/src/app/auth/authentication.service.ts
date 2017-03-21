@@ -92,7 +92,7 @@ export class AuthenticationService {
     }
 
     //gets the user data for display, parses it, and stores it
-    private getUserData = (): Observable<any>=>{
+    public getUserData = (): Observable<any>=>{
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -116,6 +116,7 @@ export class AuthenticationService {
                 }
             });
     }
+
 
 
     isLoggedIn() : boolean {

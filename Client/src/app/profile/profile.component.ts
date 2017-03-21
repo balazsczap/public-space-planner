@@ -62,7 +62,12 @@ export class ProfileComponent implements OnInit {
   onSubmit(value){
   	if(!this.userForm.valid)
   		return;
-  	if(value.newpass) value.password=value.newpass;
-  	
+  	if(value.newpass) {value.password=value.newpass; delete value["newpass"];delete value["confirmpass"];};
+  	value.id=this.id;
+    this.userService.updateUser(value).subscribe(res=>{
+      this.authService.getUserData().subscribe(res=>{
+        console.log(res);
+      });
+    });
   }
 }
