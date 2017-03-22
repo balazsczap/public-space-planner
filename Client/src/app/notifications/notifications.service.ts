@@ -20,7 +20,8 @@ export class NotificationsService {í
     public readonly TYPE = {
     	ERROR: "error",
     	WARNING: "warning",
-        NOTE: "note"
+        NOTE: "note",
+        SUCCESS: "success"
     }
 
     public readonly DURATION = { 

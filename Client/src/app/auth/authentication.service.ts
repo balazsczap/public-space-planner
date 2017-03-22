@@ -21,8 +21,19 @@ export class AuthenticationService {
         if(currentUser){
             this.token = currentUser.token;
             this._userId = currentUser.id;
-            this.user = JSON.parse(localStorage.getItem('userData'));
+            this.getUserData()
+                .subscribe(data=>{
+                    console.log(data);
+                    if(!data){
+                        this.logOut();
+
+                    }
+                });
         }
+        else{
+            this.logOut();
+        }
+
     }
  
 
@@ -110,6 +121,9 @@ export class AuthenticationService {
             .catch(error=>{
                 if(error.status==400){
                     return Observable.of(error);
+                }
+                if(error.status==401){
+                    return Observable.of(false);
                 }
                 else{
                     return Observable.throw(error.json().error || 'Server error'); 

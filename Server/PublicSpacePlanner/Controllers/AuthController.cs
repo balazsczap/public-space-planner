@@ -26,7 +26,14 @@ namespace PublicSpacePlanner.Controllers
 			_users = users;
 		}
 
-        // GET: api/values
+		[Authorize(Roles = "user,admin")]
+		[HttpGet]
+		[Route("check")]
+		public IActionResult CheckIfExpired(){
+			//JwtAuthentication responds with 403: expired if token is expired, if the call got here, it's not expired yet.
+			return Ok();
+		}
+
         [HttpPost]
         public async Task<IActionResult> Authenticate(dynamic data)
         {	
@@ -65,7 +72,7 @@ namespace PublicSpacePlanner.Controllers
 			
 		}
 
-		//[Authorize("admin")]
+		[Authorize(Roles = "admin")]
 		[HttpPost]
 		[Route("firsttime")]
 		public async Task<IActionResult> GetFirstTimeToken([FromBody]string email)

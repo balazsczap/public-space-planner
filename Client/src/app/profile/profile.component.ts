@@ -2,6 +2,7 @@ import { Component, OnInit , Attribute} from '@angular/core';
 import { ActivatedRoute }from '@angular/router';
 import { UserService } from '../network/user.service';
 import { AuthenticationService } from '../auth/authentication.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { FormControl, FormBuilder, FormGroup, Validators, Validator, AbstractControl} from '@angular/forms';
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,11 @@ export class ProfileComponent implements OnInit {
   // });
 
   userForm :FormGroup;
-  constructor(private fb: FormBuilder, private userService: UserService, private authService: AuthenticationService, private route: ActivatedRoute) { 
+  constructor(private fb: FormBuilder,
+   private userService: UserService,
+   private authService: AuthenticationService,
+   private route: ActivatedRoute,
+   private notif: NotificationsService) { 
 
   }
 
@@ -66,7 +71,7 @@ export class ProfileComponent implements OnInit {
   	value.id=this.id;
     this.userService.updateUser(value).subscribe(res=>{
       this.authService.getUserData().subscribe(res=>{
-        console.log(res);
+          this.notif.create(this.notif.TYPE.SUCCESS, "Successfully modified data!", this.notif.DURATION.LONG);
       });
     });
   }
