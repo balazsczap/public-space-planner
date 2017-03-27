@@ -21,6 +21,8 @@ export class AuthenticationService {
         if(currentUser){
             this.token = currentUser.token;
             this._userId = currentUser.id;
+            this.user = JSON.parse(localStorage.getItem('userData'));
+
             this.getUserData()
                 .subscribe(data=>{
                     console.log(data);

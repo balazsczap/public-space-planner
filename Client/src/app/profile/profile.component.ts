@@ -1,5 +1,4 @@
 import { Component, OnInit , Attribute} from '@angular/core';
-import { ActivatedRoute }from '@angular/router';
 import { UserService } from '../network/user.service';
 import { AuthenticationService } from '../auth/authentication.service';
 import { NotificationsService } from '../notifications/notifications.service';
@@ -27,7 +26,6 @@ export class ProfileComponent implements OnInit {
   constructor(private fb: FormBuilder,
    private userService: UserService,
    private authService: AuthenticationService,
-   private route: ActivatedRoute,
    private notif: NotificationsService) { 
 
   }
@@ -60,7 +58,8 @@ export class ProfileComponent implements OnInit {
         let that = this;
         return (c: FormControl) =>
         {
-            return (c.value === that.userForm.controls["passworď"].value) ? null : {'passwordMatch': {valid: false}};
+            console.log("hello");
+            return (c.value === that.userForm.controls["newpass"].value) ? null : {'passwordMatch': {valid: false}};
         }
     }
 

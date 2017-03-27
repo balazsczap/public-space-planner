@@ -14,12 +14,12 @@
     </ul>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="authService.isLoggedIn()"><p class="navbar-text">Signed in as {{authService.user.name}}</p></li>
+        <li *ngIf="authService.isLoggedIn()"><p class="navbar-text">Signed in as {{authService.user.name}}, you are a(n) {{authService.user.role}}</p></li>
 
         <li *ngIf="authService.isLoggedIn()" class="dropdown">
           <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></a>
           <ul class="dropdown-menu">
-            <li><a [routerLink]="'/profile/'+authService._userId">Profile settings</a></li>
+            <li><a routerLink="/profile">Profile settings</a></li>
             <li role="separator" class="divider"></li>
             <li  (click)="logOut()"  style="cursor:pointer;"><a>Log out</a></li>
           </ul>

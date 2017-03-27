@@ -15,7 +15,7 @@ import { UserGuard, AdminGuard, SelfGuard } from './auth/auth-guard.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent},
-  { path: 'profile/:id', component: ProfileComponent, canActivate: [SelfGuard]},
+  { path: 'profile', component: ProfileComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [UserGuard] },
   { path: 'map', component: MapComponent, canActivate: [UserGuard]  },
   { path: 'stock', component: StockComponent, canActivate: [UserGuard]  },

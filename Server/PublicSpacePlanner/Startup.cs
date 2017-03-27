@@ -70,7 +70,6 @@ namespace PublicSpacePlanner
 				opt.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 			});
 			
-			//app.UseMiddleware<TokenProviderService>(Options.Create(options));
 			services.AddSingleton<TokenProviderService>();
 
 			services.AddDbContext<SpacePlannerDbContext>(options => options.UseNpgsql(conn_str));

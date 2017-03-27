@@ -77,6 +77,7 @@ namespace PublicSpacePlanner.Controllers
 		[Route("firsttime")]
 		public async Task<IActionResult> GetFirstTimeToken([FromBody]string email)
 		{
+			
 			try
 			{
 				var res = new { token = await _tokenProvider.GenerateFirstTimeToken(email) };
