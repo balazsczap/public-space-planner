@@ -17,13 +17,18 @@ namespace PublicSpacePlanner.Data.Repositories
 		}
 		public void Add(User user)
 		{
+			var exist = _context.Users.FirstOrDefault(u=>u.Email==user.Email);
+			if (exist != null)
+			{
+				throw new InvalidOperationException("User already exists");
+			}
 			_context.Users.Add(user);
 			_context.SaveChanges();
 		}
 
 		public IEnumerable<User> GetAll()
 		{
-			return _context.Users;
+			return _context.Users.ToList();
 		}
 
 		public User GetOneById(int id)

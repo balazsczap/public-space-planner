@@ -24,13 +24,23 @@ export class UserService {
         return this.http.get("/test/user").map(res=>res.json());
     }
 
-    public createNew = (email: string): Observable<string> =>{
-        var content = JSON.stringify(email);
-        return this.http.post("/auth/firsttime", content)
-            .map(res=>{
-                var token = res.json()["token"];
-                return token;
-            });
+    public createNew = (name: string, email: string, role:string): Observable<string> =>{
+        var content = JSON.stringify({name:name,email:email,role:role});
+
+        return this.http.post('/users/', content)
+            .flatMap(res=>{
+                // console.log(res);
+                return this.http.post('/auth/firsttime', JSON.stringify(email))
+                        .map(res=>{
+                            return res.json();
+                        })
+            })
+            
+        // return this.http.post("/auth/firsttime", content)
+        //     .map(res=>{
+        //         var token = res.json()["token"];
+        //         return token;
+        //     });
     }
 
     public updateUser = (user: User): Observable<User> =>{

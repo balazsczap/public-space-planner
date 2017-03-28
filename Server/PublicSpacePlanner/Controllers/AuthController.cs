@@ -63,12 +63,12 @@ namespace PublicSpacePlanner.Controllers
 		}
 
 		[HttpGet]
-		[Route("firsttime/{token}")]
+		[Route("{token}")]
 		public async Task<IActionResult> FirstTimeLogin([FromRoute] string token)
 		{
 			var decoded = new JwtSecurityTokenHandler().ReadJwtToken(token);
 			var id = int.Parse(decoded.Claims.Single(c => c.Type == "user id").Value);
-			return Redirect("/profile/" + id);
+			return Redirect("/profile/");
 			
 		}
 

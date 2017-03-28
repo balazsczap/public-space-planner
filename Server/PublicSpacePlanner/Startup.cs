@@ -73,7 +73,7 @@ namespace PublicSpacePlanner
 			services.AddSingleton<TokenProviderService>();
 
 			services.AddDbContext<SpacePlannerDbContext>(options => options.UseNpgsql(conn_str));
-			services.AddSingleton<IUserRepository, UserRepository>();
+			services.AddTransient<IUserRepository, UserRepository>();
 			services.AddCors();
 		}
 

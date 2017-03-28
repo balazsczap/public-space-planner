@@ -28,7 +28,7 @@ namespace PublicSpacePlanner.Controllers
 
 		
 		[HttpGet]
-		public IEnumerable<User> Get()
+		public async Task<IEnumerable<User>> Get()
 		{
 			return _users.GetAll().Where(u=>u.Active);
 		}
@@ -86,6 +86,7 @@ namespace PublicSpacePlanner.Controllers
 		[HttpPost]
 		public IActionResult Add([FromBody] JObject userData)
 		{
+			var name = userData["name"]?.ToString();
 			var email = userData["email"]?.ToString();
 			var role = userData["role"]?.ToString();
 
@@ -96,7 +97,17 @@ namespace PublicSpacePlanner.Controllers
 
 			var user = new User { Email = email, Username=email, Password = null, Role = role};
 
-			_users.Add(user);
+
+
+			user.Name = name ?? user.Name;
+			try
+			{
+				_users.Add(user);
+			}
+			catch(InvalidOperationException ie)
+			{
+				return StatusCode(400, ie.Message);
+			}
 
 			return Created($"/users/{user.Id}", user);
 		}
