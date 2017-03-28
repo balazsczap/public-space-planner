@@ -69,7 +69,7 @@ namespace PublicSpacePlanner.Controllers
 			try{
 				var decoded = new JwtSecurityTokenHandler().ReadJwtToken(token);			
 				var activated = Boolean.Parse(decoded.Claims.SingleOrDefault(c=>c.Type=="user activated").Value);			
-				var id = int.Parse(decoded.Claims.Single(c => c.Type == "user id").Value);			
+				var id = int.Parse(decoded.Claims.Single(c => c.Type == "user id").Value);
 				return new ObjectResult(id);
 			}
 			catch(Exception e){

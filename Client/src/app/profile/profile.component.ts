@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit {
   		"name": [user.name, Validators.pattern(/\w+ \w+/)],
   		"username": [user.username, Validators.minLength(4)],
   		"newpass": ['', Validators.minLength(6),],
-  		"confirmpass": ['', this.validatePassword],
+  		"confirmpass": ['', CustomValidators.identicalValueTo(this.userForm.controls["newpass"])],
   		"email": [user.email, Validators.required],
 	})
 
@@ -75,3 +75,20 @@ export class ProfileComponent implements OnInit {
     });
   }
 }
+
+
+class CustomValidators{
+  static identicalValueTo(original: AbstractControl){
+    return new IdenticalValueValidator(original);
+  }
+}
+
+class IdenticalValueValidator implements Validator{
+  constructor(private original: AbstractControl){}
+  public validate(control: AbstractControl):any{
+    if(this.original.value!==control.value){
+      return {"IdenticalValueValidator": {"original": this.original.value, "current":control.value}};
+    }
+    return null;
+  }
+} 
