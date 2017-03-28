@@ -9,19 +9,18 @@ import { ProfileComponent } from './profile/profile.component';
 
 import { UsersRoutes } from './users/users.routing';
 
-import { LoginTesterComponent  }   from './users/login-tester/login-tester.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { UserGuard, AdminGuard, SelfGuard } from './auth/auth-guard.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent},
+  { path: 'login/firsttime/:token', component: LoginComponent},
   { path: 'profile', component: ProfileComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [UserGuard] },
   { path: 'map', component: MapComponent, canActivate: [UserGuard]  },
   { path: 'stock', component: StockComponent, canActivate: [UserGuard]  },
   ...UsersRoutes,
   // { path: 'users', component: UsersComponent, canActivate: [AdminGuard] },
-  { path: 'authtest', component: LoginTesterComponent , canActivate: [UserGuard] },
   { path: '',   redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

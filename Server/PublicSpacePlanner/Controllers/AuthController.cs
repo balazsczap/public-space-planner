@@ -59,16 +59,23 @@ namespace PublicSpacePlanner.Controllers
 			{
 				return new BadRequestObjectResult(e.Message);
 			}
-
 		}
+		
 
 		[HttpGet]
 		[Route("{token}")]
 		public async Task<IActionResult> FirstTimeLogin([FromRoute] string token)
 		{
-			var decoded = new JwtSecurityTokenHandler().ReadJwtToken(token);
-			var id = int.Parse(decoded.Claims.Single(c => c.Type == "user id").Value);
-			return Redirect("/profile/");
+			try{
+				var decoded = new JwtSecurityTokenHandler().ReadJwtToken(token);			
+				var activated = Boolean.Parse(decoded.Claims.SingleOrDefault(c=>c.Type=="user activated").Value);			
+				var id = int.Parse(decoded.Claims.Single(c => c.Type == "user id").Value);			
+				return new ObjectResult(id);
+			}
+			catch(Exception e){
+				return new BadRequestObjectResult("Invalid token");
+			}
+			// return Redirect("/profile/");
 			
 		}
 

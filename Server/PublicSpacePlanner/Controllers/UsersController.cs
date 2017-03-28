@@ -45,7 +45,7 @@ namespace PublicSpacePlanner.Controllers
 			}
 			return new ObjectResult(user);
 		}
-
+		
 
 
 	   [Authorize(Roles = "admin")]
@@ -157,7 +157,7 @@ namespace PublicSpacePlanner.Controllers
 
 			user.Email = email ?? user.Email;
 
-			if (!string.IsNullOrEmpty(user.Name) && !string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
+			if (!string.IsNullOrEmpty(user.Username) && !string.IsNullOrEmpty(user.Password))
 				user.Active = true;
 
 			_users.Update(user);

@@ -26,7 +26,9 @@ export class AddUserComponent implements OnInit {
      var role = userData["role"];
 
      this.userService.createNew(name,email,role)
-         .subscribe(data=>{console.log(data);this.userUrl="/api/auth/firsttime/"+data["token"];});
+         .subscribe(data=>{
+           this.userUrl="/login/firsttime/"+data["token"];
+        });
   }
 
 }

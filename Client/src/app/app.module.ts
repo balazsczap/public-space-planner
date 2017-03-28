@@ -28,7 +28,6 @@ import { AddComponent } from './stock/add/add.component';
 import { LoginComponent } from './login/login.component';
 import { Notifications as NotificationsComponent } from './notifications/notifications.component';
 
-import { LoginTesterComponent } from './users/login-tester/login-tester.component';
 import { ProfileComponent } from './profile/profile.component';
 
 
@@ -52,11 +51,6 @@ import { ProfileComponent } from './profile/profile.component';
     AddComponent,
     LoginComponent,
     NotificationsComponent,
-
-
-    LoginTesterComponent,
-
-
     ProfileComponent
   ],
   providers: [ConfigurationService, AuthenticationService, NotificationsService, HttpService, UserService, AdminGuard, UserGuard, SelfGuard],

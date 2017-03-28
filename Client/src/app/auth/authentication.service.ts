@@ -33,11 +33,31 @@ export class AuthenticationService {
                 });
         }
         else{
-            this.logOut();
+            // this._route.params.subscribe(params=>{
+            //     console.log(params["token"]);
+            //     this.logOut();
+                
+            // })
         }
 
     }
  
+    setFirstTimeToken(token:string):Observable<boolean>{
+        this.token=token;
+        return this._httpService.get(this._config.ApiUrl+"/auth/"+token)
+            .flatMap((data)=>{
+                var id = data.json();
+                this._userId=id;    
+                return this.getUserData()
+            })
+            .catch(err=>{
+                    if(err.status==400){
+                        return Observable.of(false);                    
+                    }
+                });
+            
+        
+    }
 
     //does a http post to the authentication endpoint, gets the response,
     //parses it for the user id and token, and gets the user data for display

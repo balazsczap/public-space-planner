@@ -66,7 +66,7 @@ namespace PublicSpacePlanner
 				opt.Issuer = "PublicSpacePlanner";
 				opt.Expiration = TimeSpan.FromMinutes(60);
 				// opt.Expiration = TimeSpan.FromSeconds(15);
-				opt.LongExpiration = TimeSpan.FromDays(7);
+				opt.LongExpiration = TimeSpan.FromDays(3);
 				opt.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 			});
 			

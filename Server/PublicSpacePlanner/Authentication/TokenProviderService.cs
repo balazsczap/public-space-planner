@@ -74,10 +74,10 @@ namespace PublicSpacePlanner.Authentication
 		{
 			var user = _userRepository.GetOneByEmail(email);
 			
-			//if (user.Active)
-			//{
-			//	throw new InvalidOperationException("User is already activated");
-			//}
+			if (user.Active)
+			{
+				throw new InvalidOperationException("User is already activated");
+			}
 
 			var now = DateTime.UtcNow;
 			var claims = new List<Claim>()
@@ -86,6 +86,7 @@ namespace PublicSpacePlanner.Authentication
 				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 				new Claim(JwtRegisteredClaimNames.Iat,  now.ToUniversalTime().ToString(), ClaimValueTypes.Integer64),
 				new Claim("user id", user.Id.ToString()),
+				new Claim("user activated", "false"),
 				new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", user.Role)
 
 			};
