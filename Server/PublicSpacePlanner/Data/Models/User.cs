@@ -33,7 +33,7 @@ namespace PublicSpacePlanner.Data.Models
 		public string ImageUrl { get; set; } = "default_image_url";
 
 		public bool Active { get; set; } = false;
-		public ICollection<Blueprint> BlueprintsCreated { get; set; } = new List<Blueprint>();
+		public ICollection<StockItem> BlueprintsCreated { get; set; } = new List<StockItem>();
 		public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 	}
 }

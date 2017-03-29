@@ -28,7 +28,7 @@ namespace PublicSpacePlanner.Controllers
 
 		
 		[HttpGet]
-		public async Task<IEnumerable<User>> Get()
+		public IEnumerable<User> Get()
 		{
 			return _users.GetAll().Where(u=>u.Active);
 		}

@@ -1,16 +1,15 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace PublicSpacePlanner.Data.Models
 {
-    public class Rating
+    public class Comment
     {
 		public int Id { get; set; }
-		public User GivenBy { get; set; }
-		public StockItem Target { get; set; }
-		public int Value { get; set; }
+		public DateTime Time { get; set; }
+		public string Message { get; set; }
+		public User CreatedBy { get; set; }
 	}
 }

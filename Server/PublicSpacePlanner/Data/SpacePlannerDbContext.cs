@@ -19,7 +19,7 @@ namespace PublicSpacePlanner.Data
 		}
 
 		public DbSet<User> Users { get; set; }
-		public DbSet<Blueprint> Blueprints { get; set; }
+		public DbSet<StockItem> StockItems { get; set; }
 		public DbSet<Rating> Ratings { get; set; }
 
 	}
