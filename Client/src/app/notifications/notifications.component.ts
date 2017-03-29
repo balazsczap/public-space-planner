@@ -37,7 +37,7 @@ import { Notification } from './notifications.model';
       ]
     // `
 })
-export class Notifications {
+export class NotificationsComponent {
     private _notes: Notification[];
     constructor(private _notifications: NotificationsService) {
         this._notes = new Array<Notification>();

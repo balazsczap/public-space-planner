@@ -7,7 +7,6 @@ import { MapComponent  }   from './map/map.component';
 import { StockComponent  }   from './stock/stock.component';
 import { ProfileComponent } from './profile/profile.component';
 
-import { UsersRoutes } from './users/users.routing';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { UserGuard, AdminGuard, SelfGuard } from './auth/auth-guard.service';
@@ -19,8 +18,6 @@ const appRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [UserGuard] },
   { path: 'map', component: MapComponent, canActivate: [UserGuard]  },
   { path: 'stock', component: StockComponent, canActivate: [UserGuard]  },
-  ...UsersRoutes,
-  // { path: 'users', component: UsersComponent, canActivate: [AdminGuard] },
   { path: '',   redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

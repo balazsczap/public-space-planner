@@ -1,9 +1,10 @@
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule }  from '@angular/router';
 import { UsersComponent } from "./users.component";
 import { AddUserComponent } from "./add/add.component";
 import { UserGuard, AdminGuard } from '../auth/auth-guard.service';
 
-export const UsersRoutes: Routes = [
+const usersRoutes: Routes = [
   {
     path: 'users',
     component: UsersComponent,
@@ -15,3 +16,14 @@ export const UsersRoutes: Routes = [
     ]
   }
 ];
+
+@NgModule({
+  imports:[
+    RouterModule.forChild(usersRoutes)
+  ],
+  exports:[
+    RouterModule
+  ]
+})
+
+export class UsersRoutingModule{}
