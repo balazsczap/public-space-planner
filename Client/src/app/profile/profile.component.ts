@@ -1,8 +1,9 @@
 import { Component, OnInit , Attribute} from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../network/user.service';
 import { AuthenticationService } from '../auth/authentication.service';
 import { NotificationsService } from '../notifications/notifications.service';
-import { FormControl, FormBuilder, FormGroup, Validators, Validator, AbstractControl} from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, Validators, Validator, AbstractControl, ValidatorFn} from '@angular/forms';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -26,6 +27,7 @@ export class ProfileComponent implements OnInit {
   constructor(private fb: FormBuilder,
    private userService: UserService,
    private authService: AuthenticationService,
+   private router: Router,
    private notif: NotificationsService) { 
 
   }
@@ -33,35 +35,17 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
   	this.id = this.authService._userId;
   	let user = this.authService.user;
-	this.userForm = this.fb.group({
-  		"name": [user.name, Validators.pattern(/\w+ \w+/)],
-  		"username": [user.username, Validators.minLength(4)],
-  		"newpass": ['', Validators.minLength(6),],
-  		"confirmpass": ['', CustomValidators.identicalValueTo(this.userForm.controls["newpass"])],
-  		"email": [user.email, Validators.required],
-	})
-
-	console.log(this.userForm.controls["name"].valid);
-  	// this.route.params.subscribe(params=>{
-  	// 	this.id=params["id"];
-
-  	// 	// this.userService.getUserById(this.id).subscribe(user=>{
-  	// 	// 	console.log(user);
-
-  	// 	// });
-  	// 	var user = 
-
-  	// });
-  	// this.id = this.route.params["id"];
+    this.userForm = this.fb.group({
+        "name": [user.name, Validators.pattern(/\w+ \w+/)],
+        "username": [user.username, Validators.minLength(4)],
+        "newpass": ['',  [Validators.minLength(6), Validators.required]],
+        "email": [user.email, Validators.required],
+    })
+    this.userForm.addControl("confirmpass", this.fb.control('',[
+        CustomValidators.identicalValueTo(this.userForm.controls["newpass"])
+      ]));
   }
-	private validatePassword() {
-        let that = this;
-        return (c: FormControl) =>
-        {
-            console.log("hello");
-            return (c.value === that.userForm.controls["newpass"].value) ? null : {'passwordMatch': {valid: false}};
-        }
-    }
+
 
   onSubmit(value){
   	if(!this.userForm.valid)
@@ -71,23 +55,31 @@ export class ProfileComponent implements OnInit {
     this.userService.updateUser(value).subscribe(res=>{
       this.authService.getUserData().subscribe(res=>{
           this.notif.create(this.notif.TYPE.SUCCESS, "Successfully modified data!", this.notif.DURATION.LONG);
+          this.router.navigate(['/dashboard']);
       });
     });
   }
+
+
 }
 
 
 class CustomValidators{
-  static identicalValueTo(original: AbstractControl){
-    return new IdenticalValueValidator(original);
+  static identicalValueTo(original: AbstractControl): ValidatorFn{
+    var validator =  new IdenticalValueValidator();
+    return validator.getValidator(original);
   }
 }
 
-class IdenticalValueValidator implements Validator{
-  constructor(private original: AbstractControl){}
-  public validate(control: AbstractControl):any{
-    if(this.original.value!==control.value){
-      return {"IdenticalValueValidator": {"original": this.original.value, "current":control.value}};
+class IdenticalValueValidator {
+
+
+  public getValidator(original: AbstractControl): ValidatorFn{
+    return (control: AbstractControl) => this.validate(control, original)
+  }
+  private validate(control: AbstractControl, original: AbstractControl):{[key: string]: boolean}{
+    if(original.value!==control.value){
+      return {"IdenticalValueValidator": true};
     }
     return null;
   }

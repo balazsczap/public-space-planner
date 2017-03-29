@@ -152,7 +152,7 @@ namespace PublicSpacePlanner.Controllers
 			}
 			user.ImageUrl = imgUrl ?? user.ImageUrl;
 
-			if (requester.Role=="admin")
+			if (requester.Role=="admin" && role!=null)
 				user.Role = role ?? user.Role;
 
 			user.Email = email ?? user.Email;

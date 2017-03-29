@@ -14,7 +14,7 @@
 	  </div>
 	  <div class="form-group ">
 	    <label for="newpass">New password</label>
-	    <input type="password" class="form-control" id="newpass" placeholder="Newpass" formControlName="newpass">
+	    <input type="password" (keyup)="userForm.controls['confirmpass'].updateValueAndValidity();" class="form-control" id="newpass" placeholder="Newpass" formControlName="newpass">
 	    <div class="alert alert-danger" *ngIf="!userForm.controls['newpass'].valid">Your password must be at least 6 characters long.</div>
 	  </div>
 	  <div class="form-group ">
