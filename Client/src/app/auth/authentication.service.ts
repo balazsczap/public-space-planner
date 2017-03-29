@@ -23,14 +23,20 @@ export class AuthenticationService {
             this._userId = currentUser.id;
             this.user = JSON.parse(localStorage.getItem('userData'));
 
-            this.getUserData()
+            this.getUserData().catch((err,caught)=>{
+                    return caught;
+                })
                 .subscribe(data=>{
                     console.log(data);
                     if(!data){
                         this.logOut();
 
                     }
-                });
+                    err=>{
+                        console.log(err);
+                    }
+                })
+
         }
         else{
             // this._route.params.subscribe(params=>{
@@ -147,9 +153,13 @@ export class AuthenticationService {
                 if(error.status==401){
                     return Observable.of(false);
                 }
+                if(error.status==504){
+                    return Observable.throw("Server is not available");
+                }
                 else{
                     return Observable.throw(error.json().error || 'Server error'); 
                 }
+                
             });
     }
 

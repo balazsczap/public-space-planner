@@ -1,5 +1,5 @@
 <div class="col-md-7 col-sm-7 section">
-	<div *ngIf="users.length==0" class="subsection cssload-container" style="height:10vh;">
+	<div *ngIf="!users" class="subsection cssload-container" style="height:10vh;">
 		<div class="cssload-whirlpool"></div>
 	</div>
 	<div  *ngFor="let user of users" class="row user subsection">

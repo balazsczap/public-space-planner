@@ -13,7 +13,12 @@ export class UserService {
     }
  
     public getAll = () : Observable<User[]> =>{
-    	return this.http.get('/users').map(res => res.json());
+    	return this.http.get('/users').map(res => {
+            return res.json();
+        })
+        .catch(err=>{
+            return Observable.throw(err);
+        });
     }
 
     public getUserById = (id: number): Observable<User> =>{

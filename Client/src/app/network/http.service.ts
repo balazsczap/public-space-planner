@@ -33,29 +33,30 @@ export class HttpService<T> {
 	public get = (url: string) : Observable<Response> =>{
 		let headers = this.createAuthHeaders();
 		return this._http.get(this._config.ApiUrl + url, {headers:headers})
-			.catch(error=>{
-				if(error.status==401){
-					this._auth.logOut();
-					return Observable.throw("Authorization token expired");
-				}
-			});
+			.catch(this.handleError);
 	}
 
 	public post = (url: string, body: any) : Observable<Response> =>{
 		let headers = this.createAuthHeaders();
-		return this._http.post(this._config.ApiUrl + url, body, {headers:headers});
-				// .catch(err=>{console.log(err); return Observable.of(err);});
+		return this._http.post(this._config.ApiUrl + url, body, {headers:headers})
+				.catch(this.handleError);
 	}
 
 	public put = (url: string, body:any): Observable<Response> =>{
 		let headers = this.createAuthHeaders();
 		return this._http.put(this._config.ApiUrl + url, body, {headers:headers})
 				// .map(data=>{console.log(data); return data;})
-				.catch(err=>{console.log(err); return Observable.of(err);});
+				.catch(this.handleError);
 	}
 
-   private handleError(error: Response) {
-     	console.error(error);
+   private handleError = (error: Response): Observable<Response> => {
+		if(error.status==401){
+			this._auth.logOut();
+			return Observable.throw("Authorization token expired");
+		}
+		else if(error.status==504){
+			return Observable.throw("Server in not available");
+		}
     	return Observable.throw(error.json().error || 'Server error');
    }
 }

@@ -12,16 +12,17 @@ import { NotificationsService } from '../notifications/notifications.service';
 })
 export class UsersComponent implements OnInit {
   
-  private users: User[] = [];
+  private users: User[];
 
   constructor(private userService: UserService, private notifications: NotificationsService) { }
 
   ngOnInit() {
   	this.userService.getAll().subscribe(
-  		data=>{
+  		(data:User[])=>{
   			this.users = data;
   		},
   		err=>{
+        this.users = [];
   			this.notifications.create("error", err);
   		});
   }
