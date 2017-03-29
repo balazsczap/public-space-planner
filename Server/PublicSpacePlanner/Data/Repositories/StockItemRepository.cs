@@ -33,8 +33,9 @@ namespace PublicSpacePlanner.Data.Repositories
 		public StockItem GetOneById(int id)
 		{
 			return _context.StockItems
-				.Include(u => u.Creator)
-				.Single(s => s.Id == id);
+				.Include(s => s.Creator)
+				.Include(s => s.Comments)
+				.SingleOrDefault(s => s.Id == id);
 		}
 
 		public void Remove(int id)

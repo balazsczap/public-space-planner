@@ -20,14 +20,14 @@ namespace PublicSpacePlanner.Controllers
 			_stock = stock;
 		}
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpGet]
 		public IEnumerable<StockItem> Get()
 		{
 			return _stock.GetAll();
 		}
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpGet("{id:int}")]
 		public IActionResult GetOne(int id)
 		{
@@ -40,7 +40,7 @@ namespace PublicSpacePlanner.Controllers
 		}
 
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpPost]
 		public IActionResult Add([FromBody] JObject itemData)
 		{
@@ -60,7 +60,7 @@ namespace PublicSpacePlanner.Controllers
 			
 		}
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpPut("{id:int}")]
 		public IActionResult Update([FromRoute] int id, [FromBody] JObject itemData)
 		{
@@ -94,7 +94,7 @@ namespace PublicSpacePlanner.Controllers
 			return new ObjectResult(existingItem);
 		}
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpDelete("{id:int}")]
 		public IActionResult Delete(int id)
 		{
@@ -118,7 +118,7 @@ namespace PublicSpacePlanner.Controllers
 			return Ok();
 		}
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpGet("{id:int}/comments")]
 		public IActionResult GetComments([FromRoute] int id)
 		{
@@ -127,11 +127,20 @@ namespace PublicSpacePlanner.Controllers
 			{
 				return NotFound();
 			}
-
-			return new ObjectResult(item.Comments.ToList());
+			var comment = item.Comments
+				.Select(c =>
+				new
+				{
+					Id = c.Id,
+					Time = c.Time,
+					Message = c.Message,
+					CreatedBy = c.CreatedBy.Id,
+					StockItem = c.StockItem.Id,
+				});
+			return new ObjectResult(comment);
 		}
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpGet("{itemId:int}/comments/{commentId:int}")]
 		public IActionResult GetOneComment([FromRoute] int itemId, [FromRoute] int commentId)
 		{
@@ -141,18 +150,27 @@ namespace PublicSpacePlanner.Controllers
 				return NotFound();
 			}
 
-			var comment = item.Comments.SingleOrDefault(c=>c.Id == commentId);
+			var comment = item.Comments
+				.SingleOrDefault(c => c.Id == commentId);
 			if (comment == null)
 			{
 				return NotFound();
 			}
+			var simple = new
+			{
+				Id = comment.Id,
+				Time = comment.Time,
+				Message = comment.Message,
+				CreatedBy = comment.CreatedBy.Id,
+				StockItem = comment.StockItem.Id,
+			};
 
-			return new ObjectResult(comment);
+			return new ObjectResult(simple);
 		}
 
 
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpPost("{id:int}/comments")]
 		public IActionResult AddComment([FromRoute] int id,[FromBody] JObject commentData)
 		{
@@ -174,9 +192,18 @@ namespace PublicSpacePlanner.Controllers
 				return BadRequest();
 			}
 
-			return Created($"/stock/{id}/comments/{comment.Id}", comment);
+			var simple = new
+			{
+				Id = comment.Id,
+				Time = comment.Time,
+				Message = comment.Message,
+				CreatedBy = comment.CreatedBy.Id,
+				StockItem = comment.StockItem.Id,
+			};
+
+			return Created($"/stock/{id}/comments/{comment.Id}", simple);
 		}
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpPut("{itemId:int}/comments/{commentId:int}")]
 		public IActionResult UpdateComment([FromRoute] int itemId, [FromRoute] int commentId, [FromBody] JObject commentData)
 		{
@@ -202,9 +229,9 @@ namespace PublicSpacePlanner.Controllers
 		
 		}
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpDelete("{itemId:int}/comments/{commentId:int}")]
-		public IActionResult UpdateComment([FromRoute] int itemId, [FromRoute] int commentId)
+		public IActionResult DeleteComment([FromRoute] int itemId, [FromRoute] int commentId)
 		{
 			try
 			{

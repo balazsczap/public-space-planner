@@ -11,5 +11,6 @@ namespace PublicSpacePlanner.Data.Models
 		public DateTime Time { get; set; }
 		public string Message { get; set; }
 		public User CreatedBy { get; set; }
+		public StockItem StockItem { get; set; }
 	}
 }

@@ -20,6 +20,7 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 using PublicSpacePlanner.Data.Repositories;
 using System.Diagnostics;
+using Newtonsoft.Json.Serialization;
 
 namespace PublicSpacePlanner
 {
