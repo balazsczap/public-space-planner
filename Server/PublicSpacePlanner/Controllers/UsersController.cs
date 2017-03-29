@@ -26,7 +26,7 @@ namespace PublicSpacePlanner.Controllers
 		}
 		// GET api/users
 
-		
+		[Authorize(Roles ="user,admin")]
 		[HttpGet]
 		public IEnumerable<User> Get()
 		{

@@ -70,7 +70,7 @@ namespace PublicSpacePlanner.Authentication
 			
 		}
 
-		public async Task<string> GenerateFirstTimeToken(string email)
+		public string GenerateFirstTimeToken(string email)
 		{
 			var user = _userRepository.GetOneByEmail(email);
 			

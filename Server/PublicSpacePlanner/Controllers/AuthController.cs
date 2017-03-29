@@ -64,7 +64,7 @@ namespace PublicSpacePlanner.Controllers
 
 		[HttpGet]
 		[Route("{token}")]
-		public async Task<IActionResult> FirstTimeLogin([FromRoute] string token)
+		public IActionResult FirstTimeLogin([FromRoute] string token)
 		{
 			try{
 				var decoded = new JwtSecurityTokenHandler().ReadJwtToken(token);			
@@ -72,7 +72,7 @@ namespace PublicSpacePlanner.Controllers
 				var id = int.Parse(decoded.Claims.Single(c => c.Type == "user id").Value);
 				return new ObjectResult(id);
 			}
-			catch(Exception e){
+			catch(Exception){
 				return new BadRequestObjectResult("Invalid token");
 			}
 			// return Redirect("/profile/");
@@ -82,12 +82,12 @@ namespace PublicSpacePlanner.Controllers
 		[Authorize(Roles = "admin")]
 		[HttpPost]
 		[Route("firsttime")]
-		public async Task<IActionResult> GetFirstTimeToken([FromBody]string email)
+		public IActionResult GetFirstTimeToken([FromBody]string email)
 		{
 			
 			try
 			{
-				var res = new { token = await _tokenProvider.GenerateFirstTimeToken(email) };
+				var res = new { token = _tokenProvider.GenerateFirstTimeToken(email) };
 				return new ObjectResult(res);
 			}
 			catch(Exception e)

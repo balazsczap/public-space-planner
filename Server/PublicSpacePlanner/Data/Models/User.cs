@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +34,9 @@ namespace PublicSpacePlanner.Data.Models
 		public string ImageUrl { get; set; } = "default_image_url";
 
 		public bool Active { get; set; } = false;
-		public ICollection<StockItem> BlueprintsCreated { get; set; } = new List<StockItem>();
+
+		public ICollection<StockItem> StockItemsCreated { get; set; } = new List<StockItem>();
+
 		public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 	}
 }

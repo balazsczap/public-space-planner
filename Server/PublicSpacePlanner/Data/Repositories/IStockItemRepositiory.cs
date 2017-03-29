@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace PublicSpacePlanner.Data.Repositories
 {
-    interface IStockItemRepositiory
+    public interface IStockItemRepositiory
     {
-		void Add(StockItem stockitem);
+		void Add(StockItem stockitem, int userId);
 		IEnumerable<StockItem> GetAll();
 		StockItem GetOneById(int id);
 		void Update(StockItem changed);
 		void Remove(int id);
-    }
+		void AddComment(int id, int userId, Comment comment);
+		void UpdateComment(int itemId, int commentId, string message);
+		void DeleteComment(int id, int commentId);
+
+	}
 }
