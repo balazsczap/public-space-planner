@@ -5,22 +5,30 @@
 	  <div class="form-group">
 	    <label for="name">Name</label>
 	    <input type="text" class="form-control" id="name" placeholder="Name" [formControl]="userForm.controls['name']"> 
-	    <div class="alert alert-danger" *ngIf="!userForm.controls['name'].valid">Your name must consist of at least two words.</div>
+	    <div class="alert alert-danger" *ngIf="!userForm.controls['name'].valid">
+				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				Your name must consist of at least two words.</div>
 	  </div>
 	  <div class="form-group ">
 	    <label for="username">Username</label>
 	    <input type="text" class="form-control" id="username" placeholder="Username" formControlName="username">
-	    <div class="alert alert-danger" *ngIf="!userForm.controls['username'].valid">Your username must be at least 4 characters long.</div>
+	    <div class="alert alert-danger" *ngIf="!userForm.controls['username'].valid">
+				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				Your username must be at least 4 characters long.</div>
 	  </div>
 	  <div class="form-group ">
 	    <label for="newpass">New password</label>
 	    <input type="password" (keyup)="userForm.controls['confirmpass'].updateValueAndValidity();" class="form-control" id="newpass" placeholder="Newpass" formControlName="newpass">
-	    <div class="alert alert-danger" *ngIf="!userForm.controls['newpass'].valid">Your password must be at least 6 characters long.</div>
+	    <div class="alert alert-danger" *ngIf="!userForm.controls['newpass'].valid">
+				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				Your password must be at least 6 characters long.</div>
 	  </div>
 	  <div class="form-group ">
 	    <label for="confirmpass">Confirm password</label>
 	    <input type="password" class="form-control" id="confirmpass" placeholder="Confirmpass" formControlName="confirmpass">
-	    <div class="alert alert-danger" *ngIf="!userForm.controls['confirmpass'].valid">The two passwords do not match.</div>
+	    <div class="alert alert-danger" *ngIf="!userForm.controls['confirmpass'].valid">
+				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				The two passwords do not match.</div>
 	  </div>
 	  <div class="form-group ">
 	    <label for="email">Email address</label>

@@ -19,11 +19,11 @@ import { NotificationsModule } from './notifications/notifications.module';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { UsersModule } from './users/users.module';
 
-import { StockComponent } from './stock/stock.component';
+import { UsersModule } from './users/users.module';
+import { StockModule } from './stock/stock.module';
+
 import { MapComponent } from './map/map.component';
-import { AddComponent } from './stock/add/add.component';
 import { LoginComponent } from './login/login.component';
 
 import { ProfileComponent } from './profile/profile.component';
@@ -36,6 +36,7 @@ import { ProfileComponent } from './profile/profile.component';
     FormsModule,
     HttpModule,
     UsersModule,
+    StockModule,
     RoutingModule,
     NotificationsModule,
     ReactiveFormsModule
@@ -45,9 +46,7 @@ import { ProfileComponent } from './profile/profile.component';
     AppComponent,
     PageNotFoundComponent,
     DashboardComponent,
-    StockComponent,
     MapComponent,
-    AddComponent,
     LoginComponent,
     ProfileComponent
   ],

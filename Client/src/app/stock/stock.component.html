@@ -1,3 +1,10 @@
-<p>
-  stock works!
-</p>
+<router-outlet>
+  <div class="section col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+    <div *ngFor="let item of stock" (click)="onSelect(item)" class="stock-item subsection">
+      <div class="title">
+        <h2>{{item.name}}</h2>
+      </div>
+      <div>{{item.description}}</div>
+    </div>
+  </div>
+</router-outlet>

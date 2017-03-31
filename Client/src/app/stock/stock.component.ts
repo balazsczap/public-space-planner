@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { StockItem } from '../models/stock.model';
 
 @Component({
   selector: 'app-stock',
@@ -7,7 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StockComponent implements OnInit {
 
-  constructor() { }
+  private stock: StockItem[] = []; 
+
+  constructor(private router: Router) {
+    for(var i=0; i<10;++i){
+      var item = new StockItem(i,"Játszótér", "Leírássssssssssssssssssssss", i);
+      this.stock.push(item);    
+    }
+  }
+
+  onSelect(item: StockItem){
+    this.router.navigate(['/stock', item.id]);
+  }
 
   ngOnInit() {
   }

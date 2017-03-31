@@ -27,7 +27,6 @@ export class AuthenticationService {
                     return caught;
                 })
                 .subscribe(data=>{
-                    console.log(data);
                     if(!data){
                         this.logOut();
 

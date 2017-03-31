@@ -11,7 +11,9 @@
 @secondaryTextColor: #757575;
 @dividerColor:       #BDBDBD;
 
-
+html {
+  overflow-y: scroll;
+}
 
 body{
 	font-family: "Roboto";
@@ -23,6 +25,12 @@ h1{
 
 ul li{
 	list-style-type: none;
+}
+
+.btn{
+	border-radius: 0;
+	border:none;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.10);
 }
 
 hr{
@@ -47,9 +55,13 @@ hr{
 }
 
 .section:hover, .subsection:hover{
-	background-color: #f6f6f6;
+	// background-color: #f6f6f6;
+	
 }
 
+.subsection:hover{
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0 rgba(0, 0, 0, 0.19);
+}
 
 
 // .nav, .navbar, .navbar-header {

@@ -1,0 +1,16 @@
+<div class="section stock-item col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+  
+  <div class="title">
+    <span  [routerLink]="['../']" class="glyphicon glyphicon-menu-left back-button"  style="cursor:pointer; vertical-align: middle;" aria-hidden="true"></span>
+    <span >{{item.name}}</span>    
+  </div>
+  <div class="content">
+    <span>{{item.description}}</span>
+    <div class="comments text-center">
+       <span>Comments:</span>      
+       <div *ngFor="let comment of item.comments" class="comment text-left">
+          <span>{{comment}}</span>
+       </div>
+    </div>
+  </div>  
+</div>
