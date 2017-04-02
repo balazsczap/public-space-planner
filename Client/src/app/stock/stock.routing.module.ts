@@ -3,6 +3,7 @@ import { Routes, RouterModule }  from '@angular/router';
 import { StockComponent } from "./stock.component";
 import { UserGuard, AdminGuard } from '../auth/auth-guard.service';
 import { DetailsComponent } from './details/details.component';
+import { AddComponent } from './add/add.component';
 const stockRoutes: Routes = [
   {
     path: 'stock',
@@ -10,9 +11,14 @@ const stockRoutes: Routes = [
     canActivate: [UserGuard]
   },
   {
+    path: 'stock/add',
+    component: AddComponent
+  },
+  {
     path: 'stock/:id',
     component: DetailsComponent
-  }
+  },
+
 
 ];
 

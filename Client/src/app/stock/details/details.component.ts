@@ -1,22 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
+import {FormBuilder} from '@angular/forms';
 import { StockItem } from '../../models/stock.model';
+import { StockService } from '../../network/stock.service';
+import { NotificationsService } from '../../notifications/notifications.service';
 @Component({
   selector: 'stock-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.less']
 })
 export class DetailsComponent implements OnInit {
-  
+  private itemId: number;
   private item: StockItem;
-  constructor(private route: ActivatedRoute) { 
+  constructor(
+  private fb: FormBuilder,
+  private route: ActivatedRoute,
+  private stockService: StockService,
+  private notifications: NotificationsService) { 
 
   }
 
   ngOnInit() {
     this.route.params.subscribe(params=>{
-      this.item = new StockItem(+params['id'], "Játszótér", "A Lorem Ipsum egy egyszerû szövegrészlete, szövegutánzata a betûszedõ és nyomdaiparnak. A Lorem Ipsum az 1500-as évek óta standard szövegrészletként szolgált az iparban; mikor egy ismeretlen nyomdász összeállította a betûkészletét és egy példa-könyvet vagy szöveget nyomott papírra, ezt használta.") ;
-    })
+      this.itemId = +params['id'];
+      this.updateComments();
+    });
   }
 
+  onSubmit(formdata: any){
+    this.stockService.postComment(this.item.id, formdata.comment)
+      .subscribe(data=>{
+        this.updateComments();
+      })
+  }
+
+  private updateComments(){
+      this.stockService.getOneById(this.itemId)
+        .subscribe(data=>{
+          this.item = data;
+        });
+  }
 }

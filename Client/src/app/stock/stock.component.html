@@ -1,5 +1,12 @@
 <router-outlet>
+
   <div class="section col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+    <div *ngIf="!stock" class="subsection cssload-container" style="height:10vh;">
+      <div class="cssload-whirlpool"></div>
+    </div>
+    <div *ngIf="stock" class="text-center">
+      <button routerLink="add" class="btn btn-primary" ><span  class="glyphicon glyphicon-plus" ></span><span> Create new stock item</span></button>
+    </div>
     <div *ngFor="let item of stock" (click)="onSelect(item)" class="stock-item subsection">
       <div class="title">
         <h2>{{item.name}}</h2>

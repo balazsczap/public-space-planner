@@ -4,6 +4,9 @@ import { StockComponent } from "./stock.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {StockRoutingModule} from './stock.routing.module';
 import { DetailsComponent } from './details/details.component';
+import { AddComponent } from './add/add.component';
+import {NotificationsService} from '../notifications/notifications.service';
+import {StockService} from '../network/stock.service';
 @NgModule({
   imports: [
     CommonModule, 
@@ -13,7 +16,9 @@ import { DetailsComponent } from './details/details.component';
   ],
   declarations: [
     StockComponent,
-    DetailsComponent
-  ]
+    DetailsComponent,
+    AddComponent
+  ],
+  providers: [StockService, NotificationsService]
 })
 export class StockModule {}

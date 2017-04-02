@@ -27,7 +27,7 @@ namespace PublicSpacePlanner.Controllers
 			return _stock.GetAll();
 		}
 
-		[Authorize(Roles = "user,admin")]
+		//[Authorize(Roles = "user,admin")]
 		[HttpGet("{id:int}")]
 		public IActionResult GetOne(int id)
 		{
@@ -44,16 +44,22 @@ namespace PublicSpacePlanner.Controllers
 		[HttpPost]
 		public IActionResult Add([FromBody] JObject itemData)
 		{
+			var requester = new
+			{
+				Role = User.Claims.Single(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value,
+				Id = int.Parse(User.Claims.Single(c => c.Type == "user id").Value)
+			};
+
 			var name = itemData["name"]?.ToString();
 			var description = itemData["description"]?.ToString();
-			var creatorId = itemData["creatorId"]?.ToString();
+			var creatorId = requester.Id;
 
 			if (name == null || description == null || creatorId == null)
 				return StatusCode(400, "No name, description, or creatorId given");
 
 			var item = new StockItem { Name = name, Description = description };
 
-			_stock.Add(item, int.Parse(creatorId));
+			_stock.Add(item, creatorId);
 
 
 			return Created($"/stock/{item.Id}", item);
@@ -174,10 +180,16 @@ namespace PublicSpacePlanner.Controllers
 		[HttpPost("{id:int}/comments")]
 		public IActionResult AddComment([FromRoute] int id,[FromBody] JObject commentData)
 		{
-			var message = commentData["message"]?.ToString();
-			var userId = commentData["userId"]?.ToString();
+			var requester = new
+			{
+				Role = User.Claims.Single(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value,
+				Id = int.Parse(User.Claims.Single(c => c.Type == "user id").Value)
+			};
 
-			if (message == null || userId == null)
+			var message = commentData["message"]?.ToString();
+			var userId = requester.Id;
+
+			if (message == null)
 			{
 				return BadRequest();
 			}
@@ -185,7 +197,7 @@ namespace PublicSpacePlanner.Controllers
 			var comment = new Comment { Message = message, Time = DateTime.Now };
 			try
 			{
-				_stock.AddComment(id, int.Parse(userId), comment);
+				_stock.AddComment(id, userId, comment);
 			}
 			catch (InvalidOperationException)
 			{

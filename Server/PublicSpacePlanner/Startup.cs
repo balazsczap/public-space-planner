@@ -20,7 +20,10 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 using PublicSpacePlanner.Data.Repositories;
 using System.Diagnostics;
+using System.Reflection;
 using Newtonsoft.Json.Serialization;
+using PublicSpacePlanner.Controllers;
+using Microsoft.AspNetCore.Http;
 
 namespace PublicSpacePlanner
 {
@@ -34,6 +37,7 @@ namespace PublicSpacePlanner
 				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
 				.AddEnvironmentVariables();
+
 			Configuration = builder.Build();
 
 		}
@@ -48,7 +52,6 @@ namespace PublicSpacePlanner
 		{
 
 			// Add framework services.
-			services.AddMvc();
 
 
 			var conn_str = @"User ID=besthfaxbiccvz;
@@ -60,8 +63,6 @@ namespace PublicSpacePlanner
 							 SslMode=Require;
 							 Trust Server Certificate=true;";
 
-
-			services.AddOptions();
 			services.Configure<TokenProviderOptions>(opt => { 
 				opt.Audience = "PublicSpacePlanner";
 				opt.Issuer = "PublicSpacePlanner";
@@ -72,13 +73,13 @@ namespace PublicSpacePlanner
 			});
 			
 			services.AddSingleton<TokenProviderService>();
-
+			//services.AddDbContext<SpacePlannerDbContext>(options=>)
 			services.AddDbContext<SpacePlannerDbContext>(options => options.UseNpgsql(conn_str));
 			services.AddTransient<IUserRepository, UserRepository>();
 			services.AddTransient<IStockItemRepositiory, StockItemRepository>();
 			services.AddCors();
-
-			services.AddMvc().AddJsonOptions(options =>
+			
+			services.AddMvc().AddControllersAsServices().AddJsonOptions(options =>
 			{
 				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 			});
@@ -89,6 +90,9 @@ namespace PublicSpacePlanner
 		{
 			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 			loggerFactory.AddDebug();
+
+
+
 
 			var tokenValidationParameters = new TokenValidationParameters
 			{

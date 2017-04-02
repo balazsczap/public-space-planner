@@ -16,6 +16,10 @@ export class NotificationsService {í
     	this._notifications.next(new Notification(type,message,duration));
     }
 
+    public createDefaultError(message: string){
+        this.create("error", message, 3000);
+    }
+
     public readonly TYPE = {
     	ERROR: "error",
     	WARNING: "warning",

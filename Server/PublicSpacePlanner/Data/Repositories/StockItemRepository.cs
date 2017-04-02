@@ -35,7 +35,15 @@ namespace PublicSpacePlanner.Data.Repositories
 			return _context.StockItems
 				.Include(s => s.Creator)
 				.Include(s => s.Comments)
+				.Include("Comments.CreatedBy")
 				.SingleOrDefault(s => s.Id == id);
+
+		
+
+			//return _context.StockItems
+			//	.Include(s => s.Creator)
+			//	.Include(s => s.Comments)
+			//	.SingleOrDefault(s => s.Id == id);
 		}
 
 		public void Remove(int id)
@@ -57,9 +65,11 @@ namespace PublicSpacePlanner.Data.Repositories
 				.Single(u => u.Id == userId);
 
 			comment.CreatedBy = user;
+			
 
 			var item = _context.StockItems
 				.Include(s=>s.Comments)
+				.Include(s=>s.Creator)
 				.Single(s => s.Id == id);
 
 			item.Comments.Add(comment);
