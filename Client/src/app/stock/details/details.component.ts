@@ -4,6 +4,7 @@ import {FormBuilder} from '@angular/forms';
 import { StockItem } from '../../models/stock.model';
 import { StockService } from '../../network/stock.service';
 import { NotificationsService } from '../../notifications/notifications.service';
+import { AuthenticationService } from '../../auth/authentication.service';
 @Component({
   selector: 'stock-details',
   templateUrl: './details.component.html',
@@ -16,8 +17,13 @@ export class DetailsComponent implements OnInit {
   private fb: FormBuilder,
   private route: ActivatedRoute,
   private stockService: StockService,
-  private notifications: NotificationsService) { 
+  private notifications: NotificationsService,
+  private auth: AuthenticationService) { 
 
+  }
+
+  ayy(c: Comment):boolean{
+    return true;
   }
 
   ngOnInit() {
@@ -28,6 +34,7 @@ export class DetailsComponent implements OnInit {
   }
 
   onSubmit(formdata: any){
+    
     this.stockService.postComment(this.item.id, formdata.comment)
       .subscribe(data=>{
         this.updateComments();

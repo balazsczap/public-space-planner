@@ -18,7 +18,11 @@ export class StockService {
 
     public getOneById = (id:number) : Observable<StockItem> =>{
         return this.http.get("/stock/"+id)
-            .map(res=>res.json());
+            .map(res=>{
+                var ret = res.json();
+                // ret.comments = ret.comments.map(c=>c.)
+                return ret;
+            });
     } 
     
     public postComment = (stockId: number, comment:string) : Observable<Comment> =>{
