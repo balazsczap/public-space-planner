@@ -49,6 +49,12 @@ export class HttpService<T> {
 				.catch(this.handleError);
 	}
 
+	public delete = (url:string) : Observable<Response> => {
+		let headers = this.createAuthHeaders();
+		return this ._http.delete(this._config.ApiUrl + url, {headers:headers})
+			.catch(this.handleError);
+	}
+
    private handleError = (error: Response): Observable<Response> => {
 		if(error.status==401){
 			this._auth.logOut();

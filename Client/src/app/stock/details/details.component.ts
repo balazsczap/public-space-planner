@@ -5,6 +5,7 @@ import { StockItem } from '../../models/stock.model';
 import { StockService } from '../../network/stock.service';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { AuthenticationService } from '../../auth/authentication.service';
+import {Comment} from '../../models/comment.model';
 @Component({
   selector: 'stock-details',
   templateUrl: './details.component.html',
@@ -22,9 +23,7 @@ export class DetailsComponent implements OnInit {
 
   }
 
-  ayy(c: Comment):boolean{
-    return true;
-  }
+
 
   ngOnInit() {
     this.route.params.subscribe(params=>{
@@ -46,5 +45,14 @@ export class DetailsComponent implements OnInit {
         .subscribe(data=>{
           this.item = data;
         });
+  }
+
+  deleteComment(id: number){
+    this.stockService.deleteCommentOf(this.item.id, id)
+      .subscribe((success:boolean)=>{
+        if(success){
+          this.updateComments();
+        }
+      })
   }
 }

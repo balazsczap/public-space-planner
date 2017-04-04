@@ -20,7 +20,6 @@ export class StockService {
         return this.http.get("/stock/"+id)
             .map(res=>{
                 var ret = res.json();
-                // ret.comments = ret.comments.map(c=>c.)
                 return ret;
             });
     } 
@@ -30,8 +29,13 @@ export class StockService {
             .map(res=>res.json());
     }
 
-    public getCommentsOf = (id:number) : Observable<Comment[]> =>{
-        return this.http.get("/stock/"+id+"/comments")
+    public getCommentsOf = (stockId:number) : Observable<Comment[]> =>{
+        return this.http.get("/stock/"+stockId+"/comments")
+            .map(res=>res.json());
+    }
+
+    public deleteCommentOf = (stockId: number, commentId:number) : Observable<boolean> => {
+        return this.http.delete('/stock/' + stockId + '/comments/' + commentId)
             .map(res=>res.json());
     }
 }

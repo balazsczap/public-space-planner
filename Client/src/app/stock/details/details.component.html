@@ -11,9 +11,9 @@
     <div class="comments text-center">
        <span>Comments:</span>      
        <div *ngFor="let comment of item.comments" class="comment text-left">
-          <div class="sender"><span>{{comment.createdBy.name}}</span></div>
+          <div class="createdBy"><span>{{comment.createdBy.name}}</span></div>
           <div class="message"><span>{{comment.message}}</span></div>
-          <button *ngIf="ayy(comment)" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove" style="cursor:pointer; vertical-align: middle;" aria-hidden="true"></span></button>          
+          <button *ngIf="comment.createdBy.id==auth.user.id" (click)="deleteComment(comment.id)" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove" style="cursor:pointer; vertical-align: middle;" aria-hidden="true"></span></button>          
           <div class="time pull-right"><span>{{comment.time}}</span></div>
        </div>
        <div class="add-comment text-left">
