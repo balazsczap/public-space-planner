@@ -10,6 +10,7 @@
     <div *ngFor="let item of stock" (click)="onSelect(item)" class="stock-item subsection">
       <div class="title">
         <h2>{{item.name}}</h2>
+        <span class="text-right">Creator: {{item.creator.name}}</span>
       </div>
       <div>{{item.description}}</div>
     </div>

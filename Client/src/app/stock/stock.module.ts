@@ -7,6 +7,7 @@ import { DetailsComponent } from './details/details.component';
 import { AddComponent } from './add/add.component';
 import {NotificationsService} from '../notifications/notifications.service';
 import {StockService} from '../network/stock.service';
+import { EditComponent } from './edit/edit.component';
 @NgModule({
   imports: [
     CommonModule, 
@@ -17,7 +18,8 @@ import {StockService} from '../network/stock.service';
   declarations: [
     StockComponent,
     DetailsComponent,
-    AddComponent
+    AddComponent,
+    EditComponent
   ],
   providers: [StockService, NotificationsService]
 })

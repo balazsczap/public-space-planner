@@ -27,7 +27,7 @@ namespace PublicSpacePlanner.Controllers
 			return _stock.GetAll();
 		}
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpGet("{id:int}")]
 		public IActionResult GetOne(int id)
 		{
@@ -48,13 +48,13 @@ namespace PublicSpacePlanner.Controllers
 			{
 				Role = User.Claims.Single(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value,
 				Id = int.Parse(User.Claims.Single(c => c.Type == "user id").Value)
-			};
+			};	
 
 			var name = itemData["name"]?.ToString();
 			var description = itemData["description"]?.ToString();
 			var creatorId = requester.Id;
 
-			if (name == null || description == null || creatorId == null)
+			if (name == null || description == null)
 				return StatusCode(400, "No name, description, or creatorId given");
 
 			var item = new StockItem { Name = name, Description = description };

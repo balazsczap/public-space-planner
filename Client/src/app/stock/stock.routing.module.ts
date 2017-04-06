@@ -4,6 +4,7 @@ import { StockComponent } from "./stock.component";
 import { UserGuard, AdminGuard } from '../auth/auth-guard.service';
 import { DetailsComponent } from './details/details.component';
 import { AddComponent } from './add/add.component';
+import { EditComponent } from './edit/edit.component';
 const stockRoutes: Routes = [
   {
     path: 'stock',
@@ -12,11 +13,18 @@ const stockRoutes: Routes = [
   },
   {
     path: 'stock/add',
-    component: AddComponent
+    component: AddComponent,
+    canActivate: [UserGuard]
   },
   {
     path: 'stock/:id',
-    component: DetailsComponent
+    component: DetailsComponent,
+    canActivate: [UserGuard]
+  },
+  {
+    path: 'stock/:id/edit',
+    component: EditComponent,
+    canActivate: [UserGuard]
   },
 
 

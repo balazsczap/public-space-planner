@@ -4,6 +4,7 @@ import { UserService } from '../network/user.service';
 import { AuthenticationService } from '../auth/authentication.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { FormControl, FormBuilder, FormGroup, Validators, Validator, AbstractControl, ValidatorFn} from '@angular/forms';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',

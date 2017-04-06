@@ -60,6 +60,9 @@ export class HttpService<T> {
 			this._auth.logOut();
 			return Observable.throw("Authorization token expired");
 		}
+		if(error.status==404){
+			throw error;
+		}
 		else if(error.status==504){
 			return Observable.throw("Server in not available");
 		}

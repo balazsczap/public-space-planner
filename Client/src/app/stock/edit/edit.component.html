@@ -1,0 +1,22 @@
+<div class="section stock-item col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+  <div *ngIf="!item" class="subsection cssload-container" style="height:10vh;">
+    <div class="cssload-whirlpool"></div>
+  </div>
+  <form [formGroup]="stockEditForm" (ngSubmit)="onSubmit(stockEditForm.value)">
+    <div *ngIf="item">
+      <div class="title">
+        <span  [routerLink]="['../']" class="glyphicon glyphicon-menu-left back-button"  style="cursor:pointer; vertical-align: middle;" aria-hidden="true"></span>
+        <input type="text" class="form-control" id="name" value="{{item.name}}" [formControl]="stockEditForm.controls['name']"> 
+
+
+      </div>
+      <div class="content">
+        <textarea rows="4" class="form-control" id="description"  formControlName="description" [formControl]="stockEditForm.controls['description']">
+        </textarea>
+      </div>  
+    </div>
+    <div class="text-center">
+	  	<button [disabled]="!stockEditForm.valid" [class.enabled]="!stockEditForm.valid" type="submit" class="btn btn-default">Submit</button>
+	  </div>
+  </form>
+</div>

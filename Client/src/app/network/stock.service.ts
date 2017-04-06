@@ -7,7 +7,8 @@ import { StockItem} from "../models/stock.model";
  
 @Injectable()
 export class StockService {
-    constructor(private http: HttpService<StockItem>){}
+    constructor(private http: HttpService<StockItem>
+    ){}
 
     public getAll = () : Observable<StockItem[]> =>{
         return this.http.get("/stock")
@@ -21,9 +22,27 @@ export class StockService {
             .map(res=>{
                 var ret = res.json();
                 return ret;
-            });
+            })
+            .catch(err=>{
+                throw err;
+            })
     } 
     
+    public createStockItem = (name: string, description:string) : Observable<boolean> => {
+        return this.http.post("/stock", {name: name, description:description})
+            .map(res=>res.ok);
+    }
+
+    public updateStockItem = (id:number, name: string, description:string) : Observable<boolean> =>{
+        return this.http.put("/stock/"+id, {name:name, description:description})
+            .map(res=>res.ok);
+    }
+
+    public deleteItem = (id: number): Observable<boolean> =>{
+        return this.http.delete("/stock/"+id)
+            .map(res=>res.ok);
+    }
+
     public postComment = (stockId: number, comment:string) : Observable<Comment> =>{
         return this.http.post("/stock/" + stockId + "/comments", {message: comment})
             .map(res=>res.json());
@@ -36,6 +55,7 @@ export class StockService {
 
     public deleteCommentOf = (stockId: number, commentId:number) : Observable<boolean> => {
         return this.http.delete('/stock/' + stockId + '/comments/' + commentId)
-            .map(res=>res.json());
+            .map(res=>true);
     }
+
 }
