@@ -6,6 +6,7 @@ import { StockService } from '../../network/stock.service';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { AuthenticationService } from '../../auth/authentication.service';
 import {Comment} from '../../models/comment.model';
+import {Rating} from '../../models/rating.model';
 @Component({
   selector: 'stock-details',
   templateUrl: './details.component.html',
@@ -14,6 +15,7 @@ import {Comment} from '../../models/comment.model';
 export class DetailsComponent implements OnInit {
   private itemId: number;
   private item: StockItem;
+  private userRating: Rating;
   constructor(
   private fb: FormBuilder,
   private route: ActivatedRoute,
@@ -36,7 +38,6 @@ export class DetailsComponent implements OnInit {
   }
 
   onSubmit(formdata: any){
-    
     this.stockService.postComment(this.item.id, formdata.comment)
       .subscribe(data=>{
         this.updateComments();
@@ -55,7 +56,17 @@ export class DetailsComponent implements OnInit {
   private updateComments(){
       this.stockService.getOneById(this.itemId)
         .subscribe(data=>{
+          
           this.item = data;
+          this.item.ratings = this.item.ratingsList.reduce((acc,val)=>acc+val.value, 0);
+          this.userRating = this.item.ratingsList.find(r => r.givenBy.id == this.auth.user.id);
+          if(this.userRating == undefined){
+            this.userRating = new Rating();
+            this.userRating.givenBy = this.auth.user;
+            this.userRating.value = 0;
+          }
+
+
         }, 
         err=>{
           this.router.navigate(["/404"]);
@@ -70,5 +81,18 @@ export class DetailsComponent implements OnInit {
           this.item.comments.splice(index,1);
         }
       })
+  }
+  
+  upvote(){
+    this.stockService.upvoteItem(this.item.id)
+      .subscribe((success:boolean)=>{
+        this.updateComments();
+      });
+  }
+  downvote(){
+      this.stockService.downvoteItem(this.item.id)
+      .subscribe((success:boolean)=>{
+        this.updateComments();
+      });
   }
 }

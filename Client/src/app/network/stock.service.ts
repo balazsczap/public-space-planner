@@ -20,8 +20,10 @@ export class StockService {
     public getOneById = (id:number) : Observable<StockItem> =>{
         return this.http.get("/stock/"+id)
             .map(res=>{
-                var ret = res.json();
-                return ret;
+            var obj = res.json();
+                obj["ratingsList"] = obj["ratings"];
+                delete obj["ratings"];
+                return obj;
             })
             .catch(err=>{
                 throw err;
@@ -55,7 +57,17 @@ export class StockService {
 
     public deleteCommentOf = (stockId: number, commentId:number) : Observable<boolean> => {
         return this.http.delete('/stock/' + stockId + '/comments/' + commentId)
-            .map(res=>true);
+            .map(res=>res.ok);
+    }
+
+    public upvoteItem = (stockId: number): Observable<boolean>=>{
+        return this.http.post('/stock/'+stockId+"/upvote", {})
+            .map(res => res.ok);
+    }
+
+    public downvoteItem = (stockId: number): Observable<boolean>=>{
+        return this.http.post('/stock/'+stockId+"/downvote", {})
+            .map(res => res.ok);
     }
 
 }

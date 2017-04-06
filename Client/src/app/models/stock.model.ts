@@ -1,5 +1,6 @@
 import {User} from './user.model';
 import {Comment} from './comment.model';
+import {Rating} from './rating.model';
 
 export class StockItem{
     public id: number;
@@ -7,8 +8,8 @@ export class StockItem{
     public description: string;
     public imageUrl: string;
     public creator: User;
-    public comments: Comment[]
-    constructor(id:number, name: string, description: string){
-        this.id = id; this.name=name; this.description = description; 
-    }
+    public comments: Comment[];
+    public ratings: number;
+    public ratingsList: Rating[];
+
 }

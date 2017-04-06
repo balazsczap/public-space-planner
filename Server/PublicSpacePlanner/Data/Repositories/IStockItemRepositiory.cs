@@ -9,7 +9,7 @@ namespace PublicSpacePlanner.Data.Repositories
     public interface IStockItemRepositiory
     {
 		void Add(StockItem stockitem, int userId);
-		IEnumerable<StockItem> GetAll();
+		IQueryable<StockItem> GetAll();
 		StockItem GetOneById(int id);
 		void Update(StockItem changed);
 		void Remove(int id);
@@ -17,5 +17,6 @@ namespace PublicSpacePlanner.Data.Repositories
 		void UpdateComment(int itemId, int commentId, string message);
 		void DeleteComment(int id, int commentId);
 
+		void RateItem(int itemId, int userId, int ratingValue);
 	}
 }

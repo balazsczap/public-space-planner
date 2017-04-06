@@ -22,9 +22,23 @@ namespace PublicSpacePlanner.Controllers
 
 		[Authorize(Roles = "user,admin")]
 		[HttpGet]
-		public IEnumerable<StockItem> Get()
+		public IActionResult Get()
 		{
-			return _stock.GetAll();
+			var a = _stock.GetAll()
+					.Select(s => new
+					{
+						Id = s.Id,
+						Name = s.Name,
+						Description = s.Description,
+						ImageUrl = s.ImageUrl,
+						Creator = s.Creator,
+						Ratings = s.Ratings.Sum(r => r.Value)
+					})
+					.ToList()
+					.OrderByDescending(s => s.Ratings);
+
+
+			return new ObjectResult(a);
 		}
 
 		[Authorize(Roles = "user,admin")]
@@ -253,6 +267,36 @@ namespace PublicSpacePlanner.Controllers
 			{
 				return BadRequest();
 			}
+
+			return Ok();
+		}
+
+		[Authorize(Roles = "user,admin")]
+		[HttpPost("{itemId:int}/upvote")]
+		public IActionResult UpvoteItem([FromRoute] int itemId)
+		{
+			var requester = new
+			{
+				Role = User.Claims.Single(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value,
+				Id = int.Parse(User.Claims.Single(c => c.Type == "user id").Value)
+			};
+
+			_stock.RateItem(itemId, requester.Id, 1);
+
+			return Ok();
+		}
+
+		[Authorize(Roles = "user,admin")]
+		[HttpPost("{itemId:int}/downvote")]
+		public IActionResult DownvoteItem([FromRoute] int itemId)
+		{
+			var requester = new
+			{
+				Role = User.Claims.Single(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value,
+				Id = int.Parse(User.Claims.Single(c => c.Type == "user id").Value)
+			};
+
+			_stock.RateItem(itemId, requester.Id, -1);
 
 			return Ok();
 		}

@@ -25,9 +25,11 @@ namespace PublicSpacePlanner.Data.Repositories
 			_context.SaveChanges();
 		}
 
-		public IEnumerable<StockItem> GetAll()
+		public IQueryable<StockItem> GetAll()
 		{
-			return _context.StockItems.Include(u => u.Creator);
+			return _context.StockItems
+				.Include(s => s.Creator)
+				.Include(s => s.Ratings);
 		}
 
 		public StockItem GetOneById(int id)
@@ -35,7 +37,8 @@ namespace PublicSpacePlanner.Data.Repositories
 			return _context.StockItems
 				.Include(s => s.Creator)
 				.Include(s => s.Comments)
-				.Include("Comments.CreatedBy")
+				.ThenInclude(c=>c.CreatedBy)
+				.Include(s => s.Ratings)
 				.SingleOrDefault(s => s.Id == id);
 
 		
@@ -99,6 +102,37 @@ namespace PublicSpacePlanner.Data.Repositories
 			item.Comments.Remove(comment);
 
 			_context.StockItems.Update(item);
+			_context.SaveChanges();
+		}
+
+
+
+		//adds or updates rating
+		public void RateItem(int itemId, int userId, int ratingValue)
+		{
+			var item = _context.StockItems
+				.Single(c => c.Id == itemId);
+
+			var user = _context.Users
+				.Single(u => u.Id == userId);
+
+			var rating = _context.Ratings.SingleOrDefault(r => r.GivenBy == user && r.Target.Id == itemId);
+			if (rating == null)
+			{
+				rating = new Rating { Target = item, Value = ratingValue, GivenBy = user };
+				_context.Ratings.Add(rating);
+
+				item.Ratings.Add(rating);
+				user.Ratings.Add(rating);
+				_context.StockItems.Update(item);
+				_context.Users.Update(user);
+			}
+			else
+			{
+				rating.Value = ratingValue;
+				_context.Ratings.Update(rating);
+			}
+
 			_context.SaveChanges();
 		}
 	}
