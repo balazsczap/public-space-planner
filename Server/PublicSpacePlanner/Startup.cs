@@ -77,6 +77,7 @@ namespace PublicSpacePlanner
 			services.AddDbContext<SpacePlannerDbContext>(options => options.UseNpgsql(conn_str));
 			services.AddTransient<IUserRepository, UserRepository>();
 			services.AddTransient<IStockItemRepositiory, StockItemRepository>();
+			services.AddTransient<IEventRepository, EventRepository>();
 			services.AddCors();
 			
 			services.AddMvc().AddControllersAsServices().AddJsonOptions(options =>

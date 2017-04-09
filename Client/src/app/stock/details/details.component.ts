@@ -65,6 +65,9 @@ export class DetailsComponent implements OnInit {
             this.userRating.givenBy = this.auth.user;
             this.userRating.value = 0;
           }
+          this.item.comments = this.item.comments.map(c=>{
+            return c;
+          })
 
 
         }, 

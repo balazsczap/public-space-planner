@@ -18,10 +18,10 @@ import { HttpService } from './network/http.service';
 import { NotificationsModule } from './notifications/notifications.module';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { UsersModule } from './users/users.module';
 import { StockModule } from './stock/stock.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 import { MapComponent } from './map/map.component';
 import { LoginComponent } from './login/login.component';
@@ -37,6 +37,7 @@ import { ProfileComponent } from './profile/profile.component';
     HttpModule,
     UsersModule,
     StockModule,
+    DashboardModule,
     RoutingModule,
     NotificationsModule,
     ReactiveFormsModule
@@ -45,7 +46,6 @@ import { ProfileComponent } from './profile/profile.component';
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    DashboardComponent,
     MapComponent,
     LoginComponent,
     ProfileComponent

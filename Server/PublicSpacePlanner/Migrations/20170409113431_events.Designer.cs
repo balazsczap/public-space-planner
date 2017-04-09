@@ -8,9 +8,10 @@ using PublicSpacePlanner.Data;
 namespace PublicSpacePlanner.Migrations
 {
     [DbContext(typeof(SpacePlannerDbContext))]
-    partial class SpacePlannerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170409113431_events")]
+    partial class events
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
@@ -36,24 +37,6 @@ namespace PublicSpacePlanner.Migrations
                     b.HasIndex("StockItemId");
 
                     b.ToTable("Comment");
-                });
-
-            modelBuilder.Entity("PublicSpacePlanner.Data.Models.Event", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<int>("EntityId");
-
-                    b.Property<string>("EntityType");
-
-                    b.Property<string>("EventType");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("PublicSpacePlanner.Data.Models.Rating", b =>

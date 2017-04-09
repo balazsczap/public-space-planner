@@ -23,6 +23,12 @@ namespace PublicSpacePlanner.Data.Repositories
 			_context.StockItems.Add(stockitem);
 			_context.Users.Update(user);
 			_context.SaveChanges();
+		
+			
+			_context.Events.Add(new Event { Date = DateTime.Now, EntityId = stockitem.Id, EntityType = "stock", EventType = "creation"});
+
+			_context.SaveChanges();
+
 		}
 
 		public IQueryable<StockItem> GetAll()
@@ -54,11 +60,20 @@ namespace PublicSpacePlanner.Data.Repositories
 			var removee = _context.StockItems.Single(u => u.Id == id);
 			_context.Remove(removee);
 			_context.SaveChanges();
+
+
+			_context.Events.RemoveRange(_context.Events.Where(e => e.EntityType == "stock" && e.EntityId == id));
+			_context.Events.Add(new Event { Date = DateTime.Now, EntityId = id, EntityType = "stock", EventType = "deletion" });
+
+			_context.SaveChanges();
 		}
 
 		public void Update(StockItem changed)
 		{
 			_context.StockItems.Update(changed);
+			_context.SaveChanges();
+
+			_context.Events.Add(new Event { Date = DateTime.Now, EntityId = changed.Id, EntityType = "stock", EventType = "modification" });
 			_context.SaveChanges();
 		}
 
@@ -78,6 +93,8 @@ namespace PublicSpacePlanner.Data.Repositories
 			item.Comments.Add(comment);
 			_context.StockItems.Update(item);
 			_context.SaveChanges();
+
+
 		}
 
 		public void UpdateComment(int itemId, int commentId, string message)
@@ -132,6 +149,8 @@ namespace PublicSpacePlanner.Data.Repositories
 				rating.Value = ratingValue;
 				_context.Ratings.Update(rating);
 			}
+
+			_context.Events.Add(new Event { Date = DateTime.Now, EntityId = itemId, EntityType = "stock", EventType = "rate" });
 
 			_context.SaveChanges();
 		}

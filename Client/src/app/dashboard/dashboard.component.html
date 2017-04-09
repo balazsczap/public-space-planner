@@ -1,3 +1,15 @@
-<p>
-  dashboard works!
-</p>
+<div class="section col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+  <div *ngIf="!events" class="subsection cssload-container" style="height:10vh;">
+    <div class="cssload-whirlpool"></div>
+  </div>
+
+  <div *ngFor="let event of events" (click)="navigate(event)" class="stock-item subsection">
+    <div class="title">
+      <h2>{{event.message}}</h2>
+      <h4>At: {{event.date}}</h4>
+      <h5 *ngIf="event.doneBy">By: {{event.doneBy.name}}</h5>
+      <span class="text-left">ItemType: {{event.entityType}}</span>
+      <span class="text-right pull-right">ItemId: {{event.entityId}}</span>
+    </div>
+  </div>
+</div>

@@ -25,6 +25,9 @@ namespace PublicSpacePlanner.Data.Repositories
 			}
 			_context.Users.Add(user);
 			_context.SaveChanges();
+
+			_context.Events.Add(new Event { Date = DateTime.Now, EntityId = user.Id, EntityType = "user", EventType = "creation" });
+			_context.SaveChanges();
 		}
 
 		public IEnumerable<User> GetAll()
@@ -49,14 +52,21 @@ namespace PublicSpacePlanner.Data.Repositories
 
 		public void Remove(int id)
 		{
-			var e = _context.Users.Single(u => u.Id == id);
-			_context.Remove(e);
+			var user = _context.Users.Single(u => u.Id == id);
+			_context.Remove(user);
+			_context.SaveChanges();
+
+			_context.Events.RemoveRange(_context.Events.Where(e => e.EntityType == "user" && e.EntityId == id));
+			_context.Events.Add(new Event { Date = DateTime.Now, EntityId = user.Id, EntityType = "user", EventType = "deletion" });
 			_context.SaveChanges();
 		}
 
 		public void Update(User userData)
 		{
 			_context.Users.Update(userData);
+			_context.SaveChanges();
+
+			_context.Events.Add(new Event { Date = DateTime.Now, EntityId = userData.Id, EntityType = "user", EventType = "modification" });
 			_context.SaveChanges();
 		}
 
