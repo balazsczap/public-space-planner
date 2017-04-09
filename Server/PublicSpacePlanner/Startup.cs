@@ -71,8 +71,8 @@ namespace PublicSpacePlanner
 				opt.LongExpiration = TimeSpan.FromDays(3);
 				opt.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 			});
-			
-			services.AddSingleton<TokenProviderService>();
+
+			services.AddTransient<TokenProviderService>();
 			//services.AddDbContext<SpacePlannerDbContext>(options=>)
 			services.AddDbContext<SpacePlannerDbContext>(options => options.UseNpgsql(conn_str));
 			services.AddTransient<IUserRepository, UserRepository>();

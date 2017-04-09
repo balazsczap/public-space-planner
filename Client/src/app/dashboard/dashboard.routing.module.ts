@@ -4,7 +4,7 @@ import { DashboardComponent } from "./dashboard.component";
 import { UserGuard, AdminGuard } from '../auth/auth-guard.service';
 const dashboardRoutes: Routes = [
   {
-    path: 'stock',
+    path: 'dashboard',
     component: DashboardComponent,
     canActivate: [UserGuard]
   }

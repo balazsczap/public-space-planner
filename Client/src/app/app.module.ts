@@ -19,9 +19,10 @@ import { NotificationsModule } from './notifications/notifications.module';
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-import { UsersModule } from './users/users.module';
+import { UsersAdminModule } from './users-admin/users.admin.module';
 import { StockModule } from './stock/stock.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { UsersModule }from './users/users.module';
 
 import { MapComponent } from './map/map.component';
 import { LoginComponent } from './login/login.component';
@@ -36,6 +37,7 @@ import { ProfileComponent } from './profile/profile.component';
     FormsModule,
     HttpModule,
     UsersModule,
+    UsersAdminModule,
     StockModule,
     DashboardModule,
     RoutingModule,

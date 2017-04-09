@@ -1,22 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule }  from '@angular/router';
 import { UsersComponent } from "./users.component";
+import { AddUserComponent } from "./add/add.component";
 import { UserGuard, AdminGuard } from '../auth/auth-guard.service';
-import { DetailsComponent } from './details/details.component';
 
 const usersRoutes: Routes = [
   {
-    path: 'users',
+    path: 'users_admin',
     component: UsersComponent,
-    canActivate: [UserGuard]
-  },
-  {
-    path: 'users/:id',
-    component: DetailsComponent,
-    canActivate: [UserGuard]
+    canActivate: [AdminGuard],
+    children: [
+        // {
+        //   path: 'add', component: AddUserComponent
+        // }
+    ]
   }
-
-
 ];
 
 @NgModule({

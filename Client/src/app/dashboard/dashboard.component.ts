@@ -52,9 +52,6 @@ export class DashboardComponent implements OnInit {
             e.message+="rated.";
             e.navRoute+=e.entityId;
           }
-          if(e.entityType=="user"){
-            e.navRoute="";
-          }
           return e;
         });
     });

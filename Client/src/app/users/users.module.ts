@@ -1,10 +1,11 @@
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {UsersComponent} from "./users.component";
-import {UsersRoutingModule} from './users.routing.module';
-import { AddUserComponent } from "./add/add.component";
+import { UsersComponent } from "./users.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { UsersRoutingModule} from './users.routing.module';
+import { DetailsComponent } from './details/details.component';
+import {NotificationsService} from '../notifications/notifications.service';
+import {UserService} from '../network/user.service';
 @NgModule({
   imports: [
     CommonModule, 
@@ -14,7 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   declarations: [
     UsersComponent,
-    AddUserComponent,
-  ]
+    DetailsComponent,
+  ],
+  providers: [UserService, NotificationsService]
 })
 export class UsersModule {}

@@ -1,0 +1,39 @@
+<div class="section user col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+  <div *ngIf="!user" class="subsection cssload-container" style="height:10vh;">
+    <div class="cssload-whirlpool"></div>
+  </div>
+  <div *ngIf="user">
+    <div class="title">
+       <span  [routerLink]="['../']" class="glyphicon glyphicon-menu-left back-button"  style="cursor:pointer; vertical-align: middle;" aria-hidden="true"></span>
+       <h1>{{user.name}}</h1>
+    </div>
+    <div class="subsection details">
+      <div><span>Email: {{user.email}}</span></div>
+      <div><span>Role: {{user.role}}</span></div>
+    </div>
+  </div>
+</div>
+<!--<div  *ngIf="user" class="section vote col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2comments text-center">
+   <button  [disabled]="userRating.value==1" [ngClass]="{'not-voted': userRating.value==-1}"class="btn btn-default votebutton col-md-6 col-sm-6" (click)="upvote()">
+     Upvote
+   </button>
+    <button [disabled]="userRating.value==-1" [ngClass]="{'not-voted': userRating.value==1}" class="btn btn-default votebutton col-md-6 col-sm-6" (click)="downvote()">
+      Downvote
+   </button>
+</div>
+
+<div  *ngIf="user" class="section comments col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2comments text-center">
+    <span>Comments:</span>      
+    <div *ngFor="let comment of user.comments" class="comment text-left">
+      <div class="sender"><span>{{comment.createdBy.name}}</span></div>
+      <div class="message"><span>{{comment.message}}</span></div>
+      <button *ngIf="comment.createdBy.id==auth.user.id" (click)="deleteComment(comment.id)" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove" style="cursor:pointer; vertical-align: middle;" aria-hidden="true"></span></button>          
+      <div class="time pull-right"><span>{{comment.time | date: 'short'}}</span></div>
+    </div>
+    <div class="add-comment text-left">
+      <form  #form="ngForm" (ngSubmit)="onSubmit(form.value); form.reset()">
+        <input type="text" placeholder="comment text here" name="comment" ngModel required/>
+        <input type="submit" style="visibility: hidden;" />
+      </form>
+    </div>
+</div>-->

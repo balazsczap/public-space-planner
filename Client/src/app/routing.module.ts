@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { MapComponent  }   from './map/map.component';
-import { StockComponent  }   from './stock/stock.component';
 import { ProfileComponent } from './profile/profile.component';
 
 
@@ -15,9 +13,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'login/firsttime/:token', component: LoginComponent},
   { path: 'profile', component: ProfileComponent},
-  { path: 'dashboard', component: DashboardComponent, canActivate: [UserGuard] },
   { path: 'map', component: MapComponent, canActivate: [UserGuard]  },
-  { path: 'stock', component: StockComponent, canActivate: [UserGuard]  },
   { path: '',   redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

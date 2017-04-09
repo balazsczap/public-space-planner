@@ -9,7 +9,8 @@
       <li *ngIf="authService.isLoggedIn()" [routerLinkActive]="['active']" ><a routerLink="/dashboard">Dashboard</a></li>
       <li *ngIf="authService.isLoggedIn()" [routerLinkActive]="['active']" ><a routerLink="/map">Map</a></li>
       <li *ngIf="authService.isLoggedIn()" [routerLinkActive]="['active']" ><a routerLink="/stock">Stock</a></li>
-      <li *ngIf="authService.isAdmin()" [routerLinkActive]="['active']" ><a routerLink="/users" >Users</a></li>
+      <li *ngIf="authService.isLoggedIn()" [routerLinkActive]="['active']" ><a routerLink="/users">Users</a></li>
+      <li *ngIf="authService.isAdmin()" [routerLinkActive]="['active']" ><a routerLink="/users_admin" >Users - Administration</a></li>
     </ul>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
