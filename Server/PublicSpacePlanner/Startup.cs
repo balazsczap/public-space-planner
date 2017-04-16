@@ -92,8 +92,10 @@ namespace PublicSpacePlanner
 			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 			loggerFactory.AddDebug();
 
-
-
+			if (!env.IsDevelopment())
+			{
+				ServeClient(app);
+			}
 
 			var tokenValidationParameters = new TokenValidationParameters
 			{
@@ -125,15 +127,6 @@ namespace PublicSpacePlanner
 
 			app.UseCors(builder => builder.AllowAnyOrigin());
 
-
-			if (!env.IsDevelopment())
-			{
-				ServeClient(app);
-			}
-
-
-
-
 			app.UseMvc();
 		}
 
@@ -149,6 +142,21 @@ namespace PublicSpacePlanner
 			filesOptions.FileProvider = clientFileProvider;
 			filesOptions.DefaultFileNames.Clear();
 			filesOptions.DefaultFileNames.Add("index.html");
+
+
+			//this middleware directs every call that doesn't go to the API to the built Angular app
+			//source: https://medium.com/@levifuller/building-an-angular-application-with-asp-net-core-in-visual-studio-2017-visualized-f4b163830eaa
+			app.Use(async (context, next) =>
+			{
+				await next();
+				if(context.Response.StatusCode==404 &&
+				!Path.HasExtension(context.Request.Path.Value) &&
+				!context.Request.Path.Value.StartsWith("/api/")){
+					context.Request.Path = "/index.html";
+					await next();
+				}
+			});
+
 			app.UseDefaultFiles(filesOptions);
 			app.UseStaticFiles(new StaticFileOptions
 			{
