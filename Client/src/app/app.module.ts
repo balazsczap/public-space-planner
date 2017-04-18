@@ -23,8 +23,8 @@ import { UsersAdminModule } from './users-admin/users.admin.module';
 import { StockModule } from './stock/stock.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { UsersModule }from './users/users.module';
+import { MapModule } from './map/map.module';
 
-import { MapComponent } from './map/map.component';
 import { LoginComponent } from './login/login.component';
 
 import { ProfileComponent } from './profile/profile.component';
@@ -40,6 +40,7 @@ import { ProfileComponent } from './profile/profile.component';
     UsersAdminModule,
     StockModule,
     DashboardModule,
+    MapModule,
     RoutingModule,
     NotificationsModule,
     ReactiveFormsModule
@@ -48,7 +49,6 @@ import { ProfileComponent } from './profile/profile.component';
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    MapComponent,
     LoginComponent,
     ProfileComponent
   ],
