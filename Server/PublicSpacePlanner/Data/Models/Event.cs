@@ -28,6 +28,7 @@ namespace PublicSpacePlanner.Data.Models
 		}
 
 		public DateTime Date { get; set; }
+		
 
 
 	}

@@ -19,41 +19,45 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.eventsService.getTop()
       .subscribe(data=>{
-        this.events = data.map(e=>{
-          if(e.entityType == "user"){
-            e.message="A user was ";
-            e.navRoute="/users/";
-          }
-          else if(e.entityType=="stock"){
-            e.message="A stock item was ";
-            e.navRoute="/stock/";
-            this.stockService.getOneById(e.entityId)
-              .subscribe(data=>{
-                e.doneBy=data.creator;
-              },
-              err=>{
+        this.events=data;
+        // this.events = data.map(e=>{
+          
+        // })
+        // this.events = data.map(e=>{
+        //   if(e.entityType == "user"){
+        //     e.message="A user was ";
+        //     e.navRoute="/users/";
+        //   }
+        //   else if(e.entityType=="stock"){
+        //     e.message="A stock item was ";
+        //     e.navRoute="/stock/";
+        //     this.stockService.getOneById(e.entityId)
+        //       .subscribe(data=>{
+        //         e.doneBy=data.creator;
+        //       },
+        //       err=>{
                 
-              })
-          }
+        //       })
+        //   }
 
-          if(e.eventType == "creation"){
-            e.message+="created.";
-            e.navRoute+=e.entityId;
-          }
-          else if(e.eventType == "modification"){
-            e.message+="modified.";
-            e.navRoute+=e.entityId;
-          }
-          else if(e.eventType == "deletion"){
-            e.message+="deleted!";
-            e.navRoute="";
-          }
-          else if(e.eventType == "rate"){
-            e.message+="rated.";
-            e.navRoute+=e.entityId;
-          }
-          return e;
-        });
+        //   if(e.eventType == "creation"){
+        //     e.message+="created.";
+        //     e.navRoute+=e.entityId;
+        //   }
+        //   else if(e.eventType == "modification"){
+        //     e.message+="modified.";
+        //     e.navRoute+=e.entityId;
+        //   }
+        //   else if(e.eventType == "deletion"){
+        //     e.message+="deleted!";
+        //     e.navRoute="";
+        //   }
+        //   else if(e.eventType == "rate"){
+        //     e.message+="rated.";
+        //     e.navRoute+=e.entityId;
+        //   }
+        //   return e;
+        // });
     });
   }
 

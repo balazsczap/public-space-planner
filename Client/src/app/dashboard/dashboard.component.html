@@ -3,13 +3,46 @@
     <div class="cssload-whirlpool"></div>
   </div>
 
-  <div *ngFor="let event of events" (click)="navigate(event)" class="stock-item subsection">
-    <div class="title">
-      <h2>{{event.message}}</h2>
-      <h4>At: {{event.date}}</h4>
-      <h5 *ngIf="event.doneBy">By: {{event.doneBy.name}}</h5>
-      <span class="text-left">ItemType: {{event.entityType}}</span>
-      <span class="text-right pull-right">ItemId: {{event.entityId}}</span>
+  <div *ngFor="let event of events" class="stock-item subsection">
+    <div *ngIf="event.eventType!='rate'"  [ngSwitch]="event.entityType">
+      <div *ngSwitchCase="'user'"  routerLink="/users/{{event?.entity?.id}}">
+
+          <div class="image image-user"></div>
+          <div class="info">
+            <h3 *ngIf="event.entity">{{event.entity.name}}
+              <span *ngIf="event.eventType=='modification'"> modified their profile.</span>
+              <span *ngIf="event.eventType=='creation'"> joined the site.</span>
+            </h3>
+            <h3 *ngIf="!event.entity">A user was deleted.</h3>
+
+            <h5>{{event.date | date:'medium'}}</h5>
+          </div>
+          <!--<div class="content">
+            <span class="text-left">ItemType: {{event.entityType}}</span>
+            <span class="text-right pull-right">ItemId: {{event?.entity?.id}}</span>
+          </div>-->
+
+      </div>
+      <div *ngSwitchCase="'stock'" routerLink="/stock/{{event?.entity?.id}}">
+          <div class="image image-stock"></div>
+          <div class="info">
+            <h3 *ngIf="event.entity">{{event.entity.name}} was
+              <span *ngIf="event.eventType=='modification'"> modified <a routerLink="/users/{{event?.entity?.creator?.id}}"> by {{event?.entity?.creator.name}}</a></span>
+              <span *ngIf="event.eventType=='creation'"> created.</span>
+              <span *ngIf="event.eventType=='rate'"> rated.</span>
+            </h3>
+            <h3 *ngIf="!event.entity">An item was deleted.</h3>
+
+            <h5>{{event.date | date:'medium'}}</h5>
+          </div>
+          <!--<div class="content">
+            <h5 *ngIf="event.entity">Creator: {{event?.entity?.creator}}</h5>
+          </div>-->
+      </div>
+      <div *ngSwitchDefault>
+        <h1 class="error">ERROR</h1>
+      </div>
     </div>
+
   </div>
 </div>

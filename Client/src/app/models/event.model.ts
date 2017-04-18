@@ -8,5 +8,6 @@ export class Event{
     public message: string;
     public navRoute:string;
     public doneBy: User;
+    public doneOn: any;
     public date: Date;
 }
