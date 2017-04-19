@@ -10,11 +10,11 @@ class MapItem{
       return false;
     return (
         this.x >= other.x && this.x < other.x+other.width /*left side is inside the others area*/ 
-        || this.x+this.width >= other.x && this.x+this.width < other.x+other.width  /*right side is inside the others area*/ 
+        || this.x+this.width > other.x && this.x+this.width <= other.x+other.width  /*right side is inside the others area*/ 
        ) &&
        (
         this.y >= other.y && this.y < other.y+other.height /*top side is inside the others area*/ 
-        || this.y+this.height >= other.y && this.y+this.height < other.y+other.height  /*bottom side is inside the others area*/ 
+        || this.y+this.height > other.y && this.y+this.height <= other.y+other.height  /*bottom side is inside the others area*/ 
        );
   }
 }
@@ -47,16 +47,20 @@ export class MapComponent implements OnInit {
 
     var item1 = new MapItem(2,2,"#ff0000", 2, 2);
     var item2 = new MapItem(2,2,"#00ff00", 0, 0);
+    var item3 = new MapItem(1,1,"#ff00ff", 4, 4);
+    var item4 = new MapItem(1,2,"#ffff00", 3, 4);
     this.map[2][2].push(item1);
     this.map[0][0].push(item2);
-    this.items.push(item1,item2);
+    this.map[4][4].push(item3);
+    this.map[4][3].push(item4);
+    this.items.push(item1,item2,item3,item4);
 
     this.dragulaService.dropModel.subscribe(value=>{
       var item = value[1];
-      var [from_x, from_y] = [+value[2].getAttribute("x_pos"), +value[2].getAttribute("y_pos")];
-      var [to_x, to_y] = [+value[3].getAttribute("x_pos"), +value[3].getAttribute("y_pos")];
-      this.map[from_y][from_x][0].x=to_x;
-      this.map[from_y][from_x][0].y=to_y;
+      var [to_x, to_y] = [+value[2].getAttribute("x_pos"), +value[2].getAttribute("y_pos")];
+      var [from_x, from_y] = [+value[3].getAttribute("x_pos"), +value[3].getAttribute("y_pos")];
+      this.map[to_y][to_x][0].x=to_x;
+      this.map[to_y][to_x][0].y=to_y; 
       // this.map[to_y][to_x].push(itemmodel);
 
       // console.log("item:", item.getAttribute("x_pos")," ", item.getAttribute("y_pos"));
@@ -91,12 +95,19 @@ export class MapComponent implements OnInit {
          if(from_x==to_x && from_y==to_y)
           return true;
          var element = this.map[from_y][from_x][0];
+         if(element==undefined){
+           var ayy = "lmao";
+         }
          var [elem_width, elem_height] = [element.width, element.height];
-
+         var new_tester = new MapItem(element.width, element.height, "0xffffff", to_x, to_y);
          for(var i=0; i<this.items.length;++i){
-           if(element.intersects(this.items[i]))
+           if(new_tester.intersects(this.items[i]))
             return false;
          }
+         if(new_tester.x+new_tester.width>this.cols || new_tester.y+new_tester.height > this.rows){
+           return false;
+         }
+
 
          return source.children.length<1;
       }
