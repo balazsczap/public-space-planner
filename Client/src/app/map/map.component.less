@@ -14,12 +14,19 @@
     // z-index: 200;
 }
 
+
 .drag-map-slot{
     padding-right:5px;
     margin:0;
     padding:0;
     position:absolute;
     overflow:visible;
+    z-index:10;
+
+}
+
+.drag-map-slot:last-of-type{
+    margin-bottom:100px;
 }
 
 .map-row{
@@ -31,30 +38,51 @@
     overflow:visible;
     // position:absolute;
 }
+
 .map-item{
     background-color:#fdd;
     // position:relative;
     // display:inline-block;
-    // z-index:100;
-    margin:0;
+    z-index:0;
+    margin:1px;
     padding:1em;
-    cursor:-webkit-grab;
+  
     position:absolute;
     overflow:visible;
+    background-color: #ffffff;
+    
+}
+
+.map-item-draggable{
     transition: box-shadow 0.1s;   
-}
-.map-item:hover{
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.19);
+    clip-path: polygon(0% 20px,  20px 0%, 120% 0%, 120% 120%,0 120%);
+    cursor:-webkit-grab;
 }
+
+.map-item-draggable:hover{
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 5px 10px 0 rgba(0, 0, 0, 0.19);
+     z-index:2;
+}
+.map-item-draggable:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-width: 0 0px 20px 20px;
+  border-style: solid;
+  border-color: rgba(200, 200, 200, 0.7) rgba(0,0,0,0);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3), 1px 1px 1px rgba(0,0,0,0.2);
+  border-radius: 1px 1px 8px 0;
+}
+
+
 
 .map-item .glyphicon{
     color:rgba(200,200,200,0.8);
     font-size: 2em;
 }
 
-.map-item:active { 
-    cursor:-webkit-grabbing;
-}
 .gu-mirror{
    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 10px 15px 0 rgba(0, 0, 0, 0.19);
 }

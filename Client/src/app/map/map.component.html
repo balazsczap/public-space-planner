@@ -98,11 +98,13 @@
 		[attr.y_pos]="rowindex"
 		[style.min-height.px]="box_width">
 		<div *ngIf="map.getItem(rowindex, colindex)" class="map-item"
-				[style.width.px]="map.getItem(rowindex, colindex)?.width*box_width-1"
-				[style.height.px]="map.getItem(rowindex, colindex)?.height*box_width"
+				[class.map-item-draggable]="map.getItem(rowindex, colindex).draggable"
+				[style.width.px]="map.getItem(rowindex, colindex).width*box_width-2"
+				[style.height.px]="map.getItem(rowindex, colindex).height*box_width-2"
 				[attr.x_pos]="colindex"
 				[attr.y_pos]="rowindex"
-				[style.background-color]="map.getItem(rowindex, colindex)?.color">
+				[style.background-color]="map.getItem(rowindex, colindex).color">
+				<!--<span class="glyphicon glyphicon-move" aria-hidden="true"></span>-->
 			</div>
 		</div>
 	</div>

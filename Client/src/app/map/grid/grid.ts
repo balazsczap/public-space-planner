@@ -5,8 +5,10 @@ export interface Intersectable{
     y: number;
     width: number;
     height:number;
+    id:number;
     intersects(other: Intersectable): boolean;
     clone(): Intersectable;
+    draggable:boolean;
 }
 export class Grid<T extends Intersectable>{
     private map: Array<Array<Array<T>>> = [];
@@ -32,6 +34,10 @@ export class Grid<T extends Intersectable>{
 
         })
         this.dragulaService.setOptions(bagName, {
+            moves: (el: Element, source: Element, handle: Element, sibling: Element)=>{
+                var element = this.map[+el.getAttribute("y_pos")][+el.getAttribute("x_pos")][0];
+                return element.draggable; 
+            },
             //accepts is called by dragula to see if the element being dragged can be dropped in target
             accepts: (el: Element, target: Element, source: Element, sibling: Element)=>{
                 //get the coordinates of the slots, which are stored as HTML attributes
