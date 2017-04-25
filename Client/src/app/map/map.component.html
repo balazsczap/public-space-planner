@@ -32,6 +32,37 @@
 		</div>
 	</div>
 </div>-->
+<!--<div #container (window:resize)="onResize(container.getBoundingClientRect())" class="col-md-12 col-sm-12 col-lg-12"
+	[style.min-height.px]="1000">
+	<div *ngFor="let row of map;let rowindex = index" 
+	class="map-row" 
+	[style.height.px]="box_width"
+	[style.top.px]="box_width*rowindex"
+	[style.min-height.px]="box_width">
+		<div *ngFor="let slot of row;let colindex = index" 
+		class="map-slot"
+		[pspDragSlot]
+		(pspDropped)="onDrop($event,slot)"
+		[style.width.px]="box_width"
+		[style.min-width.px]="box_width"
+		[style.left.px]="box_width*colindex-15" 
+		[style.height.px]="box_width"
+		[style.top.px]="box_width*rowindex"
+		
+		[attr.x_pos]="colindex"
+		[attr.y_pos]="rowindex"
+		[style.min-height.px]="box_width">
+			<div *ngIf="slot[0]" class="map-item"
+		        [pspDragItem]="slot[0]"
+				[style.width.px]="slot[0]?.width*box_width-1"
+				[style.height.px]="slot[0]?.height*box_width"
+				[attr.x_pos]="colindex"
+				[attr.y_pos]="rowindex"
+				[style.background-color]="slot[0]?.color">
+			</div>
+		</div>
+	</div>
+</div>-->
 <div #container (window:resize)="onResize(container.getBoundingClientRect())" class="col-md-12 col-sm-12 col-lg-12"
 	[style.min-height.px]="1000">
 	<div *ngFor="let row of map;let rowindex = index" 
@@ -40,23 +71,38 @@
 	[style.top.px]="box_width*rowindex"
 	[style.min-height.px]="box_width">
 		<div *ngFor="let slot of row;let colindex = index" 
+			class="map-slot"
+			[style.width.px]="box_width"
+			[style.min-width.px]="box_width"
+			[style.left.px]="box_width*colindex-15" 
+			[style.height.px]="box_width"
+			[style.top.px]="box_width*rowindex"
+			
+			[attr.x_pos]="colindex"
+			[attr.y_pos]="rowindex"
+			[style.min-height.px]="box_width">
+		</div>
+		<div *ngFor="let slot of row;let colindex = index" 
+		class="drag-map-slot"
 		[dragula]="'bag-one'"
-		[dragulaModel]="slot"
-		class="map-slot"
+		[dragulaModel]="slot" 
 		[style.width.px]="box_width"
 		[style.min-width.px]="box_width"
 		[style.left.px]="box_width*colindex-15" 
 		[style.height.px]="box_width"
 		[style.top.px]="box_width*rowindex"
+		
 		[attr.x_pos]="colindex"
 		[attr.y_pos]="rowindex"
 		[style.min-height.px]="box_width">
-			<div class="map-item"
+			<div *ngIf="slot[0]" class="map-item"
+		        [pspDragItem]="slot[0]"
 				[style.width.px]="slot[0]?.width*box_width-1"
 				[style.height.px]="slot[0]?.height*box_width"
 				[attr.x_pos]="colindex"
 				[attr.y_pos]="rowindex"
 				[style.background-color]="slot[0]?.color">
+				<!--<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>-->
 			</div>
 		</div>
 	</div>
