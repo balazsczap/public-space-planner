@@ -4,8 +4,6 @@ import { MapComponent } from "./map.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragulaModule } from "ng2-dragula"
 import { NotificationsService } from '../notifications/notifications.service';
-import { DragSlotDirective } from "./drag/drag-slot.directive";
-import { DragItemDirective } from "./drag/drag-item.directive";
 @NgModule({
   imports: [
     CommonModule, 
@@ -15,8 +13,6 @@ import { DragItemDirective } from "./drag/drag-item.directive";
   ],
   declarations: [
     MapComponent,
-    DragSlotDirective,
-    DragItemDirective
   ],
   providers: [NotificationsService]
 })

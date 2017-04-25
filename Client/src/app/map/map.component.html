@@ -64,7 +64,8 @@
 	</div>
 </div>-->
 <div #container (window:resize)="onResize(container.getBoundingClientRect())" class="col-md-12 col-sm-12 col-lg-12"
-	[style.min-height.px]="1000">
+	[style.min-height.px]="box_width*rows"
+	[style.height.px]="box_width*rows">
 	<div *ngFor="let rowindex of rowIndexes" 
 	class="map-row" 
 	[style.height.px]="box_width"
@@ -75,7 +76,7 @@
 			class="map-slot"
 			[style.width.px]="box_width"
 			[style.min-width.px]="box_width"
-			[style.left.px]="box_width*colindex-15" 
+			[style.left.px]="box_width*colindex-5" 
 			[style.height.px]="box_width"
 			[style.top.px]="box_width*rowindex"
 			
@@ -90,7 +91,7 @@
 		[dragulaModel]="map.getSlot(rowindex, colindex)" 
 		[style.width.px]="box_width"
 		[style.min-width.px]="box_width"
-		[style.left.px]="box_width*colindex-15" 
+		[style.left.px]="box_width*colindex-5" 
 		[style.height.px]="box_width"
 		[style.top.px]="box_width*rowindex"
 		
@@ -108,4 +109,9 @@
 			</div>
 		</div>
 	</div>
+
 </div>
+
+	<div class="add-container">
+		asd
+	</div>
