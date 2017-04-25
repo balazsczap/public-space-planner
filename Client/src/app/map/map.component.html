@@ -70,6 +70,7 @@
 	[style.height.px]="box_width"
 	[style.top.px]="box_width*rowindex"
 	[style.min-height.px]="box_width">
+		<!-- overlay for drawing the grid-->
 		<div *ngFor="let slot of row;let colindex = index" 
 			class="map-slot"
 			[style.width.px]="box_width"
@@ -82,6 +83,7 @@
 			[attr.y_pos]="rowindex"
 			[style.min-height.px]="box_width">
 		</div>
+		<!-- the actual grid itself, which is invisible-->
 		<div *ngFor="let slot of row;let colindex = index" 
 		class="drag-map-slot"
 		[dragula]="'bag-one'"
@@ -102,7 +104,6 @@
 				[attr.x_pos]="colindex"
 				[attr.y_pos]="rowindex"
 				[style.background-color]="slot[0]?.color">
-				<!--<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>-->
 			</div>
 		</div>
 	</div>

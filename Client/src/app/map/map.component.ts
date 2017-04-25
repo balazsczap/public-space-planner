@@ -10,11 +10,11 @@ class MapItem{
       return false;
     return (
         this.x >= other.x && this.x < other.x+other.width /*left side is inside the others area*/ 
-        || this.x+this.width > other.x && this.x+this.width < other.x+other.width  /*right side is inside the others area*/ 
+        || this.x+this.width > other.x && this.x+this.width <= other.x+other.width  /*right side is inside the others area*/ 
        ) &&
        (
         this.y >= other.y && this.y < other.y+other.height /*top side is inside the others area*/ 
-        || this.y+this.height > other.y && this.y+this.height < other.y+other.height  /*bottom side is inside the others area*/ 
+        || this.y+this.height > other.y && this.y+this.height <= other.y+other.height  /*bottom side is inside the others area*/ 
        );
   }
 
@@ -82,7 +82,7 @@ export class MapComponent implements OnInit {
     }
     // var item1 = new MapItem(2,2,"#ff0000", 2, 2);
     // var item2 = new MapItem(2,2,"#00ff00", 0, 0);
-    var item3 = new MapItem(3,2,2,"#ff00ff", 0, 0);
+    var item3 = new MapItem(3,3,2,"#ff00ff", 0, 0);
     var item1 = new MapItem(1,2,2,"#ffff00", 2, 2);
 
     // var item4 = new MapItem(1,2,"#ffff00", 3, 4);
