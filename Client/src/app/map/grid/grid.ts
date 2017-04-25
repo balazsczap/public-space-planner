@@ -11,8 +11,9 @@ export interface Intersectable{
 export class Grid<T extends Intersectable>{
     private map: Array<Array<Array<T>>> = [];
     private items: Array<T> = [];
-    constructor(private dragulaService: DragulaService, private cols: number, private rows: number){
-
+    private dropSubscription: any;
+    constructor(private dragulaService: DragulaService, private bagName:string, private cols: number, private rows: number){
+        //fill map with slots
         for(var i=0; i<this.rows;++i){
             this.map.push([]);
             for(var j=0; j<this.cols;++j){
@@ -20,15 +21,17 @@ export class Grid<T extends Intersectable>{
             }
         }
         //on drop, set the current coordinates of the item
-        this.dragulaService.dropModel.subscribe(value=>{
+        this.dropSubscription = this.dragulaService.dropModel.subscribe(value=>{
             //value is [bagName, element, target, source]
+            
             var item = value[1];
             var [to_x, to_y] = [+value[2].getAttribute("x_pos"), +value[2].getAttribute("y_pos")];
-
+            
             this.map[to_y][to_x][0].x=to_x;
             this.map[to_y][to_x][0].y=to_y;
+
         })
-        this.dragulaService.setOptions("grid", {
+        this.dragulaService.setOptions(bagName, {
             //accepts is called by dragula to see if the element being dragged can be dropped in target
             accepts: (el: Element, target: Element, source: Element, sibling: Element)=>{
                 //get the coordinates of the slots, which are stored as HTML attributes
@@ -76,5 +79,11 @@ export class Grid<T extends Intersectable>{
             return null;
         }
         return this.map[y][x][0];
+    }
+
+    public destoy():void{
+        this.dropSubscription.unsubscribe();
+        
+        this.dragulaService.destroy(this.bagName);
     }
 }

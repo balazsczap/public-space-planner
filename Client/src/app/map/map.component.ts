@@ -53,7 +53,7 @@ export class MapComponent implements OnInit {
   private map: Grid<MapItem>;
 
   constructor(private dragulaService: DragulaService) {
-      this.map = new Grid<MapItem>(this.dragulaService, this.cols, this.rows);
+
   }
 
   onResize(div: ClientRect) {
@@ -62,15 +62,17 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
 
+    this.map = new Grid<MapItem>(this.dragulaService, "grid", this.cols, this.rows);
 
     var item3 = new MapItem(3, 2, "#ff00ff");
     var item1 = new MapItem(2, 2, "#ffff00");
 
     this.map.addItem(item3, 0,0);
     this.map.addItem(item1, 2,2);
-
     window.dispatchEvent(new Event("resize"));
   }
 
-
+  ngOnDestroy(){
+    this.map.destoy();
+  }
 }
