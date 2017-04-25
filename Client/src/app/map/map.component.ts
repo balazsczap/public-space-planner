@@ -15,26 +15,19 @@ class MapItem implements Intersectable {
   }
 
   public intersects = (other: Intersectable): boolean => {
+    //they are the same item
     if (this.id == other.id)
       return false;
-    console.log(this.x);
-    console.log(this.y);
-    
+
     var left_inside = this.x >= other.x && this.x < other.x + other.width;
     var right_inside = this.x + this.width > other.x && this.x + this.width <= other.x + other.width;
-    var x_overlap = this.x <= other.x && this.x+this.width >= other.x+other.width;
+    var horizontal_overlap = this.x <= other.x && this.x+this.width >= other.x+other.width;
+
     var top_inside = this.y >= other.y && this.y < other.y + other.height;
     var bottom_inside = this.y + this.height > other.y && this.y + this.height <= other.y + other.height;
-    var y_overlap = this.y <= other.y && this.y+this.height >= other.y+other.height;
-    return (left_inside || right_inside || x_overlap) && (top_inside || bottom_inside || y_overlap);
-    // return (
-    //     this.x >= other.x && this.x < other.x + other.width /*left side is inside the others area*/
-    //     || this.x + this.width > other.x && this.x + this.width <= other.x + other.width  /*right side is inside the others area*/
-    //   ) &&
-    //   (
-    //     this.y >= other.y && this.y < other.y + other.height /*top side is inside the others area*/
-    //     || this.y + this.height > other.y && this.y + this.height <= other.y + other.height  /*bottom side is inside the others area*/
-    //   );
+    var vertical_overlap = this.y <= other.y && this.y+this.height >= other.y+other.height;
+
+    return (left_inside || right_inside || horizontal_overlap) && (top_inside || bottom_inside || vertical_overlap);
   }
 
   public clone = () : Intersectable =>{
