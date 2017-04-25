@@ -65,13 +65,13 @@
 </div>-->
 <div #container (window:resize)="onResize(container.getBoundingClientRect())" class="col-md-12 col-sm-12 col-lg-12"
 	[style.min-height.px]="1000">
-	<div *ngFor="let row of map;let rowindex = index" 
+	<div *ngFor="let rowindex of rowIndexes" 
 	class="map-row" 
 	[style.height.px]="box_width"
 	[style.top.px]="box_width*rowindex"
 	[style.min-height.px]="box_width">
 		<!-- overlay for drawing the grid-->
-		<div *ngFor="let slot of row;let colindex = index" 
+		<div *ngFor="let colindex of colIndexes" 
 			class="map-slot"
 			[style.width.px]="box_width"
 			[style.min-width.px]="box_width"
@@ -84,10 +84,10 @@
 			[style.min-height.px]="box_width">
 		</div>
 		<!-- the actual grid itself, which is invisible-->
-		<div *ngFor="let slot of row;let colindex = index" 
+		<div *ngFor="let colindex of colIndexes" 
 		class="drag-map-slot"
-		[dragula]="'bag-one'"
-		[dragulaModel]="slot" 
+		[dragula]="'grid'"
+		[dragulaModel]="map.getSlot(rowindex, colindex)" 
 		[style.width.px]="box_width"
 		[style.min-width.px]="box_width"
 		[style.left.px]="box_width*colindex-15" 
@@ -97,13 +97,12 @@
 		[attr.x_pos]="colindex"
 		[attr.y_pos]="rowindex"
 		[style.min-height.px]="box_width">
-			<div *ngIf="slot[0]" class="map-item"
-		        [pspDragItem]="slot[0]"
-				[style.width.px]="slot[0]?.width*box_width-1"
-				[style.height.px]="slot[0]?.height*box_width"
+		<div *ngIf="map.getItem(rowindex, colindex)" class="map-item"
+				[style.width.px]="map.getItem(rowindex, colindex)?.width*box_width-1"
+				[style.height.px]="map.getItem(rowindex, colindex)?.height*box_width"
 				[attr.x_pos]="colindex"
 				[attr.y_pos]="rowindex"
-				[style.background-color]="slot[0]?.color">
+				[style.background-color]="map.getItem(rowindex, colindex)?.color">
 			</div>
 		</div>
 	</div>
