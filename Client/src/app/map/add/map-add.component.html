@@ -1,0 +1,14 @@
+
+
+<div class="section map-item-container"
+[dragula]="'grid'"
+[dragulaModel]="items">
+    <div *ngFor="let item of items" 
+    class="map-itemm col-sm-1 col-md-1 col-lg-1" 
+    [style.width.px]="item.width*box_width-2"
+    [style.height.px]="item.height*box_width-2"
+    [attr.width]="item.width"
+    [attr.height]="item.height"
+    [style.background-color]="item.color">
+    </div>
+</div>

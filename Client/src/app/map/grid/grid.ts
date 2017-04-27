@@ -25,12 +25,20 @@ export class Grid<T extends Intersectable>{
 
         })
         this.dragulaService.setOptions(bagName, {
+            over:(el:Element, container:Element, source:Element)=>{
+
+            },
             moves: (el: Element, source: Element, handle: Element, sibling: Element) => {
                 var element = this.map[+el.getAttribute("y_pos")][+el.getAttribute("x_pos")][0];
                 return element.draggable;
             },
             //accepts is called by dragula to see if the element being dragged can be dropped in target
             accepts: (el: Element, target: Element, source: Element, sibling: Element) => {
+                //if target is not part of the map
+                if(target.classList.contains("map-item-container")){
+                    return true;
+                }
+
                 //get the coordinates of the slots, which are stored as HTML attributes
                 var [from_x, from_y] = [+source.getAttribute("x_pos"), +source.getAttribute("y_pos")];
                 var [to_x, to_y] = [+target.getAttribute("x_pos"), +target.getAttribute("y_pos")];
@@ -38,18 +46,27 @@ export class Grid<T extends Intersectable>{
                 //if it's not being actually moved, it can be dropped
                 if (from_x == to_x && from_y == to_y)
                     return true;
-                var element = this.map[from_y][from_x][0];
+
+                var element;
+                if(source.classList.contains("map-item-container")){
+                    element = this.map[from_y][from_x][0];
+                }
+                else{
+                    element = this.map[from_y][from_x][0];
+                }
+
+               
 
                 //create a clone which can be tested for intersection with any other elements
                 var tester = element.clone();
                 tester.x = to_x;
                 tester.y = to_y;
-
                 //check for intersection with other elements
                 for (var i = 0; i < this.items.length; ++i) {
                     if (tester.intersects(this.items[i]))
                         return false;
                 }
+                
                 //check for intersection with the sides of the grid
                 if (tester.x + tester.width > this.cols || tester.y + tester.height > this.rows) {
                     return false;

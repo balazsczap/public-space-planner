@@ -8,9 +8,6 @@ import { Grid } from './grid/grid';
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.less'],
-  // host:{
-  //   '(window:resize)': 'onResize($event)'
-  // }
 })
 export class MapComponent implements OnInit {
   private rows: number = 8;
@@ -23,7 +20,7 @@ export class MapComponent implements OnInit {
   private map: Grid<MapItem>;
 
   constructor(private dragulaService: DragulaService) {
-
+    
   }
 
   onResize(div: ClientRect) {
@@ -31,8 +28,8 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.map = new Grid<MapItem>(this.dragulaService, "grid", this.cols, this.rows);
+    
 
     var item1 = new MapItem(4, 2, "#ff00ff");
     var item2 = new MapItem(2, 2, "#ffff00");
