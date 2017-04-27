@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula'
 import { MapItem, Wall } from '../map-item.model';
 import { Grid } from '../grid/grid';
+import { MapService } from '../map.service';
 
 @Component({
   selector: 'app-map-add',
@@ -11,15 +12,12 @@ import { Grid } from '../grid/grid';
 })
 
 export class MapAddComponent implements OnInit {
-    private items: Array<MapItem> = [];
-
     private box_width=50;
-    constructor(private dragulaService: DragulaService) {
+    constructor(private mapService: MapService<MapItem>) {
         
     }
 
     ngOnInit(){
-        this.items.push(new MapItem(1,1,"#0000ff"));
-        this.items.push(new MapItem(1,2,"#00ffff"));
+
     }
 }

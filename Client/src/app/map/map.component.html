@@ -1,69 +1,4 @@
-<!-- <div class="map section map" style="height:800px">
-</div> -->
-
-<!--<div class="container" style="height:300px;" [dragula]="'bag-one'" [dragulaModel]="items1">
-	<div *ngFor="let item of items1" class="subsection" >{{item}}</div>
-</div>
-<div class="container" style="height:300px;" [dragula]="'bag-one'" [dragulaModel]="items2">
-	<div *ngFor="let item of items2" class="subsection" >{{item}}</div>
-</div>
-
-<div class="container" style="height:300px;" [dragula]="'bag-one'" [dragulaModel]="items3">
-	<div *ngFor="let item of items3" class="subsection" >{{item}}</div>
-</div>-->
-
-<!--<div class="container-fluid">
-	<div *ngFor="let row of map;let rowindex = index" class="row" [style.height.px]="box_width">
-		<div *ngFor="let column of row;let colindex = index" class="col col-md-1"  [style.width.px]="box_width">
-			<div [dragula]="'bag-one'" [dragulaModel]="column" class="map-slot"
-			[style.min-width.px]="box_width+2"
-			[style.min-height.px]="box_width+1"
-			[attr.x_pos]="colindex"
-			[attr.y_pos]="rowindex">
-				<div *ngFor="let item of column" class="map-item"
-					[style.width.px]="item.width*box_width-1"
-					[style.height.px]="item.height*box_width"
-					[attr.x_pos]="item.x"
-					[attr.y_pos]="item.y"
-					[style.background-color]="item.color">
-					
-				</div>
-			</div>
-		</div>
-	</div>
-</div>-->
-<!--<div #container (window:resize)="onResize(container.getBoundingClientRect())" class="col-md-12 col-sm-12 col-lg-12"
-	[style.min-height.px]="1000">
-	<div *ngFor="let row of map;let rowindex = index" 
-	class="map-row" 
-	[style.height.px]="box_width"
-	[style.top.px]="box_width*rowindex"
-	[style.min-height.px]="box_width">
-		<div *ngFor="let slot of row;let colindex = index" 
-		class="map-slot"
-		[pspDragSlot]
-		(pspDropped)="onDrop($event,slot)"
-		[style.width.px]="box_width"
-		[style.min-width.px]="box_width"
-		[style.left.px]="box_width*colindex-15" 
-		[style.height.px]="box_width"
-		[style.top.px]="box_width*rowindex"
-		
-		[attr.x_pos]="colindex"
-		[attr.y_pos]="rowindex"
-		[style.min-height.px]="box_width">
-			<div *ngIf="slot[0]" class="map-item"
-		        [pspDragItem]="slot[0]"
-				[style.width.px]="slot[0]?.width*box_width-1"
-				[style.height.px]="slot[0]?.height*box_width"
-				[attr.x_pos]="colindex"
-				[attr.y_pos]="rowindex"
-				[style.background-color]="slot[0]?.color">
-			</div>
-		</div>
-	</div>
-</div>-->
-<div #container (window:resize)="onResize(container.getBoundingClientRect())" class="col-md-12 col-sm-12 col-lg-12"
+<div #container (window:resize)="onResize(container.getBoundingClientRect())" class=" container col-md-12 col-sm-12 col-lg-12"
 	[style.min-height.px]="box_width*rows"
 	[style.height.px]="box_width*rows">
 	<div *ngFor="let rowindex of rowIndexes" 
@@ -87,8 +22,8 @@
 		<!-- the actual grid itself, which is invisible-->
 		<div *ngFor="let colindex of colIndexes" 
 		class="drag-map-slot"
-		[dragula]="'grid'"
-		[dragulaModel]="map.getSlot(rowindex, colindex)" 
+		[dragula]="mapService.bagName"
+		[dragulaModel]="getSlot(rowindex, colindex)" 
 		[style.width.px]="box_width"
 		[style.min-width.px]="box_width"
 		[style.left.px]="box_width*colindex-5" 
@@ -98,17 +33,60 @@
 		[attr.x_pos]="colindex"
 		[attr.y_pos]="rowindex"
 		[style.min-height.px]="box_width">
-		<div *ngIf="map.getItem(rowindex, colindex)" class="map-item"
-				[class.map-item-draggable]="map.getItem(rowindex, colindex).draggable"
-				[style.width.px]="map.getItem(rowindex, colindex).width*box_width-2"
-				[style.height.px]="map.getItem(rowindex, colindex).height*box_width-2"
+			<!-- the items on the grid-->
+			<div *ngIf="getItem(rowindex, colindex)" class="map-item"
+				[class.map-item-draggable]="getItem(rowindex, colindex).draggable"
+				[style.width.px]="getItem(rowindex, colindex).width*box_width-2"
+				[style.height.px]="getItem(rowindex, colindex).height*box_width-2"
+				[class.wall]="!getItem(rowindex,colindex).draggable"
 				[attr.x_pos]="colindex"
 				[attr.y_pos]="rowindex"
-				[style.background-color]="map.getItem(rowindex, colindex).color">
-				<!--<span class="glyphicon glyphicon-move" aria-hidden="true"></span>-->
+				[attr._id]="getItem(rowindex, colindex).id"
+				[style.background-color]="getItem(rowindex, colindex).color">
+				<!--<img *ngIf="getItem(rowindex,colindex)?.bgImageUrl?.length>0" 
+				[src]="getItem(rowindex,colindex)?.bgImageUrl? getItem(rowindex,colindex)?.bgImageUrl : '' " alt=""/>-->
+				<img *ngIf="getItem(rowindex,colindex)?.bgImageUrl?.length==1" 
+				[src]="getItem(rowindex,colindex)?.bgImageUrl? getItem(rowindex,colindex)?.bgImageUrl : '' " alt=""/>
+
 			</div>
+
 		</div>
 	</div>
 
 </div>
-<app-map-add  class="col-md-12 col-sm-12 col-lg-12"></app-map-add>
+
+
+
+<div class="col-md-12 col-sm-12 col-lg-12">
+	<div class="section map-add-item-container"
+	[dragula]="mapService.bagName"
+	[dragulaModel]="mapService.getStock()">
+
+			<div   *ngFor="let item of mapService.getStock()"
+			class="map-add-item "
+
+			[attr.width]="item.width"
+			[attr.height]="item.height"
+			[attr._id]="item.id"
+			>
+
+				<img *ngIf="item?.bgImageUrl?.length>0" 
+				[style.background-color]="item.color"
+				/>
+
+				<img *ngIf="item?.bgImageUrl?.length<=0"
+				class="map-item-draggable"
+				[style.background-color]="item.color"
+				[style.width.px]="item.width*box_width-2"
+				[style.height.px]="item.height*box_width-2"
+				[src]="item?.bgImageUrl? item?.bgImageUrl : '' " alt=""/>
+
+				<p class="text-center map-add-item-name"
+				
+				>{{item.name}}</p>
+				<!--[style.left.px]="item.width*box_width"-->
+			</div>
+			
+		
+	</div>
+</div>

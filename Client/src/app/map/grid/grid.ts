@@ -24,10 +24,14 @@ export class Grid<T extends Intersectable>{
             this.map[to_y][to_x][0].y = to_y;
 
         })
-        this.dragulaService.setOptions(bagName, {
-            over:(el:Element, container:Element, source:Element)=>{
 
-            },
+        this.dragulaService.over.subscribe((el:Element, container:Element, source:Element)=>{
+                console.log(el);
+                console.log(container);
+                console.log(source);
+            });
+        this.dragulaService.setOptions(bagName, {
+
             moves: (el: Element, source: Element, handle: Element, sibling: Element) => {
                 var element = this.map[+el.getAttribute("y_pos")][+el.getAttribute("x_pos")][0];
                 return element.draggable;
@@ -35,7 +39,8 @@ export class Grid<T extends Intersectable>{
             //accepts is called by dragula to see if the element being dragged can be dropped in target
             accepts: (el: Element, target: Element, source: Element, sibling: Element) => {
                 //if target is not part of the map
-                if(target.classList.contains("map-item-container")){
+                // console.log("accepts");
+                if(target.classList.contains("map-add-item-container")){
                     return true;
                 }
 
@@ -48,7 +53,7 @@ export class Grid<T extends Intersectable>{
                     return true;
 
                 var element;
-                if(source.classList.contains("map-item-container")){
+                if(source.classList.contains("map-add-item-container")){
                     element = this.map[from_y][from_x][0];
                 }
                 else{

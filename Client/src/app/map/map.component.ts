@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula'
-import { MapItem, Wall } from './map-item.model';
+import { MapItem, Wall, StockItem } from './map-item.model';
 import { Grid } from './grid/grid';
-
+import { MapService } from './map.service';
 
 @Component({
   selector: 'app-map',
@@ -10,17 +10,19 @@ import { Grid } from './grid/grid';
   styleUrls: ['./map.component.less'],
 })
 export class MapComponent implements OnInit {
-  private rows: number = 8;
-  private rowIndexes = (Array(this.rows).fill(0).map((x,i)=>i));
-  private cols: number = 18;
-  private colIndexes = (Array(this.cols).fill(0).map((x,i)=>i));
+  private rows: number;
+  private rowIndexes;
+  private cols: number;
+  private colIndexes;
 
   private box_width;
 
-  private map: Grid<MapItem>;
-
-  constructor(private dragulaService: DragulaService) {
-    
+  // @ViewChild('myname') input; 
+  constructor(private mapService: MapService<MapItem>) {
+    this.rows = mapService.getRows();
+    this.cols = mapService.getCols();
+    this.rowIndexes = (Array(this.rows).fill(0).map((x,i)=>i));
+    this.colIndexes = (Array(this.cols).fill(0).map((x,i)=>i));
   }
 
   onResize(div: ClientRect) {
@@ -28,24 +30,43 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.map = new Grid<MapItem>(this.dragulaService, "grid", this.cols, this.rows);
-    
-
-    var item1 = new MapItem(4, 2, "#ff00ff");
-    var item2 = new MapItem(2, 2, "#ffff00");
+    // var item1 = new StockItem(4, 2, "Szökőkút", "/assets/person_img.jpg" );
+    // var item1 = new StockItem(4, 2, "Szökőkút", "/assets/person_img.jpg" );
+    var item1 = new StockItem(4, 2, "Szökőkút", "#00ffff" );
+    var item2 = new StockItem(2, 2, "Kutyafuttató","#00ff00" );
     var wall1 = new Wall(2,8);
-    var wall2 = new Wall(3,4);
-    this.map.addItem(item1, 0,0);
-    this.map.addItem(item2, 2,2);
-    this.map.addItem(wall1, 6,0);
-    this.map.addItem(wall2, 12,3);
-    
+    var wall2 = new Wall(7,2);
+    this.mapService.addItemToMap(item1, 6,12);
+    this.mapService.addItemToMap(item2, 2,2);
+    this.mapService.addItemToMap(wall1, 0,6);
+    this.mapService.addItemToMap(wall2, 3,11);
+    this.mapService.addItemToMap(new Wall(2,1), 0,16);
+    this.mapService.addItemToMap(new Wall(1,1), 1,17);
+    this.mapService.addItemToMap(new Wall(1,1), 6,17);
+    this.mapService.addItemToMap(new Wall(2,1), 7,16);
 
+    this.mapService.addItemToMap(new Wall(2,1), 0,0);
+    this.mapService.addItemToMap(new Wall(1,1), 1,0);
+    this.mapService.addItemToMap(new Wall(1,1), 6,0);
+    this.mapService.addItemToMap(new Wall(2,1), 7,0);
+
+    this.mapService.addItemToStock(new StockItem(1,1,"Játszótér","#0000ff"));
+    this.mapService.addItemToStock(new StockItem(1,2,"Pad","#ff00ff"));
+    this.mapService.addItemToStock(new StockItem(2,2,"Tűzrakó hely","#ffaa11"));
 
     window.dispatchEvent(new Event("resize"));
   }
 
-  ngOnDestroy(){
-    this.map.destoy();
+  getItem(row:number,col:number):MapItem{
+    return this.mapService.getItemFromMap(row,col);
   }
+
+  getSlot(row:number, col:number){
+    return this.mapService.getSlot(row,col);
+  }
+
+  ngOnDestroy(){
+    this.mapService.erase();
+  }
+
 }
