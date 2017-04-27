@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula'
 import { MapItem, Wall, StockItem } from './map-item.model';
-import { Grid } from './grid/grid';
 import { MapService } from './map.service';
 
 @Component({
