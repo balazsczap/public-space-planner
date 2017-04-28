@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { MapItem,StockItem,Wall } from "./map-item.model";
-import { Grid } from "./grid/grid";
 import { DragulaService } from "ng2-dragula";
-import { Intersectable } from './grid/intersectable.interface';
+import { Intersectable } from './map-item.model';
 
 
 @Injectable()
@@ -129,8 +128,8 @@ export class MapService<T extends Intersectable> {
         })
 
         this.dragulaService.setOptions(this._bagName, {
-            //if the item is let go outside of any container, it reverts back to where it was before the drag
-            revertOnSpill:true,
+            //if the item is let go outside of any container, it doesn't revert back to where it was before the drag
+            revertOnSpill:false,
             //horizontal ordering is being considered first (important at the stock's visual direction)
             direction:'horizontal',
             //set draggable items as movable by dragula

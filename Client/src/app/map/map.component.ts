@@ -52,6 +52,7 @@ export class MapComponent implements OnInit {
     this.mapService.addItemToStock(new StockItem(1,1,"Játszótér","#0000ff"));
     this.mapService.addItemToStock(new StockItem(1,2,"Pad","#ff00ff"));
     this.mapService.addItemToStock(new StockItem(2,2,"Tűzrakó hely","#ffaa11"));
+    
 
     window.dispatchEvent(new Event("resize"));
   }

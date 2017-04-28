@@ -1,4 +1,13 @@
-import { Intersectable } from './grid/intersectable.interface';
+export interface Intersectable {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    id: number;
+    intersects(other: Intersectable): boolean;
+    clone(): Intersectable;
+    draggable: boolean;
+}
 
 export class MapItem implements Intersectable {
   public x: number;
