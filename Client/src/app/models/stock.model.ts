@@ -7,6 +7,8 @@ export class StockItem{
     public name: string;
     public description: string;
     public imageUrl: string;
+    public width: number;
+    public height: number;
     public creator: User;
     public comments: Comment[];
     public ratings: number;

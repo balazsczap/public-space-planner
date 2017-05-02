@@ -43,10 +43,10 @@
 				[attr.y_pos]="rowindex"
 				[attr._id]="getItem(rowindex, colindex).id"
 				[style.background-color]="getItem(rowindex, colindex).color">
-				<!--<img *ngIf="getItem(rowindex,colindex)?.bgImageUrl?.length>0" 
-				[src]="getItem(rowindex,colindex)?.bgImageUrl? getItem(rowindex,colindex)?.bgImageUrl : '' " alt=""/>-->
-				<img *ngIf="getItem(rowindex,colindex)?.bgImageUrl?.length==1" 
+				<img *ngIf="getItem(rowindex,colindex)?.bgImageUrl?.length>0" 
 				[src]="getItem(rowindex,colindex)?.bgImageUrl? getItem(rowindex,colindex)?.bgImageUrl : '' " alt=""/>
+				<!--<img *ngIf="getItem(rowindex,colindex)?.bgImageUrl?.length==1" 
+				[src]="getItem(rowindex,colindex)?.bgImageUrl? getItem(rowindex,colindex)?.bgImageUrl : '' " alt=""/>-->
 
 			</div>
 
@@ -55,10 +55,14 @@
 
 </div>
 
+<div *ngIf="hideStock"  >
+	<button class="button btn btn-primary col-sm-4 col-md-4 col-lg-4" (click)="hide()">Show stock</button>
+	<button class="button btn btn-primary col-sm-4 col-md-4 col-lg-4 col-sm-offset-4 col-md-offset-4 col-lg-offset-4" (click)="save()">Save</button>
+</div>
 
-
-<div class="col-md-12 col-sm-12 col-lg-12">
-	<div class="section map-add-item-container"
+<div *ngIf="!hideStock" class="section col-md-12 col-sm-12 col-lg-12">
+	<h1 class="text-center">Stock</h1>
+	<div class=" map-add-item-container"
 	[dragula]="mapService.bagName"
 	[dragulaModel]="mapService.getStock()">
 
@@ -70,9 +74,12 @@
 			[attr._id]="item.id"
 			>
 
-				<img *ngIf="item?.bgImageUrl?.length>0" 
+				<img *ngIf="item?.bgImageUrl?.length>0"
+				class="map-item-draggable"
 				[style.background-color]="item.color"
-				/>
+				[style.width.px]="item.width*box_width-2"
+				[style.height.px]="item.height*box_width-2"
+				[src]="item?.bgImageUrl? item?.bgImageUrl : '' " alt=""/>
 
 				<img *ngIf="item?.bgImageUrl?.length<=0"
 				class="map-item-draggable"
@@ -89,4 +96,7 @@
 			
 		
 	</div>
+</div>
+<div *ngIf="!hideStock" class="col-sm-2 col-md-2 col-lg-2 col-offset-sm-2 col-offset-md-2 col-offset-lg-2" style="margin-top:20px;">
+	<button class="btn btn-primary" (click)="hide()">Hide stock</button>
 </div>

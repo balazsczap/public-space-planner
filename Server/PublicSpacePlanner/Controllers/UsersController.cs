@@ -167,14 +167,32 @@ namespace PublicSpacePlanner.Controllers
 
 		[Authorize(Roles ="admin")]
 		[HttpDelete("{id:int}")]
-		public void Delete(int id)
+		public IActionResult Delete(int id)
 		{
 			_users.Remove(id);
+			return Ok();
+		}
+
+		//[Authorize(Roles = "user,admin")]
+		[HttpGet("{id:int}/plan")]
+		public IActionResult GetPlansOf(int id)
+		{
+			var planData = _users.GetPlan(id);
+			if (planData == null)
+			{
+				planData = "";
+			}
+			return new ObjectResult(planData);
 		}
 
 
-		
-
+		//[Authorize(Roles = "user,admin")]
+		[HttpPut("{id:int}/plan")]
+		public IActionResult UpdatePlansOf(int id, [FromBody] string planData)
+		{
+			_users.UpdatePlan(id, planData);
+			return Ok();
+		}
 
     }
 }

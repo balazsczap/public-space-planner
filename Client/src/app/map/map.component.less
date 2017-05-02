@@ -60,8 +60,12 @@
 
 .map-item.wall{
     box-sizing: content-box;
-    border: 2px solid white;
-    margin:0px 0px 0px 0px;
+    border: 1px solid white;
+    border-bottom-width: 1px;
+    border-left-width: 0px;
+    border-right-width: 1px;
+    border-top-width: 0px;
+    margin:1px 0px 0px 1px;
 }
 
 
@@ -168,4 +172,13 @@
     // margin-right:50px;
 }
 
+h1{
+    margin-top:0;
+    margin-bottom:1em;
+}
+
+
 .gu-mirror.map-add-item{opacity:.2;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";filter:alpha(opacity=20);cursor:-webkit-grabbing;box-shadow:none;}
+.gu-transit{
+    display: inline-block;
+}

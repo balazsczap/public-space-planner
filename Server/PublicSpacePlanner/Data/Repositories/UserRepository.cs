@@ -70,5 +70,18 @@ namespace PublicSpacePlanner.Data.Repositories
 			_context.SaveChanges();
 		}
 
+
+		public string GetPlan(int userId)
+		{
+			return _context.Plans.Single(p => p.Creator.Id == userId).PlanData;
+		}
+
+		public void UpdatePlan(int userId, string planData)
+		{
+			var plan = _context.Plans.Single(p => p.Creator.Id == userId);
+			plan.PlanData = planData;
+			_context.Plans.Update(plan);
+			_context.SaveChanges();
+		}
 	}
 }

@@ -13,9 +13,11 @@ export class MapComponent implements OnInit {
   private rowIndexes;
   private cols: number;
   private colIndexes;
-
+  
   private box_width;
 
+
+  private hideStock: boolean = true;
   // @ViewChild('myname') input; 
   constructor(private mapService: MapService<MapItem>) {
     this.rows = mapService.getRows();
@@ -30,15 +32,16 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     // var item1 = new StockItem(4, 2, "Szökőkút", "/assets/person_img.jpg" );
-    // var item1 = new StockItem(4, 2, "Szökőkút", "/assets/person_img.jpg" );
-    var item1 = new StockItem(4, 2, "Szökőkút", "#00ffff" );
+    var item1 = new StockItem(4, 2, "Szökőkút", "/assets/person_img.jpg" );
+    // var item1 = new StockItem(4, 2, "Szökőkút", "#00ffff" );
     var item2 = new StockItem(2, 2, "Kutyafuttató","#00ff00" );
     var wall1 = new Wall(2,8);
     var wall2 = new Wall(7,2);
-    this.mapService.addItemToMap(item1, 6,12);
-    this.mapService.addItemToMap(item2, 2,2);
+    this.mapService.addItemToMap(item1, 0, 2);
+    this.mapService.addItemToMap(item2, 4,9);
     this.mapService.addItemToMap(wall1, 0,6);
     this.mapService.addItemToMap(wall2, 3,11);
+    
     this.mapService.addItemToMap(new Wall(2,1), 0,16);
     this.mapService.addItemToMap(new Wall(1,1), 1,17);
     this.mapService.addItemToMap(new Wall(1,1), 6,17);
@@ -66,7 +69,15 @@ export class MapComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    this.mapService.erase();
+    this.mapService.reload();
+  }
+
+  hide(){
+    this.hideStock=!this.hideStock;
+  }
+
+  save(){
+    // this.mapService.save();
   }
 
 }

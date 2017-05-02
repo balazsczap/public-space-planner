@@ -15,5 +15,7 @@ namespace PublicSpacePlanner.Data.Repositories
 		void Add(User user);
 		void Update(User user);
 		void Remove(int id);
+		string GetPlan(int userId);
+		void UpdatePlan(int userId, string planData);
     }
 }

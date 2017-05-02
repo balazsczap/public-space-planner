@@ -8,9 +8,10 @@ using PublicSpacePlanner.Data;
 namespace PublicSpacePlanner.Migrations
 {
     [DbContext(typeof(SpacePlannerDbContext))]
-    partial class SpacePlannerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170502140722_plan added")]
+    partial class planadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)

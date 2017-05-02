@@ -23,6 +23,7 @@ namespace PublicSpacePlanner.Data
 		public DbSet<StockItem> StockItems { get; set; }
 		public DbSet<Rating> Ratings { get; set; }
 		public DbSet<Event> Events { get; set; }
+		public DbSet<Plan> Plans { get; set; }
 	}
 }
 
