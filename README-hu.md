@@ -2,12 +2,12 @@
 
 # Public Space Planner
 
-Az alkalmazás a BME-VIK Mérnökinformatikus BsC képzés Önálló laboratórium tárgyának keretein belül készül.
+Az alkalmazás a BME-VIK Mérnökinformatikus BsC képzés Önálló laboratórium tárgyának keretein belül készül, Cserkúti Péter konzulens felügyelete alatt.
 
 ## Leírás
 
 A cél egy olyan webalkalmazás megvalósítása, mely által egy közösségi területet a környezetében lakó emberek közösen rendezhessenek be. 
-Ez egy egyszeri, játékszerű aktivitás keretében fog zajlani.
+Ez egy egyszeri, játékszerű aktivitás keretében fog zajlani, ami ösztönzi az embereket a tervezésben való részvételre. 
 
 Két fázisból áll:
   
@@ -44,10 +44,6 @@ csak ehhez a projekthez használható megbízhatóan.
 
 ##### Futtatás:
 
-A projekt gyökérkönyvtárában `npm run dev`.
+A projekt gyökérkönyvtárában `npm run dev`.(Ha két külön parancssorban szeretnénk futtatni, az alkönyvtárakban `npm start`-olni kell mindkét alprojektet.)
 
-Ha két külön parancssorban szeretnénk futtatni:
-* a Client könyvtárban `npm start`,
-* a Server\PublicSpacePlanner könyvtárban `dotnet run --environment=Development`
-
-parancsok hatására a kliens a localhost:4200, a szerver a localhost:5000-es portján indul, és ide van irányítva a kliens összes api hívása is.
+A kliens az angular-cli default localhost:4200-as porton, a szerver a dotnet-core default localhost:5000-es portján indul, és ide van irányítva a kliens összes API hívása is.
