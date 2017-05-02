@@ -1,3 +1,5 @@
+[English version](./readme.md)
+
 # Public Space Planner
 
 Az alkalmazás a BME-VIK Mérnökinformatikus BsC képzés Önálló laboratórium tárgyának keretein belül készül.
