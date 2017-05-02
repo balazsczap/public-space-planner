@@ -1,52 +1,46 @@
+[Hungarian version](./README-hu.md)
+
 # Public Space Planner
 
-Az alkalmazás a BME-VIK Mérnökinformatikus BsC képzés Önálló laboratórium tárgyának keretein belül készül.
+This application is under development for the project laboratory course of the BME-VIK Computer Engineering curriculum, under the advisory of Cserkúti Péter.
 
-## Leírás
+## Description
 
-A cél egy olyan webalkalmazás megvalósítása, mely által egy közösségi területet a környezetében lakó emberek közösen rendezhessenek be. 
-Ez egy egyszeri, játékszerű aktivitás keretében fog zajlani.
+The goal is the realization of a web appilcation by which a public area can be furnished by the people living in the neighbourhood of it. This would happen as a game-like activity, which encourages people to participate in the planning.
 
-Két fázisból áll:
+The game would consist of two phases:
   
-* Az első fázisban a résztvevők egy (már előre elkészített) készlethez adhatnak hozzá elemeket,
-az egyedi elképzeléseik és szükségleteik alapján. Lehet rájuk szavazni, extra javaslatokat tenni, stb.
-Az elemeket a játék üzemeltetői végérvényesíthetik.
-* A második fázisban ezekből az elemekből a terület térképére helyezhetnek el tetszőlegesen, 
-a különböző elhelyezésekről szavazni lehet. A játék vége az játékidő lejártával történik.
+* In the first phase, participants can add items to an (already populated) stock, based on their unique desires and needs. These items can be voted on, commented on for further modifications, etc. The items can be finalized by the operators of the game.
+* In the second phase one can put these elements on a stylized map of the area, creating plans. The plans are subject to the same mechanisms as the stock items. The game is over when a certain time limit is passed.
 
-Központi elem a résztvevők közötti kommunikáció, a minél proaktívabb részvétel lehetővé tétele.
+The cental element in the game is the communication between participants, making the most proactive involvement possible.
 
-## Használat
+## Usage
 
-#### A projekt (<sub><sup>reményeim szerint</sup></sub>) mindenkori buildelt változata elérhető a https://public-space-planner.herokuapp.com címen.
+#### The application's current latest version is (<sub><sup>hopefully</sup></sub>) available at: [https://public-space-planner.herokuapp.com](https://public-space-planner.herokuapp.com).
 
-Ehhez a https://github.com/balazsczap/dotnetcore-buildpack -et használja, ami részben saját fejlesztés, viszont jelenlegi állapotában
-csak ehhez a projekthez használható megbízhatóan.
+To make this possible, the Heroku configuration uses https://github.com/balazsczap/dotnetcore-buildpack which is a fork of another buildpack, but it is extremely fragile, usable only for this app.
 
-### Lokális futtatáshoz:
+### Running locally
 
-##### Szükséges:
-* A `.NET Core 1.1 SDK`: https://www.microsoft.com/net/download/core#/current 
-  * A `preview2-1-003177`-es verzió van jelenleg használatban, 
-  <sub><sup>2017.03.05-én és korábban ez volt megtalálható a fenti linken.</sup></sub>
-* `node.js v6.9.4` és `npm 3.10.10`
+##### Dependencies:
+* `.NET Core 1.1 SDK`: https://www.microsoft.com/net/download/core#/current 
+  * `preview2-1-003177` is used, 
+  <sub><sup>On 2017/03/05 it was available on the above URL.</sup></sub>
+* `node.js v6.9.4` & `npm 3.10.10`
 
-##### Telepítés: 
-* a `Client` könyvtárban
-  * `npm install -g @angular/cli@1.0.0-beta.32.3` ha még nem lenne telepítve
+##### Installation: 
+* in `Client` directory
+  * `npm install -g @angular/cli@1.0.0-beta.32.3` if it's not installed
   * `npm install`
 
-* a `Server\PublicSpacePlanner` könyvtárban
+* in `Server\PublicSpacePlanner` directory
   * `dotnet restore`
 
-##### Futtatás:
+##### Running:
 
-A projekt gyökérkönyvtárában `npm run dev`.
+In the root folder: `npm run dev`.
+(If you want to launch it in two separate terminals, navigate to the subfolders, and `npm start` both.)
 
-Ha két külön parancssorban szeretnénk futtatni:
-* a Client könyvtárban `npm start`,
-* a Server\PublicSpacePlanner könyvtárban `dotnet run --environment=Development`
-
-parancsok hatására a kliens a localhost:4200, a szerver a localhost:5000-es portján indul, és ide van irányítva a kliens összes api hívása is.
+Client starts on the angular-cli default localhost:4200, server starts on the dotnet-core default localhost:5000, and API-calls from the client are proxied to the server.
 
