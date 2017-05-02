@@ -1,4 +1,4 @@
-[English version](./readme.md)
+[English version](./README.md)
 
 # Public Space Planner
 
