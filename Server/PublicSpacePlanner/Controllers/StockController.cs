@@ -32,6 +32,8 @@ namespace PublicSpacePlanner.Controllers
 						Description = s.Description,
 						ImageUrl = s.ImageUrl,
 						Creator = s.Creator,
+						Width = s.Width,
+						Height = s.Height,
 						Ratings = s.Ratings.Sum(r => r.Value)
 					})
 					.ToList()
@@ -62,22 +64,25 @@ namespace PublicSpacePlanner.Controllers
 			{
 				Role = User.Claims.Single(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value,
 				Id = int.Parse(User.Claims.Single(c => c.Type == "user id").Value)
-			};	
+			};
 
 			var name = itemData["name"]?.ToString();
 			var description = itemData["description"]?.ToString();
 			var creatorId = requester.Id;
+			var imageUrl = itemData["imageUrl"]?.ToString();
+			var width = itemData["width"]?.ToString();
+			var height = itemData["height"]?.ToString();
 
-			if (name == null || description == null)
+			if (name == null || description == null || width == null || height == null)
 				return StatusCode(400, "No name, description, or creatorId given");
 
-			var item = new StockItem { Name = name, Description = description };
+			var item = new StockItem { Name = name, Description = description, ImageUrl = imageUrl, Height = int.Parse(height), Width = int.Parse(width)};
 
 			_stock.Add(item, creatorId);
 
 
 			return Created($"/stock/{item.Id}", item);
-			
+
 		}
 
 		[Authorize(Roles = "user,admin")]
@@ -93,6 +98,8 @@ namespace PublicSpacePlanner.Controllers
 			var name = itemData["name"]?.ToString();
 			var description = itemData["description"]?.ToString();
 			var imageUrl = itemData["imageUrl"]?.ToString();
+			var width = itemData["width"]?.ToString();
+			var height = itemData["height"]?.ToString();
 
 			var existingItem = _stock.GetOneById(id);
 			if (existingItem == null)
@@ -101,13 +108,16 @@ namespace PublicSpacePlanner.Controllers
 			}
 
 			// Users shouldn't be able to modify eachother's stock items
-			if(requester.Role == "user" && existingItem.Creator.Id != requester.Id){
+			if (requester.Role == "user" && existingItem.Creator.Id != requester.Id)
+			{
 				return StatusCode(403, "Trying to modify another user's stock item");
 			}
 
 			existingItem.Name = name ?? existingItem.Name;
 			existingItem.Description = description ?? existingItem.Description;
 			existingItem.ImageUrl = imageUrl ?? existingItem.ImageUrl;
+			existingItem.Width = width == null ? existingItem.Width : int.Parse(width);
+			existingItem.Height = height == null ? existingItem.Height : int.Parse(height);
 
 			_stock.Update(existingItem);
 
@@ -192,7 +202,7 @@ namespace PublicSpacePlanner.Controllers
 
 		[Authorize(Roles = "user,admin")]
 		[HttpPost("{id:int}/comments")]
-		public IActionResult AddComment([FromRoute] int id,[FromBody] JObject commentData)
+		public IActionResult AddComment([FromRoute] int id, [FromBody] JObject commentData)
 		{
 			var requester = new
 			{
@@ -252,7 +262,7 @@ namespace PublicSpacePlanner.Controllers
 
 
 			return Ok();
-		
+
 		}
 
 		[Authorize(Roles = "user,admin")]
@@ -263,7 +273,7 @@ namespace PublicSpacePlanner.Controllers
 			{
 				_stock.DeleteComment(itemId, commentId);
 			}
-			catch(InvalidOperationException)
+			catch (InvalidOperationException)
 			{
 				return BadRequest();
 			}

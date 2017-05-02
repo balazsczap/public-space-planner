@@ -173,7 +173,7 @@ namespace PublicSpacePlanner.Controllers
 			return Ok();
 		}
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpGet("{id:int}/plan")]
 		public IActionResult GetPlansOf(int id)
 		{
@@ -186,10 +186,20 @@ namespace PublicSpacePlanner.Controllers
 		}
 
 
-		//[Authorize(Roles = "user,admin")]
+		[Authorize(Roles = "user,admin")]
 		[HttpPut("{id:int}/plan")]
 		public IActionResult UpdatePlansOf(int id, [FromBody] string planData)
 		{
+			var requester = new
+			{
+				Role = User.Claims.Single(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value,
+				Id = int.Parse(User.Claims.Single(c => c.Type == "user id").Value)
+			};
+
+			if (requester.Role == "user" && requester.Id != id)
+			{
+				return StatusCode(403, "Trying to access another user's data");
+			}
 			_users.UpdatePlan(id, planData);
 			return Ok();
 		}

@@ -13,8 +13,8 @@ namespace PublicSpacePlanner.Data.Models
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public string ImageUrl { get; set; }
-
-		
+		public int Width { get; set; }
+		public int Height { get; set; }
 		public User Creator { get; set; }
 		
 		public ICollection<Comment> Comments { get; set; } = new List<Comment>(); 
