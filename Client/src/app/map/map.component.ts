@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula'
-import { MapItem, Wall, StockItem } from './map-item.model';
+import { MapItem, Wall } from './map-item.model';
+import { StockItem } from '../models/stock.model';
 import { MapService } from './map.service';
 
 @Component({
@@ -32,29 +33,29 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     // var item1 = new StockItem(4, 2, "Szökőkút", "/assets/person_img.jpg" );
-    var item1 = new StockItem(4, 2, "Szökőkút", "/assets/person_img.jpg" );
+    // var item1 = new StockItem(4, 2, "Szökőkút", "/assets/person_img.jpg" );
     // var item1 = new StockItem(4, 2, "Szökőkút", "#00ffff" );
-    var item2 = new StockItem(2, 2, "Kutyafuttató","#00ff00" );
-    var wall1 = new Wall(2,8);
-    var wall2 = new Wall(7,2);
-    this.mapService.addItemToMap(item1, 0, 2);
-    this.mapService.addItemToMap(item2, 4,9);
-    this.mapService.addItemToMap(wall1, 0,6);
-    this.mapService.addItemToMap(wall2, 3,11);
+    // var item2 = new StockItem(2, 2, "Kutyafuttató","#00ff00" );
+    // var wall1 = new Wall(2,8);
+    // var wall2 = new Wall(7,2);
+    // this.mapService.addItemToMap(item1, 0, 2);
+    // this.mapService.addItemToMap(item2, 4,9);
+    // this.mapService.addItemToMap(wall1, 0,6);
+    // this.mapService.addItemToMap(wall2, 3,11);
     
-    this.mapService.addItemToMap(new Wall(2,1), 0,16);
-    this.mapService.addItemToMap(new Wall(1,1), 1,17);
-    this.mapService.addItemToMap(new Wall(1,1), 6,17);
-    this.mapService.addItemToMap(new Wall(2,1), 7,16);
+    // this.mapService.addItemToMap(new Wall(2,1), 0,16);
+    // this.mapService.addItemToMap(new Wall(1,1), 1,17);
+    // this.mapService.addItemToMap(new Wall(1,1), 6,17);
+    // this.mapService.addItemToMap(new Wall(2,1), 7,16);
 
-    this.mapService.addItemToMap(new Wall(2,1), 0,0);
-    this.mapService.addItemToMap(new Wall(1,1), 1,0);
-    this.mapService.addItemToMap(new Wall(1,1), 6,0);
-    this.mapService.addItemToMap(new Wall(2,1), 7,0);
+    // this.mapService.addItemToMap(new Wall(2,1), 0,0);
+    // this.mapService.addItemToMap(new Wall(1,1), 1,0);
+    // this.mapService.addItemToMap(new Wall(1,1), 6,0);
+    // this.mapService.addItemToMap(new Wall(2,1), 7,0);
 
-    this.mapService.addItemToStock(new StockItem(1,1,"Játszótér","#0000ff"));
-    this.mapService.addItemToStock(new StockItem(1,2,"Pad","#ff00ff"));
-    this.mapService.addItemToStock(new StockItem(2,2,"Tűzrakó hely","#ffaa11"));
+    // this.mapService.addItemToStock(new StockItem(1,1,"Játszótér","#0000ff"));
+    // this.mapService.addItemToStock(new StockItem(1,2,"Pad","#ff00ff"));
+    // this.mapService.addItemToStock(new StockItem(2,2,"Tűzrakó hely","#ffaa11"));
     
 
     window.dispatchEvent(new Event("resize"));

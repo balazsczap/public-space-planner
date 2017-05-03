@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
-import { MapItem, StockItem, Wall } from "./map-item.model";
+import { MapItem, Wall } from "./map-item.model";
 import { DragulaService } from "ng2-dragula";
 import { Intersectable } from './map-item.model';
 import { HttpService } from '../network/http.service';
@@ -32,31 +32,31 @@ export class MapService<T extends Intersectable> {
     private httpService: HttpService<string>,
     private authService: AuthenticationService,
     private notificationsService: NotificationsService) {
-        this.reload();
-        this.dragulaSetup();
-        // this.reload();  
+        // this.reload();
+        // this.dragulaSetup();
+        this.reload();  
        
-        // this.httpService.get(`/users/${this.authService._userId}/plan`)
-        //     .map(data=>{
-        //         return data.text();
-        //     })
-        //     .subscribe(
-        //         (plan:string)=>{
-        //         if(plan.length>2){
-        //             this.fromPlanString(plan);
-        //         }
-        //         else{
-        //             // this.reload();
+        this.httpService.get(`/users/${this.authService._userId}/plan`)
+            .map(data=>{
+                return data.text();
+            })
+            .subscribe(
+                (plan:string)=>{
+                if(plan.length>2){
+                    this.loadFromString(plan);
+                }
+                else{
+                    // this.reload();
                     
-        //         }
-        //     },
-        //         err=>{
-        //         this.notificationsService.createDefaultError(err);
-        //         //fill map with slots
+                }
+            },
+                err=>{
+                this.notificationsService.createDefaultError(err);
+                //fill map with slots
  
                 
-        //     });
-        // this.dragulaSetup();
+            });
+        this.dragulaSetup();
         
       
 
@@ -70,16 +70,16 @@ export class MapService<T extends Intersectable> {
 
 
 
-    public addItemToMap(item: T, y: number, x: number) {
-        this.map[y][x].push(item);
-        this.mapItems.push(item);
-        item.x = x;
-        item.y = y;
-    }
+    // public addItemToMap(item: T, y: number, x: number) {
+    //     this.map[y][x].push(item);
+    //     this.mapItems.push(item);
+    //     item.x = x;
+    //     item.y = y;
+    // }
 
-    public addItemToStock(item: T) {
-        this.stock.push(item);
-    }
+    // public addItemToStock(item: T) {
+    //     this.stock.push(item);
+    // }
 
     public getSlot(y: number, x: number) {
         return this.map[y][x];
@@ -110,7 +110,7 @@ export class MapService<T extends Intersectable> {
 
     public save(){
         var a = this.authService._userId;
-        this.httpService.put(`/users/${this.authService._userId}/plan`, "\'"+this.toPlanString()+"\'")
+        this.httpService.put(`/users/${this.authService._userId}/plan`, "\'"+this.saveToString()+"\'")
 
             .subscribe(value=>{
                 if(value.ok) {
@@ -136,23 +136,40 @@ export class MapService<T extends Intersectable> {
         }
         this.stock = [];
     }
-
-    private fromPlanString(plan:string): void{
-        
-        var map: Array<Array<Array<T>>> = JSON.parse(plan);
-        for(var i=0; i<map.length;++i){
-            for(var j=0; j<map[i].length; ++j){
-                if(map[i][j].length>0){
-                    var item = map[i][j][0];
-                    this.addItemToMap(item, i,j);
-                }
+    private loadFromString(plan:string):void{
+        var input = JSON.parse(plan);
+        for(var i=0; i<this.rows;++i){
+            for(var j=0; j<this.cols;++j){
+                // this.map[i][j][0] = this.stockService.getItemById()
             }
         }
     }
-    private toPlanString(): string{
-        return JSON.stringify(this.map);
-
+    private saveToString(): string{
+        var output = [];
+        for(var i=0; i<this.rows;++i){
+            for(var j=0; j<this.cols;++j){
+                var item_id = this.map[i][j][0].draggable? this.map[i][j][0].id: -1;
+                output.push([item_id]);
+            }
+        }
+        return JSON.stringify(output);
     }
+    // private fromPlanString(plan:string): void{
+        
+    //     var map: Array<Array<Array<T>>> = JSON.parse(plan);
+    //     for(var i=0; i<map.length;++i){
+    //         for(var j=0; j<map[i].length; ++j){
+    //             if(map[i][j].length>0){
+    //                 var item = map[i][j][0];
+    //                 this.addItemToMap(item, i,j);
+    //             }
+    //         }
+    //     }
+    // }
+    // private toPlanString(): string{
+    //     return JSON.stringify(this.map);
+
+    // }
 
 
 
