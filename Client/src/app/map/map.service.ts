@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
-import { MapItem, Wall } from "./map-item.model";
 import { DragulaService } from "ng2-dragula";
 import { Intersectable } from './map-item.model';
 import { HttpService } from '../network/http.service';
+import { StockService } from '../network/stock.service';
 import { AuthenticationService } from '../auth/authentication.service';
 import { User } from '../models/user.model';
+import { StockItem } from '../models/stock.model';
 import { NotificationsService } from '../notifications/notifications.service';
 @Injectable()
 export class MapService<T extends Intersectable> {
-    private readonly cols: number = 18;
-    private readonly rows: number = 8;
+    protected readonly cols: number = 18;
+    protected readonly rows: number = 8;
     public getCols(): number {
         return this.cols;
     }
@@ -19,67 +20,35 @@ export class MapService<T extends Intersectable> {
     public getRows(): number {
         return this.rows;
     }
-    private readonly _bagName = "grid";
+    protected readonly _bagName = "grid";
 
     public get bagName(): string {
         return this._bagName;
     }
-    private map: Array<Array<Array<T>>>;
-    private mapItems: Array<T>;
-    private stock: Array<T>;
-    private dropSubscription: any;
-    constructor(private dragulaService: DragulaService,
-    private httpService: HttpService<string>,
-    private authService: AuthenticationService,
-    private notificationsService: NotificationsService) {
-        // this.reload();
-        // this.dragulaSetup();
-        this.reload();  
-       
-        this.httpService.get(`/users/${this.authService._userId}/plan`)
-            .map(data=>{
-                return data.text();
-            })
-            .subscribe(
-                (plan:string)=>{
-                if(plan.length>2){
-                    this.loadFromString(plan);
-                }
-                else{
-                    // this.reload();
-                    
-                }
-            },
-                err=>{
-                this.notificationsService.createDefaultError(err);
-                //fill map with slots
- 
-                
-            });
-        this.dragulaSetup();
-        
-      
-
-        
-
-
-
-
+    protected map: Array<Array<Array<T>>>;
+    protected mapItems: Array<T>;
+    protected stock: Array<T>;
+    protected dropSubscription: any;
+        constructor(protected dragulaService: DragulaService,
+        protected stockService: StockService,
+        protected httpService: HttpService<string>,
+        protected authService: AuthenticationService,
+        protected notificationsService: NotificationsService) {
     }
 
 
 
 
-    // public addItemToMap(item: T, y: number, x: number) {
-    //     this.map[y][x].push(item);
-    //     this.mapItems.push(item);
-    //     item.x = x;
-    //     item.y = y;
-    // }
+    protected addItemToMap(item: T, y: number, x: number) {
+        this.map[y][x].push(item);
+        this.mapItems.push(item);
+        item.x = x;
+        item.y = y;
+    }
 
-    // public addItemToStock(item: T) {
-    //     this.stock.push(item);
-    // }
+    protected addItemToStock(item: T) {
+        this.stock.push(item);
+    }
 
     public getSlot(y: number, x: number) {
         return this.map[y][x];
@@ -108,19 +77,19 @@ export class MapService<T extends Intersectable> {
         return this.stock.find(t => t.id == id);
     }
 
-    public save(){
+    public save() {
         var a = this.authService._userId;
-        this.httpService.put(`/users/${this.authService._userId}/plan`, "\'"+this.saveToString()+"\'")
+        this.httpService.put(`/users/${this.authService._userId}/plan`, "\'" + this.saveToString() + "\'")
 
-            .subscribe(value=>{
-                if(value.ok) {
+            .subscribe(value => {
+                if (value.ok) {
                     this.notificationsService.create(this.notificationsService.TYPE.SUCCESS, "Successfully saved", this.notificationsService.DURATION.SHORT);
-                }   
-            },  
-            err=>{
+                }
+            },
+            err => {
                 this.notificationsService.createDefaultError(err);
                 //fill map with slots
-                this.reload();  
+                this.reload();
             });
     }
 
@@ -136,26 +105,26 @@ export class MapService<T extends Intersectable> {
         }
         this.stock = [];
     }
-    private loadFromString(plan:string):void{
+    protected loadFromString(plan: string): void {
         var input = JSON.parse(plan);
-        for(var i=0; i<this.rows;++i){
-            for(var j=0; j<this.cols;++j){
+        for (var i = 0; i < this.rows; ++i) {
+            for (var j = 0; j < this.cols; ++j) {
                 // this.map[i][j][0] = this.stockService.getItemById()
             }
         }
     }
-    private saveToString(): string{
+    protected saveToString(): string {
         var output = [];
-        for(var i=0; i<this.rows;++i){
-            for(var j=0; j<this.cols;++j){
-                var item_id = this.map[i][j][0].draggable? this.map[i][j][0].id: -1;
+        for (var i = 0; i < this.rows; ++i) {
+            for (var j = 0; j < this.cols; ++j) {
+                var item_id = this.map[i][j][0].draggable ? this.map[i][j][0].id : -1;
                 output.push([item_id]);
             }
         }
         return JSON.stringify(output);
     }
-    // private fromPlanString(plan:string): void{
-        
+    // protected fromPlanString(plan:string): void{
+
     //     var map: Array<Array<Array<T>>> = JSON.parse(plan);
     //     for(var i=0; i<map.length;++i){
     //         for(var j=0; j<map[i].length; ++j){
@@ -166,14 +135,14 @@ export class MapService<T extends Intersectable> {
     //         }
     //     }
     // }
-    // private toPlanString(): string{
+    // protected toPlanString(): string{
     //     return JSON.stringify(this.map);
 
     // }
 
 
 
-    private dragulaSetup() {
+    protected dragulaSetup() {
         this.dragulaService.drop.subscribe((value: Element[]) => {
             var item = value[1];
             var source = value[3];

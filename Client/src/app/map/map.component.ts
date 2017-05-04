@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula'
 import { MapItem, Wall } from './map-item.model';
 import { StockItem } from '../models/stock.model';
-import { MapService } from './map.service';
+import { ConcreteMapService } from './concrete.map.service';
 
 @Component({
   selector: 'app-map',
@@ -14,17 +14,17 @@ export class MapComponent implements OnInit {
   private rowIndexes;
   private cols: number;
   private colIndexes;
-  
+
   private box_width;
 
 
   private hideStock: boolean = true;
   // @ViewChild('myname') input; 
-  constructor(private mapService: MapService<MapItem>) {
+  constructor(private mapService: ConcreteMapService) {
     this.rows = mapService.getRows();
     this.cols = mapService.getCols();
-    this.rowIndexes = (Array(this.rows).fill(0).map((x,i)=>i));
-    this.colIndexes = (Array(this.cols).fill(0).map((x,i)=>i));
+    this.rowIndexes = (Array(this.rows).fill(0).map((x, i) => i));
+    this.colIndexes = (Array(this.cols).fill(0).map((x, i) => i));
   }
 
   onResize(div: ClientRect) {
@@ -42,7 +42,7 @@ export class MapComponent implements OnInit {
     // this.mapService.addItemToMap(item2, 4,9);
     // this.mapService.addItemToMap(wall1, 0,6);
     // this.mapService.addItemToMap(wall2, 3,11);
-    
+
     // this.mapService.addItemToMap(new Wall(2,1), 0,16);
     // this.mapService.addItemToMap(new Wall(1,1), 1,17);
     // this.mapService.addItemToMap(new Wall(1,1), 6,17);
@@ -56,28 +56,28 @@ export class MapComponent implements OnInit {
     // this.mapService.addItemToStock(new StockItem(1,1,"Játszótér","#0000ff"));
     // this.mapService.addItemToStock(new StockItem(1,2,"Pad","#ff00ff"));
     // this.mapService.addItemToStock(new StockItem(2,2,"Tűzrakó hely","#ffaa11"));
-    
+
 
     window.dispatchEvent(new Event("resize"));
   }
 
-  getItem(row:number,col:number):MapItem{
-    return this.mapService.getItemFromMap(row,col);
+  getItem(row: number, col: number): MapItem {
+    return this.mapService.getItemFromMap(row, col);
   }
 
-  getSlot(row:number, col:number){
-    return this.mapService.getSlot(row,col);
+  getSlot(row: number, col: number) {
+    return this.mapService.getSlot(row, col);
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.mapService.reload();
   }
 
-  hide(){
-    this.hideStock=!this.hideStock;
+  hide() {
+    this.hideStock = !this.hideStock;
   }
 
-  save(){
+  save() {
     // this.mapService.save();
   }
 

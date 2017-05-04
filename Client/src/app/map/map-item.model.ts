@@ -60,13 +60,13 @@ export class Wall extends MapItem{
   }
 }
 
-// export class StockItem extends MapItem{
-//   public bgImageUrl: string;
-//   constructor(public width: number, public height: number, public name: string, public bgOrColor: string){
-//     super(width,height,bgOrColor.match(/#.{6}/)?bgOrColor:"");
-//     if(!bgOrColor.match(/#.{6}/))
-//       this.bgImageUrl = bgOrColor;
+export class StockItem extends MapItem{
+  public imageUrl: string;
+  constructor(public width: number, public height: number, public name: string, public bgOrColor: string){
+    super(width,height,bgOrColor.match(/#.{6}/)?bgOrColor:"");
+    if(!bgOrColor.match(/#.{6}/))
+      this.imageUrl = bgOrColor;
     
-//   }
-// }
+  }
+}
 

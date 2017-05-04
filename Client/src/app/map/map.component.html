@@ -43,10 +43,10 @@
 				[attr.y_pos]="rowindex"
 				[attr._id]="getItem(rowindex, colindex).id"
 				[style.background-color]="getItem(rowindex, colindex).color">
-				<img *ngIf="getItem(rowindex,colindex)?.bgImageUrl?.length>0" 
-				[src]="getItem(rowindex,colindex)?.bgImageUrl? getItem(rowindex,colindex)?.bgImageUrl : '' " alt=""/>
-				<!--<img *ngIf="getItem(rowindex,colindex)?.bgImageUrl?.length==1" 
-				[src]="getItem(rowindex,colindex)?.bgImageUrl? getItem(rowindex,colindex)?.bgImageUrl : '' " alt=""/>-->
+				<img *ngIf="getItem(rowindex,colindex)?.imageUrl?.length>0" 
+				[src]="getItem(rowindex,colindex)?.imageUrl? getItem(rowindex,colindex)?.imageUrl : '' " alt=""/>
+				<!--<img *ngIf="getItem(rowindex,colindex)?.imageUrl?.length==1" 
+				[src]="getItem(rowindex,colindex)?.imageUrl? getItem(rowindex,colindex)?.imageUrl : '' " alt=""/>-->
 
 			</div>
 
@@ -74,19 +74,19 @@
 			[attr._id]="item.id"
 			>
 
-				<img *ngIf="item?.bgImageUrl?.length>0"
+				<img *ngIf="item?.imageUrl?.length>0"
 				class="map-item-draggable"
 				[style.background-color]="item.color"
 				[style.width.px]="item.width*box_width-2"
 				[style.height.px]="item.height*box_width-2"
-				[src]="item?.bgImageUrl? item?.bgImageUrl : '' " alt=""/>
+				[src]="item?.imageUrl? item?.imageUrl : '' " alt=""/>
 
-				<img *ngIf="item?.bgImageUrl?.length<=0"
+				<img *ngIf="item?.imageUrl?.length<=0"
 				class="map-item-draggable"
 				[style.background-color]="item.color"
 				[style.width.px]="item.width*box_width-2"
 				[style.height.px]="item.height*box_width-2"
-				[src]="item?.bgImageUrl? item?.bgImageUrl : '' " alt=""/>
+				[src]="item?.imageUrl? item?.imageUrl : '' " alt=""/>
 
 				<p class="text-center map-add-item-name"
 				

@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragulaModule } from "ng2-dragula"
 import { NotificationsService } from '../notifications/notifications.service';
 import { MapService } from './map.service';
+import { ConcreteMapService } from './concrete.map.service';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { MapService } from './map.service';
   declarations: [
     MapComponent,
   ],
-  providers: [NotificationsService, MapService]
+  providers: [NotificationsService, MapService, ConcreteMapService]
 })
 export class MapModule { }
