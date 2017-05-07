@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { DragulaService } from "ng2-dragula";
-import { Intersectable } from './map-item.model';
+import { Intersectable, StockItem } from './map-item.model';
 import { HttpService } from '../network/http.service';
 import { StockService } from '../network/stock.service';
 import { AuthenticationService } from '../auth/authentication.service';
 import { User } from '../models/user.model';
-import { StockItem } from '../models/stock.model';
 import { NotificationsService } from '../notifications/notifications.service';
 @Injectable()
 export class MapService<T extends Intersectable> {
@@ -28,12 +27,19 @@ export class MapService<T extends Intersectable> {
     protected map: Array<Array<Array<T>>>;
     protected mapItems: Array<T>;
     protected stock: Array<T>;
+    protected originalStock: any;
     protected dropSubscription: any;
-        constructor(protected dragulaService: DragulaService,
+
+    protected _loadingFinished = new Subject<boolean>();
+    public loadingFinished = this._loadingFinished.asObservable();
+
+    constructor(protected dragulaService: DragulaService,
         protected stockService: StockService,
         protected httpService: HttpService<string>,
         protected authService: AuthenticationService,
         protected notificationsService: NotificationsService) {
+
+        
     }
 
 
@@ -78,6 +84,7 @@ export class MapService<T extends Intersectable> {
     }
 
     public save() {
+        console.log(this.saveToString());
         var a = this.authService._userId;
         this.httpService.put(`/users/${this.authService._userId}/plan`, "\'" + this.saveToString() + "\'")
 
@@ -89,11 +96,12 @@ export class MapService<T extends Intersectable> {
             err => {
                 this.notificationsService.createDefaultError(err);
                 //fill map with slots
-                this.reload();
+                this.init();
             });
     }
 
-    public reload() {
+
+    public init() {
         this.mapItems = [];
         this.map = [];
         //fill map with slots
@@ -106,21 +114,42 @@ export class MapService<T extends Intersectable> {
         this.stock = [];
     }
     protected loadFromString(plan: string): void {
-        var input = JSON.parse(plan);
+        var input:Array<number> = JSON.parse(plan);
+        var numItems = input.reduce((acc,val)=>{if(val>=0) acc++; return acc;}, 0);
+        var numLoaded = 0;
+
         for (var i = 0; i < this.rows; ++i) {
             for (var j = 0; j < this.cols; ++j) {
-                // this.map[i][j][0] = this.stockService.getItemById()
+                var current = input[i * this.cols + j];
+                if (current >= 0) {
+                    const placeItem = (i, j, current) =>{
+                        var slot = this.map[i][j];
+                        var item:any = this.originalStock.find(item=>item.id===current);
+                        var s: any = new StockItem(item.width, item.height, item.name, item.imageUrl);
+                        s.id = item.id;
+                        slot[0] = s;
+                        this.stock.splice(this.stock.findIndex(v => v.id == item.id), 1);
+                        if(++numLoaded == numItems){
+                            this._loadingFinished.next(true);
+                        }
+                        
+                    }
+                    placeItem(i,j, current);
+
+                }
             }
         }
+        
     }
     protected saveToString(): string {
         var output = [];
         for (var i = 0; i < this.rows; ++i) {
             for (var j = 0; j < this.cols; ++j) {
-                var item_id = this.map[i][j][0].draggable ? this.map[i][j][0].id : -1;
-                output.push([item_id]);
+                var item_id = this.map[i][j][0] && this.map[i][j][0].draggable ? this.map[i][j][0].id : -1;
+                output.push(item_id);
             }
         }
+
         return JSON.stringify(output);
     }
     // protected fromPlanString(plan:string): void{
