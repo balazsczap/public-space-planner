@@ -4,16 +4,23 @@
   </div>
   <div *ngIf="item">
     <div class="title">
+      
        <span  [routerLink]="['../']" class="glyphicon glyphicon-menu-left back-button"  style="cursor:pointer; vertical-align: middle;" aria-hidden="true"></span>
+       
        <div *ngIf="canEdit()" class="pull-right delete-button" (click)="deleteItem()">
           <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
        </div>
        <div *ngIf="canEdit()" class="pull-right edit-button" (click)="editItem()">
           <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
        </div>
+
        <h1>{{item.name}}</h1>
        <span class="creator">Creator: {{item.creator.name}} &emsp; &emsp;Ratings: {{item.ratings}}</span>
-
+       <span class="creator">Size: {{item.width}}x{{item.height}}</span>
+             <div class="creator picture" [style.background-color]="item.colored ? item.imageUrl : null" [style.width.em]="item.width*4" [style.height.em]="item.height*4">
+          
+          <img *ngIf="!item.colored" [src]="item.imageUrl"  [style.width.em]="item.width*4" [style.height.em]="item.height*4">
+        </div>
     </div>
     <div class="content">
       <span>{{item.description}}</span>

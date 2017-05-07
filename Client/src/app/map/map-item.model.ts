@@ -1,3 +1,6 @@
+import { StockItem } from '../models/stock.model';
+
+
 export interface Intersectable {
     x: number;
     y: number;
@@ -9,15 +12,23 @@ export interface Intersectable {
     draggable: boolean;
 }
 
-export class MapItem implements Intersectable {
+export class MapItem extends StockItem implements Intersectable {
   public x: number;
   public y: number;
   protected static id_counter:number = 0;
-  public id: number;
   protected _draggable: boolean = true;
-  
-  constructor(public width: number, public height: number, private color: string) {
-    this.id = MapItem.id_counter++;
+  constructor(id:number, width: number, height: number, name: string, imageUrl: string){
+    super();
+    this.id = id;
+    this.width = width;
+    this.height = height;
+    this.name = name;
+    if(imageUrl.match(/^#[0-9a-f]{6}$/)){
+        this.colored = true;
+    }
+    this._imageUrl= imageUrl;
+
+    
   }
 
   public intersects = (other: Intersectable): boolean => {
@@ -37,7 +48,7 @@ export class MapItem implements Intersectable {
   }
 
   public clone = () : Intersectable =>{
-    var item = new MapItem(this.width, this.height, this.color);
+    var item = new MapItem(this.id, this.width, this.height,this.name, this.imageUrl);
     item.x = this.x;
     item.y = this.y;
     item.id = this.id;
@@ -54,19 +65,9 @@ export class MapItem implements Intersectable {
 export class Wall extends MapItem{
   
   constructor(public width: number, public height: number) {
-    super(width,height,"");
-    this.id = MapItem.id_counter++;
+    super(-2, width,height,"Wall","#ffffff");
     this._draggable=false;
   }
 }
 
-export class StockItem extends MapItem{
-  public imageUrl: string;
-  constructor(public width: number, public height: number, public name: string, public bgOrColor: string){
-    super(width,height,bgOrColor.match(/#.{6}/)?bgOrColor:"");
-    if(!bgOrColor.match(/#.{6}/))
-      this.imageUrl = bgOrColor;
-    
-  }
-}
 

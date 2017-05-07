@@ -42,11 +42,9 @@
 				[attr.x_pos]="colindex"
 				[attr.y_pos]="rowindex"
 				[attr._id]="getItem(rowindex, colindex).id"
-				[style.background-color]="getItem(rowindex, colindex).color">
-				<img *ngIf="getItem(rowindex,colindex)?.imageUrl?.length>0" 
-				[src]="getItem(rowindex,colindex)?.imageUrl? getItem(rowindex,colindex)?.imageUrl : '' " alt=""/>
-				<!--<img *ngIf="getItem(rowindex,colindex)?.imageUrl?.length==1" 
-				[src]="getItem(rowindex,colindex)?.imageUrl? getItem(rowindex,colindex)?.imageUrl : '' " alt=""/>-->
+				[style.background-color]="getItem(rowindex, colindex).colored ? getItem(rowindex,colindex).imageUrl : null">
+				<img *ngIf="!getItem(rowindex,colindex).colored" 
+				[src]="getItem(rowindex,colindex)?.imageUrl"/>
 
 			</div>
 
@@ -62,36 +60,32 @@
 
 <div *ngIf="!hideStock" class="section col-md-12 col-sm-12 col-lg-12">
 	<h1 class="text-center">Stock</h1>
-	<div class=" map-add-item-container"
+	<div class="map-add-item-container section"
 	[dragula]="mapService.bagName"
 	[dragulaModel]="mapService.getStock()">
 
 			<div   *ngFor="let item of mapService.getStock()"
-			class="map-add-item "
+			class="map-add-item"
+			[style.width.px]="item.width*box_width-2"
+			[attr._id]="item.id">
 
-			[attr.width]="item.width"
-			[attr.height]="item.height"
-			[attr._id]="item.id"
-			>
+				<img *ngIf="!item.colored" class="map-add-item-draggable" 
+				[style.min-height.px]="item.height*box_width-2" 			
+				[attr.width]="item.width"
+				[attr.height]="item.height"
+				[src]="item.imageUrl"/>
 
-				<img *ngIf="item?.imageUrl?.length>0"
-				class="map-item-draggable"
-				[style.background-color]="item.color"
-				[style.width.px]="item.width*box_width-2"
-				[style.height.px]="item.height*box_width-2"
-				[src]="item?.imageUrl? item?.imageUrl : '' " alt=""/>
+				<div *ngIf="item.colored"  class="map-add-item-draggable" 
+				[style.min-height.px]="item.height*box_width-2"
+				[style.background-color]="item.imageUrl"			
+				[attr.width]="item.width"
+				[attr.height]="item.height">
+				</div>
 
-				<img *ngIf="item?.imageUrl?.length<=0"
-				class="map-item-draggable"
-				[style.background-color]="item.color"
-				[style.width.px]="item.width*box_width-2"
-				[style.height.px]="item.height*box_width-2"
-				[src]="item?.imageUrl? item?.imageUrl : '' " alt=""/>
-
-				<p class="text-center map-add-item-name"
-				
-				>{{item.name}}</p>
-				<!--[style.left.px]="item.width*box_width"-->
+				<p 
+				class="text-center map-add-item-name">
+					{{item.name}}
+				</p>
 			</div>
 			
 		

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { DragulaService } from "ng2-dragula";
-import { Intersectable, StockItem } from './map-item.model';
+import { Intersectable, MapItem } from './map-item.model';
 import { HttpService } from '../network/http.service';
 import { StockService } from '../network/stock.service';
 import { AuthenticationService } from '../auth/authentication.service';
@@ -84,8 +84,6 @@ export class MapService<T extends Intersectable> {
     }
 
     public save() {
-        console.log(this.saveToString());
-        var a = this.authService._userId;
         this.httpService.put(`/users/${this.authService._userId}/plan`, "\'" + this.saveToString() + "\'")
 
             .subscribe(value => {
@@ -113,33 +111,37 @@ export class MapService<T extends Intersectable> {
         }
         this.stock = [];
     }
+    
     protected loadFromString(plan: string): void {
         var input:Array<number> = JSON.parse(plan);
-        var numItems = input.reduce((acc,val)=>{if(val>=0) acc++; return acc;}, 0);
-        var numLoaded = 0;
 
         for (var i = 0; i < this.rows; ++i) {
             for (var j = 0; j < this.cols; ++j) {
                 var current = input[i * this.cols + j];
                 if (current >= 0) {
-                    const placeItem = (i, j, current) =>{
-                        var slot = this.map[i][j];
-                        var item:any = this.originalStock.find(item=>item.id===current);
-                        var s: any = new StockItem(item.width, item.height, item.name, item.imageUrl);
-                        s.id = item.id;
-                        slot[0] = s;
-                        this.stock.splice(this.stock.findIndex(v => v.id == item.id), 1);
-                        if(++numLoaded == numItems){
-                            this._loadingFinished.next(true);
-                        }
-                        
-                    }
-                    placeItem(i,j, current);
+                var slot = this.map[i][j];
+                var item:any = this.originalStock.find(item=>item.id===current);
 
+                slot[0] = item; 
+                item.x = j;
+                item.y = i;
+                this.mapItems.push(item);
+                this.stock.splice(this.stock.findIndex(v => v.id == item.id), 1);
                 }
             }
         }
-        
+        for(var i=0; i<this.mapItems.length;++i){ 
+            for(var j=i+1; j<this.mapItems.length;++j){
+                if(this.mapItems[i].intersects(this.mapItems[j])){
+                    var removee = this.mapItems[j];
+                    this.map[removee.y][removee.x][0] = null;
+                    this.mapItems.splice(j, 1);
+                    this.stock.push(removee);
+                    this.notificationsService.create(this.notificationsService.TYPE.NOTE, "Removed an item, due to collision with others because of its modified size.", this.notificationsService.DURATION.SHORT);
+                }
+            }
+        }
+        this._loadingFinished.next(true);
     }
     protected saveToString(): string {
         var output = [];

@@ -28,7 +28,7 @@ export class NotificationsService {í
     }
 
     public readonly DURATION = { 
-        SHORT: 1500,
+        SHORT: 2000,
         MEDIUM: 3000,
         LONG: 6000
     }

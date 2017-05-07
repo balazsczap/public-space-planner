@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { DragulaService } from "ng2-dragula";
-import { Intersectable, StockItem, Wall, MapItem } from './map-item.model';
+import { Intersectable, Wall, MapItem } from './map-item.model';
 import { HttpService } from '../network/http.service';
 import { StockService } from '../network/stock.service';
 import { AuthenticationService } from '../auth/authentication.service';
@@ -29,14 +29,9 @@ export class ConcreteMapService extends MapService<MapItem> {
     public reload(){
         this.init();
         
-        this.stockService.getAll().subscribe(value => {
+        this.stockService.getAllAsMapItems().subscribe(value => {
             this.originalStock = value;
-            this.stock = value.map(v => {
-                var s = new StockItem(v.width, v.height, v.name, v.imageUrl);
-                s.id = v.id;
-                return s;
-            });
-
+            this.stock = value;
             this.httpService.get(`/users/${this.authService._userId}/plan`)
                 .map(data => {
                     return data.text();

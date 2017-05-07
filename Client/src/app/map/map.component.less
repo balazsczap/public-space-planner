@@ -134,6 +134,7 @@
     background-color: #ffffff;
     background-size: contain;
     background-blend-mode: color-dodge;
+     clip-path: polygon(0% 20px,  20px 0%, 120% 0%, 120% 120%,0 120%);
 }
 
 .map-add-item img{
@@ -144,10 +145,13 @@
 
 
 .map-add-item-container{
-    min-width:100%;
-    width:100%;
+    // min-width:90%;
+    // width:100%;
+    background-color:  #f8f8f8;
     min-height:4em;
+    border:1px solid rgba(50,50,50,0.1);
     // display:inline-block;
+    min-height: 100px;
 }
 
 .map-add-item{
@@ -158,10 +162,30 @@
     margin-right:50px;
 }
 
-.map-add-item img{
-    // display:inline-block;
+.map-add-item:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-width: 0 0px 20px 20px;
+  border-style: solid;
+  z-index:1;
+  border-color: rgba(200, 200, 200, 0.7) rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3), 1px 1px 1px rgba(0,0,0,0.2);
+  border-radius: 1px 1px 8px 0;
 }
-    
+.map-add-item-draggable{
+    transition: box-shadow 0.1s;   
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 6px 0 rgba(0, 0, 0, 0.19);
+    clip-path: polygon(0% 20px,  20px 0%, 120% 0%, 120% 120%,0 120%);
+    cursor:-webkit-grab;
+}
+
+.map-add-item-draggable:hover{
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 5px 10px 0 rgba(0, 0, 0, 0.19);
+     z-index:2;
+}
+
 .map-add-item-name{
     // display:inline-block;
     // vertical-align: middle;

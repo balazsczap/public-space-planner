@@ -16,6 +16,31 @@
 				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 				You should type something here.</div>
 	  </div>
+
+		<div class="form-group col-sm-6 col-md-6 col-lg-6">
+	    <label for="width">Width</label>
+	    <input type="number" class="form-control" id="width" placeholder="Width" [formControl]="stockAddForm.controls['width']"> 
+	    <div class="alert alert-danger" *ngIf="!stockAddForm.controls['width'].valid">
+				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				You must not leave this field empty.</div>
+	  </div>
+
+		<div class="form-group col-sm-6 col-md-6 col-lg-6 ">
+	    <label for="height">Height</label>
+	    <input type="number" class="form-control" id="height" placeholder="Height" [formControl]="stockAddForm.controls['height']"> 
+	    <div class="alert alert-danger" *ngIf="!stockAddForm.controls['height'].valid">
+				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				You must not leave this field empty.</div>
+	  </div>
+
+		<div class="form-group ">
+	    <label for="imgurl">Image URL or HEX color</label>
+	    <input type="text" class="form-control" id="imgurl" placeholder="Image URL or HEX color" formControlName="imgurl">
+	    <div class="alert alert-danger" *ngIf="!stockAddForm.controls['imgurl'].valid">
+				  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				You must not leave this field empty.</div>
+	  </div>
+
 	  <div class="text-center">
 	  	<button [disabled]="!stockAddForm.valid" [class.enabled]="!stockAddForm.valid" type="submit" class="btn btn-default">Submit</button>
 	  </div>
