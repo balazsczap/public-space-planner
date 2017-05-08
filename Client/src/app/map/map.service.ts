@@ -121,7 +121,10 @@ export class MapService<T extends Intersectable> {
                 if (current >= 0) {
                 var slot = this.map[i][j];
                 var item:any = this.originalStock.find(item=>item.id===current);
-
+                //item has been previously deleted from the stock
+                if(!item){
+                    continue;
+                }
                 slot[0] = item; 
                 item.x = j;
                 item.y = i;

@@ -40,6 +40,7 @@ export class EditComponent implements OnInit {
       this.stockService.getOneById(this.itemId)
         .subscribe(data => {
           this.item = data;
+          this.stockEditForm.controls["name"].setValue(this.item.name);
           this.stockEditForm.controls["description"].setValue(this.item.description);
           this.stockEditForm.controls["width"].setValue(this.item.width);
           this.stockEditForm.controls["height"].setValue(this.item.height);
