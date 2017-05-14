@@ -10,8 +10,8 @@ import { User } from '../models/user.model';
 import { NotificationsService } from '../notifications/notifications.service';
 @Injectable()
 export class MapService<T extends Intersectable> {
-    protected readonly cols: number = 18;
-    protected readonly rows: number = 8;
+    protected readonly cols: number = 34;
+    protected readonly rows: number = 20;
     public getCols(): number {
         return this.cols;
     }

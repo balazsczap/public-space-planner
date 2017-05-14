@@ -15,6 +15,7 @@ export class MapComponent implements OnInit {
   private cols: number;
   private colIndexes;
 
+  private readonly map_bg = "/assets/map.png";
   private box_width;
 
   private loaded = false;

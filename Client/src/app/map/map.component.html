@@ -1,11 +1,12 @@
-<div #container (window:resize)="onResize(container.getBoundingClientRect())" class=" container col-md-12 col-sm-12 col-lg-12"
-	[style.min-height.px]="box_width*rows"
-	[style.height.px]="box_width*rows">
+<div #container (window:resize)="onResize(container.getBoundingClientRect())" class=" map-container col-md-12 col-sm-12 col-lg-12"
+	[style.min-height.px]="box_width*rows" [style.min-width.px]="box_width*cols"
+	[style.height.px]="box_width*rows" [style.width.px]="box_width*cols">
+	<img [src]="map_bg"/>
 	<div *ngFor="let rowindex of rowIndexes" 
 	class="map-row" 
 	[style.height.px]="box_width"
 	[style.top.px]="box_width*rowindex"
-	[style.min-height.px]="box_width">
+	[style.min-height.px]="box_width" >
 		<!-- overlay for drawing the grid-->
 		<div *ngFor="let colindex of colIndexes" 
 			class="map-slot"
@@ -50,7 +51,7 @@
 
 		</div>
 	</div>
-
+	
 </div>
 
 <div *ngIf="hideStock"  >

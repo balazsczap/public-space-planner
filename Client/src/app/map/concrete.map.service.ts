@@ -54,19 +54,32 @@ export class ConcreteMapService extends MapService<MapItem> {
 
             });
         });
-        this.addItemToMap(new Wall(2, 8), 0, 6);
-        this.addItemToMap(new Wall(7, 2), 3, 11);
+        // this.addItemToMap(new Wall(2, 8), 0, 6);
+        // this.addItemToMap(new Wall(7, 2), 3, 11);
 
-        this.addItemToMap(new Wall(2, 1), 0, 16);
-        this.addItemToMap(new Wall(1, 1), 1, 17);
-        this.addItemToMap(new Wall(1, 1), 6, 17);
-        this.addItemToMap(new Wall(2, 1), 7, 16);
+        // this.addItemToMap(new Wall(2, 1), 0, 16);
+        // this.addItemToMap(new Wall(1, 1), 1, 17);
+        // this.addItemToMap(new Wall(1, 1), 6, 17);
+        // this.addItemToMap(new Wall(2, 1), 7, 16);
 
-        this.addItemToMap(new Wall(2, 1), 0, 0);
-        this.addItemToMap(new Wall(1, 1), 1, 0);
-        this.addItemToMap(new Wall(1, 1), 6, 0);
-        this.addItemToMap(new Wall(2, 1), 7, 0);
-
+        // this.addItemToMap(new Wall(2, 1), 0, 0);
+        // this.addItemToMap(new Wall(1, 1), 1, 0);
+        // this.addItemToMap(new Wall(1, 1), 6, 0);
+        // this.addItemToMap(new Wall(2, 1), 7, 0);
+        for(var i=0; i<20;++i){
+            this.addItemToMap(new Wall(2,1), 20-i-1, Math.floor(i*1.35));
+        }
+        for(var i=0; i<20;++i){
+            for(var j=0; j<34;++j){
+                if((i==0 || i==19 )&& j>0 && j<33){
+                    this.addItemToMap(new Wall(1,1), i, j);
+                }
+                else if(j==0 || j==33){
+                    this.addItemToMap(new Wall(1,1), i, j);
+                }
+                
+            }
+        }
     }
 
 }
