@@ -2,7 +2,7 @@
 
 # Public Space Planner
 
-Az alkalmazás a BME-VIK Mérnökinformatikus BsC képzés Önálló laboratórium tárgyának keretein belül készül, Cserkúti Péter konzulens felügyelete alatt.
+Az alkalmazás a BME-VIK Mérnökinformatikus BSc képzés Önálló laboratórium tárgyának keretein belül készül, Cserkúti Péter konzulens felügyelete alatt.
 
 ## Leírás
 
