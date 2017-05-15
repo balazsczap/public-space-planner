@@ -6,6 +6,7 @@ import { Intersectable, MapItem } from './map-item.model';
 import { HttpService } from '../network/http.service';
 import { StockService } from '../network/stock.service';
 import { AuthenticationService } from '../auth/authentication.service';
+import { UserService } from '../network/user.service';
 import { User } from '../models/user.model';
 import { NotificationsService } from '../notifications/notifications.service';
 @Injectable()
@@ -37,12 +38,12 @@ export class MapService<T extends Intersectable> {
         protected stockService: StockService,
         protected httpService: HttpService<string>,
         protected authService: AuthenticationService,
-        protected notificationsService: NotificationsService) {
+        protected notificationsService: NotificationsService,
+        protected userService: UserService
+        ) {
 
         
     }
-
-
 
 
     protected addItemToMap(item: T, y: number, x: number) {
@@ -110,9 +111,11 @@ export class MapService<T extends Intersectable> {
             }
         }
         this.stock = [];
+
+        
     }
     
-    protected loadFromString(plan: string): void {
+    public loadFromString(plan: string): void {
         var input:Array<number> = JSON.parse(plan);
 
         for (var i = 0; i < this.rows; ++i) {

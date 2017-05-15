@@ -10,25 +10,45 @@ import { User } from '../models/user.model';
 // import { StockItem } from '../models/stock.model';
 import { NotificationsService } from '../notifications/notifications.service';
 import { MapService } from './map.service';
+import { UserService } from "app/network/user.service";
 @Injectable()
 export class ConcreteMapService extends MapService<MapItem> {
     constructor(dragulaService: DragulaService,
         stockService: StockService,
         httpService: HttpService<string>,
         authService: AuthenticationService,
-        notificationsService: NotificationsService) {
-        super(dragulaService, stockService, httpService, authService, notificationsService);
+        notificationsService: NotificationsService, userService: UserService) {
+        super(dragulaService, stockService, httpService, authService, notificationsService, userService);
 
 
 
+        
         this.dragulaSetup();
 
 
     }
 
-    public reload(){
+    public reload() {
         this.init();
-        
+
+
+        for (var i = 0; i < 20; ++i) {
+            this.addItemToMap(new Wall(2, 1), 20 - i - 1, Math.floor(i * 1.35));
+        }
+        for (var i = 0; i < 20; ++i) {
+            for (var j = 0; j < 34; ++j) {
+                if ((i == 0 || i == 19) && j > 0 && j < 33) {
+                    this.addItemToMap(new Wall(1, 1), i, j);
+                }
+                else if (j == 0 || j == 33) {
+                    this.addItemToMap(new Wall(1, 1), i, j);
+                }
+
+            }
+        }
+    }
+
+    public load(){
         this.stockService.getAllAsMapItems().subscribe(value => {
             this.originalStock = value;
             this.stock = value;
@@ -52,34 +72,25 @@ export class ConcreteMapService extends MapService<MapItem> {
                     //fill map with slots
 
 
-            });
+                });
         });
-        // this.addItemToMap(new Wall(2, 8), 0, 6);
-        // this.addItemToMap(new Wall(7, 2), 3, 11);
+    }
 
-        // this.addItemToMap(new Wall(2, 1), 0, 16);
-        // this.addItemToMap(new Wall(1, 1), 1, 17);
-        // this.addItemToMap(new Wall(1, 1), 6, 17);
-        // this.addItemToMap(new Wall(2, 1), 7, 16);
+    public loadOther(map:string){
+        this.stockService.getAllAsMapItems().subscribe(value => {
+            this.originalStock = value;
+            this.stock = value;
 
-        // this.addItemToMap(new Wall(2, 1), 0, 0);
-        // this.addItemToMap(new Wall(1, 1), 1, 0);
-        // this.addItemToMap(new Wall(1, 1), 6, 0);
-        // this.addItemToMap(new Wall(2, 1), 7, 0);
-        for(var i=0; i<20;++i){
-            this.addItemToMap(new Wall(2,1), 20-i-1, Math.floor(i*1.35));
-        }
-        for(var i=0; i<20;++i){
-            for(var j=0; j<34;++j){
-                if((i==0 || i==19 )&& j>0 && j<33){
-                    this.addItemToMap(new Wall(1,1), i, j);
-                }
-                else if(j==0 || j==33){
-                    this.addItemToMap(new Wall(1,1), i, j);
-                }
-                
+            if (map.length > 2) {
+                this.loadFromString(map);
+
             }
-        }
+            else {
+                // this.init
+            }
+
+
+        });
     }
 
 }

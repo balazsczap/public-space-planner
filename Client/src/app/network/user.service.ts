@@ -53,4 +53,8 @@ export class UserService {
         return this.http.put("/users/" + user.id, content)
             .map(res=>res.json());
     } 
+
+    public getMapOf = (user:User):Observable<string>=>{
+        return this.http.get(`/users/${user.id}/plan`).map(r=>r.text());
+    }
 }

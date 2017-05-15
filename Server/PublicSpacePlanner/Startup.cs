@@ -84,6 +84,9 @@ namespace PublicSpacePlanner
 			{
 				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 			});
+
+
+			services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "My API", Version = "v1" }));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -128,6 +131,9 @@ namespace PublicSpacePlanner
 			app.UseCors(builder => builder.AllowAnyOrigin());
 
 			app.UseMvc();
+
+			app.UseSwagger();
+			app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/swagger.json", "My API v1"));
 		}
 
 
